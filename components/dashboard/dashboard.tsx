@@ -49,6 +49,17 @@ const stageDefinitions: Array<{ key: keyof WorkRecord; label: string; color: str
   { key: 'dismantling', label: 'Desmontaje', color: '#89c2d9' },
 ];
 
+type HistorySeriesKey = 'progress' | 'newConduit' | 'newCabling' | 'installation' | 'commissioning' | 'dismantling';
+
+const historySeries: Array<{ key: HistorySeriesKey; label: string; color: string }> = [
+  { key: 'progress', label: 'Promedio total', color: '#0f4c75' },
+  { key: 'newConduit', label: 'Canalizado', color: '#2f80ed' },
+  { key: 'newCabling', label: 'Cableado', color: '#8b5cf6' },
+  { key: 'installation', label: 'Instalación', color: '#f59e0b' },
+  { key: 'commissioning', label: 'Puesta en marcha', color: '#10b981' },
+  { key: 'dismantling', label: 'Desmontaje', color: '#ef4444' },
+];
+
 function average(records: WorkRecord[], key: keyof WorkRecord) {
   const values = records.map((record) => record[key]).filter((value): value is number => typeof value === 'number');
   if (!values.length) return 0;
@@ -89,6 +100,7 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
   const [status, setStatus] = useState('Todos');
   const [location, setLocation] = useState('Todas');
   const [page, setPage] = useState(1);
+  const [visibleHistorySeries, setVisibleHistorySeries] = useState<HistorySeriesKey[]>(() => historySeries.map((series) => series.key));
   const [historyAgency, setHistoryAgency] = useState(() => {
     const preferred = snapshot.history.find((record) => record.projectId === '3979' && record.agency === 'OFICINA BUSTAMANTE Y RIVERO') || snapshot.history[0];
     return preferred ? `${preferred.projectId}::${preferred.agency}` : '';
@@ -142,6 +154,7 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
   const activeFilters = [project !== 'Todos', provider !== 'Todos', status !== 'Todos', location !== 'Todas', Boolean(search)].filter(Boolean).length;
 
   const resetFilters = () => { setSearch(''); setProject('Todos'); setProvider('Todos'); setStatus('Todos'); setLocation('Todas'); };
+  const toggleHistorySeries = (key: HistorySeriesKey) => setVisibleHistorySeries((current) => current.includes(key) ? current.filter((item) => item !== key) : [...current, key]);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -213,8 +226,17 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
                   <div className="rounded-xl bg-emerald-50/70 p-3 ring-1 ring-emerald-200/70"><p className="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Variación</p><p className="mt-1 flex items-center gap-1 text-2xl font-semibold tabular-nums text-emerald-700"><TrendingUp className="size-5" />{historyChange >= 0 ? '+' : ''}{historyChange} pts</p></div>
                   <div className="rounded-xl bg-sky-50/70 p-3 ring-1 ring-sky-200/70"><p className="text-[11px] font-semibold uppercase tracking-wide text-sky-700">Última actualización</p><p className="mt-1 text-lg font-semibold text-sky-800">{historyLatest.date}</p><p className="text-[11px] text-sky-700">{historyLatest.supervisor || 'Sin supervisor'}</p></div>
                 </div>
-                <div className="mb-3 flex flex-wrap gap-x-4 gap-y-2 text-[11px] text-muted-foreground">
-                  {[['progress', 'Promedio total', '#0f4c75'], ['newConduit', 'Canalizado', '#2f80ed'], ['newCabling', 'Cableado', '#8b5cf6'], ['installation', 'Instalación', '#f59e0b'], ['commissioning', 'Puesta en marcha', '#10b981'], ['dismantling', 'Desmontaje', '#ef4444']].map(([key, label, color]) => <span key={key} className="flex items-center gap-1.5"><span className="h-0.5 w-4 rounded-full" style={{ backgroundColor: color }} />{label}</span>)}
+                <div className="mb-4 flex flex-col gap-3 border-y border-slate-100 py-3 xl:flex-row xl:items-center xl:justify-between">
+                  <div className="flex flex-wrap gap-2" role="group" aria-label="Series visibles en la línea de tiempo">
+                    {historySeries.map((series) => {
+                      const visible = visibleHistorySeries.includes(series.key);
+                      return <button key={series.key} type="button" aria-pressed={visible} onClick={() => toggleHistorySeries(series.key)} className={`inline-flex h-8 items-center gap-2 rounded-lg border px-2.5 text-[11px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${visible ? 'border-slate-200 bg-white text-slate-700 shadow-sm' : 'border-transparent bg-slate-100/70 text-slate-400'}`}><span className="h-0.5 w-4 rounded-full transition-opacity" style={{ backgroundColor: series.color, opacity: visible ? 1 : 0.28 }} />{series.label}</button>;
+                    })}
+                  </div>
+                  <div className="flex shrink-0 items-center gap-1">
+                    <Button type="button" variant="ghost" size="sm" className="h-8 text-xs" onClick={() => setVisibleHistorySeries(historySeries.map((series) => series.key))} disabled={visibleHistorySeries.length === historySeries.length}>Todas</Button>
+                    <Button type="button" variant="ghost" size="sm" className="h-8 text-xs" onClick={() => setVisibleHistorySeries(['progress'])} disabled={visibleHistorySeries.length === 1 && visibleHistorySeries[0] === 'progress'}>Solo promedio</Button>
+                  </div>
                 </div>
                 <ChartContainer config={chartConfig} className="h-[340px] w-full aspect-auto sm:h-[390px]">
                   <LineChart accessibilityLayer data={historyData} margin={{ left: 4, right: 18, top: 12, bottom: 4 }}>
@@ -222,12 +244,7 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
                     <XAxis dataKey="date" axisLine={false} tickLine={false} tickMargin={10} />
                     <YAxis domain={[0, 100]} ticks={[0, 20, 40, 60, 80, 100]} tickFormatter={(value) => `${value}%`} axisLine={false} tickLine={false} width={42} />
                     <ChartTooltip cursor={{ stroke: '#94a3b8', strokeDasharray: '4 4' }} content={<ChartTooltipContent labelFormatter={(label) => `Fecha: ${label}`} formatter={(value, name) => <div className="flex min-w-40 items-center justify-between gap-4"><span className="text-muted-foreground">{String(name)}</span><span className="font-mono font-semibold">{value}%</span></div>} />} />
-                    <Line name="Canalizado" type="monotone" dataKey="newConduit" stroke="#2f80ed" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-                    <Line name="Cableado" type="monotone" dataKey="newCabling" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-                    <Line name="Instalación" type="monotone" dataKey="installation" stroke="#f59e0b" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-                    <Line name="Puesta en marcha" type="monotone" dataKey="commissioning" stroke="#10b981" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-                    <Line name="Desmontaje" type="monotone" dataKey="dismantling" stroke="#ef4444" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-                    <Line name="Promedio total" type="monotone" dataKey="progress" stroke="#0f4c75" strokeWidth={4} dot={{ r: 4, fill: '#0f4c75' }} activeDot={{ r: 6 }} />
+                    {historySeries.filter((series) => visibleHistorySeries.includes(series.key)).map((series) => <Line key={series.key} name={series.label} type="monotone" dataKey={series.key} stroke={series.color} strokeWidth={series.key === 'progress' ? 4 : 2} dot={{ r: series.key === 'progress' ? 4 : 3, fill: series.key === 'progress' ? series.color : '#fff' }} activeDot={{ r: series.key === 'progress' ? 6 : 5 }} />)}
                   </LineChart>
                 </ChartContainer>
               </> : <div className="grid min-h-72 place-items-center px-6 text-center"><div><CalendarRange className="mx-auto mb-3 size-8 text-muted-foreground/60" /><p className="font-medium">No hay historial disponible</p></div></div>}
