@@ -21,14 +21,20 @@ function Convert-ExcelDate($value) {
 
 function Convert-Percent($value) {
   if ($null -eq $value -or "$value" -eq '') { return 0 }
-  return [Math]::Round([double]$value * 100)
+  $text = "$value".Trim().Replace('%', '')
+  $number = 0.0
+  if (-not [double]::TryParse($text, [Globalization.NumberStyles]::Any, [Globalization.CultureInfo]::InvariantCulture, [ref]$number)) { return 0 }
+  if ($number -le 1) { $number *= 100 }
+  return [Math]::Round($number)
 }
 
 try {
   $taskBook = $taskExcel.Workbooks.Open($WorkbookPath, 0, $true)
   $taskSheet = $taskBook.Worksheets.Item('CRONOGRAMA')
+  $historySheet = $taskBook.Worksheets.Item('Historial de avance')
   $timelineValues = $taskSheet.Range('Y9:HK209').Value2
   $records = @()
+  $history = @()
 
   for ($row = 10; $row -le 209; $row++) {
     $agency = "$($taskSheet.Cells.Item($row, 2).Text)".Trim()
@@ -72,6 +78,26 @@ try {
     }
   }
 
+  for ($row = 2; $row -le $historySheet.UsedRange.Rows.Count; $row++) {
+    $historyAgency = "$($historySheet.Cells.Item($row, 3).Text)".Trim()
+    $historyDate = "$($historySheet.Cells.Item($row, 1).Text)".Trim()
+    if (-not $historyAgency -or -not $historyDate) { continue }
+
+    $history += [ordered]@{
+      date = $historyDate
+      item = [int]$historySheet.Cells.Item($row, 2).Value2
+      agency = $historyAgency
+      supervisor = "$($historySheet.Cells.Item($row, 4).Text)".Trim()
+      newConduit = Convert-Percent $historySheet.Cells.Item($row, 5).Value2
+      newCabling = Convert-Percent $historySheet.Cells.Item($row, 6).Value2
+      installation = Convert-Percent $historySheet.Cells.Item($row, 7).Value2
+      commissioning = Convert-Percent $historySheet.Cells.Item($row, 8).Value2
+      dismantling = Convert-Percent $historySheet.Cells.Item($row, 9).Value2
+      progress = Convert-Percent $historySheet.Cells.Item($row, 10).Value2
+      status = "$($historySheet.Cells.Item($row, 11).Text)".Trim()
+    }
+  }
+
   $payload = [ordered]@{
     source = 'CRONOGRAMA'
     workbook = [System.IO.Path]::GetFileName($WorkbookPath)
@@ -79,13 +105,14 @@ try {
     scheduleStart = Convert-ExcelDate $timelineValues[1, 1]
     scheduleEnd = Convert-ExcelDate $timelineValues[1, 195]
     records = $records
+    history = $history
   }
 
   $targetDirectory = [System.IO.Path]::GetDirectoryName($OutputPath)
   [System.IO.Directory]::CreateDirectory($targetDirectory) | Out-Null
   [System.IO.File]::WriteAllText($OutputPath, ($payload | ConvertTo-Json -Depth 6), [System.Text.UTF8Encoding]::new($false))
   $taskBook.Close($false)
-  Write-Output "Extracted $($records.Count) records to $OutputPath"
+  Write-Output "Extracted $($records.Count) records and $($history.Count) history points to $OutputPath"
 }
 finally {
   $taskExcel.Quit()

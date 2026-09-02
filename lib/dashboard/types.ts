@@ -22,6 +22,20 @@ export interface WorkRecord {
   timelineEnd: string | null;
 }
 
+export interface ProgressHistoryRecord {
+  date: string;
+  item: number;
+  agency: string;
+  supervisor: string;
+  newConduit: number;
+  newCabling: number;
+  installation: number;
+  commissioning: number;
+  dismantling: number;
+  progress: number;
+  status: string;
+}
+
 export interface DashboardSnapshot {
   source: string;
   workbook: string;
@@ -29,4 +43,5 @@ export interface DashboardSnapshot {
   scheduleStart: string;
   scheduleEnd: string;
   records: WorkRecord[];
+  history: ProgressHistoryRecord[];
 }
