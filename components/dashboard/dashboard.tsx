@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   Activity,
   Building2,
+  CalendarRange,
   CalendarDays,
   CheckCircle2,
   ChevronLeft,
@@ -27,6 +28,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import type { DashboardSnapshot, WorkRecord, WorkStatus } from '@/lib/dashboard/types';
 
 const PAGE_SIZE = 8;
+const TIMELINE_PAGE_SIZE = 12;
+const DAY_MS = 86_400_000;
 const statusColors: Record<WorkStatus, string> = {
   Terminada: '#2f7d32',
   'En proceso': '#f2c94c',
@@ -56,6 +59,35 @@ function formatDate(date: string | null) {
   return new Intl.DateTimeFormat('es-PE', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${date}T00:00:00Z`));
 }
 
+function dateValue(date: string) {
+  return new Date(`${date}T00:00:00Z`).getTime();
+}
+
+function daysBetween(start: string, end: string) {
+  return Math.round((dateValue(end) - dateValue(start)) / DAY_MS);
+}
+
+function buildMonthSegments(start: string, end: string) {
+  const rangeStart = new Date(`${start}T00:00:00Z`);
+  const rangeEnd = new Date(`${end}T00:00:00Z`);
+  const totalDays = daysBetween(start, end) + 1;
+  const segments = [];
+  let cursor = new Date(Date.UTC(rangeStart.getUTCFullYear(), rangeStart.getUTCMonth(), 1));
+
+  while (cursor <= rangeEnd) {
+    const nextMonth = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 1));
+    const segmentStart = new Date(Math.max(cursor.getTime(), rangeStart.getTime()));
+    const segmentEnd = new Date(Math.min(nextMonth.getTime() - DAY_MS, rangeEnd.getTime()));
+    segments.push({
+      label: new Intl.DateTimeFormat('es-PE', { month: 'short', timeZone: 'UTC' }).format(cursor).replace('.', ''),
+      left: ((segmentStart.getTime() - rangeStart.getTime()) / DAY_MS / totalDays) * 100,
+      width: (((segmentEnd.getTime() - segmentStart.getTime()) / DAY_MS + 1) / totalDays) * 100,
+    });
+    cursor = nextMonth;
+  }
+  return segments;
+}
+
 function StatusBadge({ status }: { status: WorkStatus }) {
   const styles = status === 'Terminada'
     ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/15'
@@ -82,6 +114,7 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
   const [status, setStatus] = useState('Todos');
   const [location, setLocation] = useState('Todas');
   const [page, setPage] = useState(1);
+  const [timelinePage, setTimelinePage] = useState(1);
 
   const locations = useMemo(() => [...new Set(snapshot.records.map((record) => record.location).filter(Boolean))].sort(), [snapshot.records]);
   const filtered = useMemo(() => {
@@ -92,7 +125,7 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
     });
   }, [snapshot.records, search, provider, status, location]);
 
-  useEffect(() => setPage(1), [search, provider, status, location]);
+  useEffect(() => { setPage(1); setTimelinePage(1); }, [search, provider, status, location]);
 
   const summary = useMemo(() => {
     const completed = filtered.filter((record) => record.status === 'Terminada').length;
@@ -109,6 +142,17 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
   const stageData = stageDefinitions.map((stage) => ({ ...stage, average: average(filtered, stage.key) }));
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const visibleRows = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const timelineRecords = filtered
+    .filter((record) => record.timelineStart && record.timelineEnd)
+    .sort((first, second) => dateValue(first.timelineStart!) - dateValue(second.timelineStart!));
+  const timelineTotalPages = Math.max(1, Math.ceil(timelineRecords.length / TIMELINE_PAGE_SIZE));
+  const timelineVisibleRows = timelineRecords.slice((timelinePage - 1) * TIMELINE_PAGE_SIZE, timelinePage * TIMELINE_PAGE_SIZE);
+  const timelineMonths = buildMonthSegments(snapshot.scheduleStart, snapshot.scheduleEnd);
+  const timelineDays = daysBetween(snapshot.scheduleStart, snapshot.scheduleEnd) + 1;
+  const today = new Date().toISOString().slice(0, 10);
+  const todayPosition = today >= snapshot.scheduleStart && today <= snapshot.scheduleEnd
+    ? (daysBetween(snapshot.scheduleStart, today) / timelineDays) * 100
+    : null;
   const activeFilters = [provider !== 'Todos', status !== 'Todos', location !== 'Todas', Boolean(search)].filter(Boolean).length;
 
   const resetFilters = () => { setSearch(''); setProvider('Todos'); setStatus('Todos'); setLocation('Todas'); };
@@ -121,7 +165,7 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
             <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground shadow-sm"><Activity className="size-5" /></div>
             <div className="min-w-0"><p className="truncate text-sm font-semibold tracking-tight">Seguimiento de trabajos</p><p className="truncate text-xs text-muted-foreground">Cronograma operativo · 2026</p></div>
           </div>
-          <nav aria-label="Navegación principal" className="hidden items-center gap-1 rounded-xl bg-muted p-1 md:flex"><a href="#resumen" className="rounded-lg bg-card px-3 py-1.5 text-xs font-semibold shadow-sm">Resumen</a><a href="#agencias" className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">Agencias</a></nav>
+          <nav aria-label="Navegación principal" className="hidden items-center gap-1 rounded-xl bg-muted p-1 md:flex"><a href="#resumen" className="rounded-lg bg-card px-3 py-1.5 text-xs font-semibold shadow-sm">Resumen</a><a href="#linea-tiempo" className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">Línea de tiempo</a><a href="#agencias" className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">Agencias</a></nav>
           <Badge variant="outline" className="hidden h-7 gap-1.5 bg-emerald-50 text-emerald-700 sm:inline-flex"><span className="size-1.5 rounded-full bg-emerald-500" />Datos cargados</Badge>
         </div>
       </header>
@@ -166,6 +210,49 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
                 <BarChart accessibilityLayer data={stageData} layout="vertical" margin={{ left: 16, right: 30 }}><CartesianGrid horizontal={false} /><XAxis type="number" domain={[0, 100]} tickFormatter={(value) => `${value}%`} axisLine={false} tickLine={false} /><YAxis dataKey="label" type="category" width={112} axisLine={false} tickLine={false} tick={{ fontSize: 11 }} /><ChartTooltip cursor={{ fill: 'rgba(31,95,139,.05)' }} content={<ChartTooltipContent hideLabel formatter={(value) => <div className="flex min-w-28 items-center justify-between gap-4"><span className="text-muted-foreground">Avance</span><span className="font-mono font-semibold">{value}%</span></div>} />} /><Bar dataKey="average" radius={[0, 7, 7, 0]} barSize={24}>{stageData.map((item) => <Cell key={item.label} fill={item.color} />)}</Bar></BarChart>
               </ChartContainer>
             </CardContent>
+          </Card>
+        </section>
+
+        <section id="linea-tiempo" className="mt-4 scroll-mt-24">
+          <Card className="border-0 shadow-[0_1px_2px_rgb(15_23_42/4%),0_10px_28px_rgb(15_23_42/5%)] ring-1 ring-slate-200/80">
+            <CardHeader className="border-b sm:grid-cols-[1fr_auto]">
+              <div><CardTitle className="flex items-center gap-2"><CalendarRange className="size-4 text-primary" />Línea de tiempo del cronograma</CardTitle><p className="mt-1 text-xs text-muted-foreground">Programación extraída de las marcas X entre el 18 de mayo y el 28 de noviembre</p></div>
+              <div className="flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground" data-slot="card-action">
+                {(Object.keys(statusColors) as WorkStatus[]).map((item) => <span key={item} className="flex items-center gap-1.5"><span className="size-2 rounded-full" style={{ backgroundColor: statusColors[item] }} />{item}</span>)}
+              </div>
+            </CardHeader>
+            <CardContent className="px-0 pb-0">
+              {timelineVisibleRows.length ? (
+                <div className="overflow-x-auto">
+                  <div className="min-w-[1080px]">
+                    <div className="grid grid-cols-[260px_1fr] border-b bg-muted/25">
+                      <div className="sticky left-0 z-20 flex h-11 items-center border-r bg-muted/95 px-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground backdrop-blur">Agencia</div>
+                      <div className="relative h-11">
+                        {timelineMonths.map((month, index) => <div key={`${month.label}-${index}`} className="absolute inset-y-0 flex items-center justify-center border-r border-border/70 text-[11px] font-semibold uppercase text-muted-foreground" style={{ left: `${month.left}%`, width: `${month.width}%` }}>{month.label}</div>)}
+                        {todayPosition !== null && <div className="absolute inset-y-0 z-10 border-l-2 border-sky-500" style={{ left: `${todayPosition}%` }}><span className="absolute left-1 top-1 rounded bg-sky-500 px-1 py-0.5 text-[9px] font-bold text-white">HOY</span></div>}
+                      </div>
+                    </div>
+                    <div>
+                      {timelineVisibleRows.map((record, rowIndex) => {
+                        const left = (daysBetween(snapshot.scheduleStart, record.timelineStart!) / timelineDays) * 100;
+                        const width = ((daysBetween(record.timelineStart!, record.timelineEnd!) + 1) / timelineDays) * 100;
+                        return (
+                          <div key={record.id} className="grid grid-cols-[260px_1fr] border-b last:border-b-0">
+                            <div className="sticky left-0 z-20 flex h-11 min-w-0 items-center justify-between gap-2 border-r bg-card/95 px-4 backdrop-blur"><div className="min-w-0"><p className="truncate text-xs font-medium">{record.agency}</p><p className="truncate text-[10px] text-muted-foreground">{record.provider} · {record.progress}%</p></div><span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: statusColors[record.status] }} /></div>
+                            <div className={`relative h-11 ${rowIndex % 2 ? 'bg-slate-50/50' : 'bg-card'}`}>
+                              {timelineMonths.map((month, index) => <div key={index} className="absolute inset-y-0 border-r border-border/45" style={{ left: `${month.left}%`, width: `${month.width}%` }} />)}
+                              <div className="absolute top-1/2 h-4 -translate-y-1/2 rounded-full shadow-sm ring-1 ring-black/5" title={`${record.agency}: ${formatDate(record.timelineStart)} – ${formatDate(record.timelineEnd)}`} style={{ left: `${left}%`, width: `max(${width}%, 7px)`, backgroundColor: statusColors[record.status] }}><span className="absolute inset-y-0 left-0 rounded-full bg-black/15" style={{ width: `${record.progress}%` }} /></div>
+                              {todayPosition !== null && <div className="absolute inset-y-0 z-10 border-l border-sky-500/60" style={{ left: `${todayPosition}%` }} />}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ) : <div className="grid min-h-44 place-items-center px-6 text-center"><div><CalendarRange className="mx-auto mb-3 size-8 text-muted-foreground/60" /><p className="font-medium">No hay programación para este resultado</p><p className="mt-1 text-sm text-muted-foreground">Prueba con otros filtros.</p></div></div>}
+            </CardContent>
+            <div className="flex flex-col gap-3 border-t bg-muted/25 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"><p className="text-xs text-muted-foreground">{timelineRecords.length} agencias con fechas programadas · arrastra horizontalmente para ver todo el periodo</p><div className="flex items-center gap-2"><Button variant="outline" size="sm" aria-label="Página anterior de la línea de tiempo" disabled={timelinePage === 1} onClick={() => setTimelinePage((current) => Math.max(1, current - 1))}><ChevronLeft /></Button><span className="min-w-20 text-center text-xs font-medium">Página {timelinePage} de {timelineTotalPages}</span><Button variant="outline" size="sm" aria-label="Página siguiente de la línea de tiempo" disabled={timelinePage === timelineTotalPages} onClick={() => setTimelinePage((current) => Math.min(timelineTotalPages, current + 1))}><ChevronRight /></Button></div></div>
           </Card>
         </section>
 

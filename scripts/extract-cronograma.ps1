@@ -27,6 +27,7 @@ function Convert-Percent($value) {
 try {
   $taskBook = $taskExcel.Workbooks.Open($WorkbookPath, 0, $true)
   $taskSheet = $taskBook.Worksheets.Item('CRONOGRAMA')
+  $timelineValues = $taskSheet.Range('Y9:HK209').Value2
   $records = @()
 
   for ($row = 10; $row -le 209; $row++) {
@@ -37,6 +38,16 @@ try {
     $progressValue = $taskSheet.Cells.Item($row, 12).Value2
     $progress = if ($null -eq $progressValue -or "$progressValue" -eq '') { 0 } else { [Math]::Round([double]$progressValue * 100) }
     $status = if ($progress -ge 100) { 'Terminada' } elseif ($progress -gt 0) { 'En proceso' } else { 'No empezada' }
+    $timelineFirstColumn = $null
+    $timelineLastColumn = $null
+    $timelineRow = $row - 8
+    for ($timelineColumn = 1; $timelineColumn -le 195; $timelineColumn++) {
+      $marker = "$($timelineValues[$timelineRow, $timelineColumn])".Trim()
+      if ($marker -match '^X') {
+        if ($null -eq $timelineFirstColumn) { $timelineFirstColumn = $timelineColumn }
+        $timelineLastColumn = $timelineColumn
+      }
+    }
 
     $records += [ordered]@{
       id = [int]$taskSheet.Cells.Item($row, 1).Value2
@@ -56,6 +67,8 @@ try {
       startDate = Convert-ExcelDate $taskSheet.Cells.Item($row, 22).Value2
       endDate = Convert-ExcelDate $taskSheet.Cells.Item($row, 23).Value2
       days = if ($null -eq $taskSheet.Cells.Item($row, 24).Value2) { $null } else { [int]$taskSheet.Cells.Item($row, 24).Value2 }
+      timelineStart = if ($null -eq $timelineFirstColumn) { $null } else { Convert-ExcelDate $timelineValues[1, $timelineFirstColumn] }
+      timelineEnd = if ($null -eq $timelineLastColumn) { $null } else { Convert-ExcelDate $timelineValues[1, $timelineLastColumn] }
     }
   }
 
@@ -63,6 +76,8 @@ try {
     source = 'CRONOGRAMA'
     workbook = [System.IO.Path]::GetFileName($WorkbookPath)
     extractedAt = (Get-Date).ToString('yyyy-MM-ddTHH:mm:ssK')
+    scheduleStart = Convert-ExcelDate $timelineValues[1, 1]
+    scheduleEnd = Convert-ExcelDate $timelineValues[1, 195]
     records = $records
   }
 

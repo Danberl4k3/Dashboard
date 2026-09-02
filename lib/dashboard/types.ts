@@ -18,11 +18,15 @@ export interface WorkRecord {
   startDate: string | null;
   endDate: string | null;
   days: number | null;
+  timelineStart: string | null;
+  timelineEnd: string | null;
 }
 
 export interface DashboardSnapshot {
   source: string;
   workbook: string;
   extractedAt: string;
+  scheduleStart: string;
+  scheduleEnd: string;
   records: WorkRecord[];
 }

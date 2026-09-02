@@ -1,7 +1,9 @@
 {
     "source":  "CRONOGRAMA",
     "workbook":  "3979_S-26D32 CRONOGRAMA DE TRABAJOS (SEGUIMIENTO) V3 (5).xlsx",
-    "extractedAt":  "2026-09-02T07:06:59-05:00",
+    "extractedAt":  "2026-09-02T07:37:28-05:00",
+    "scheduleStart":  "2026-05-18",
+    "scheduleEnd":  "2026-11-28",
     "records":  [
                     {
                         "id":  1,
@@ -20,7 +22,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-06-17",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-06-02",
+                        "timelineEnd":  "2026-06-14"
                     },
                     {
                         "id":  2,
@@ -39,7 +43,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-07-03",
                         "endDate":  "2026-07-30",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-02",
+                        "timelineEnd":  "2026-07-22"
                     },
                     {
                         "id":  4,
@@ -58,7 +64,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-06-01",
+                        "timelineEnd":  "2026-08-14"
                     },
                     {
                         "id":  6,
@@ -77,7 +85,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-07",
+                        "timelineEnd":  "2026-09-20"
                     },
                     {
                         "id":  8,
@@ -96,7 +106,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  9,
@@ -115,7 +127,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-29",
+                        "timelineEnd":  "2026-09-11"
                     },
                     {
                         "id":  10,
@@ -134,7 +148,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-04",
+                        "timelineEnd":  "2026-08-17"
                     },
                     {
                         "id":  3,
@@ -153,7 +169,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-07-18",
                         "endDate":  "2026-08-26",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-21",
+                        "timelineEnd":  "2026-08-20"
                     },
                     {
                         "id":  12,
@@ -172,7 +190,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-01",
+                        "timelineEnd":  "2026-08-14"
                     },
                     {
                         "id":  15,
@@ -191,7 +211,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-29",
+                        "timelineEnd":  "2026-08-10"
                     },
                     {
                         "id":  16,
@@ -210,7 +232,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-15",
+                        "timelineEnd":  "2026-08-28"
                     },
                     {
                         "id":  18,
@@ -229,7 +253,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-12",
+                        "timelineEnd":  "2026-09-25"
                     },
                     {
                         "id":  5,
@@ -248,7 +274,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-07-08",
                         "endDate":  "2026-07-30",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-08",
+                        "timelineEnd":  "2026-07-31"
                     },
                     {
                         "id":  20,
@@ -267,7 +295,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-11",
+                        "timelineEnd":  "2026-08-24"
                     },
                     {
                         "id":  22,
@@ -286,7 +316,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-21",
+                        "timelineEnd":  "2026-10-04"
                     },
                     {
                         "id":  27,
@@ -305,7 +337,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-10-08",
+                        "timelineEnd":  "2026-10-21"
                     },
                     {
                         "id":  28,
@@ -324,7 +358,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-26",
+                        "timelineEnd":  "2026-10-09"
                     },
                     {
                         "id":  30,
@@ -343,7 +379,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-15",
+                        "timelineEnd":  "2026-08-28"
                     },
                     {
                         "id":  34,
@@ -362,7 +400,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-04",
+                        "timelineEnd":  "2026-09-17"
                     },
                     {
                         "id":  38,
@@ -381,7 +421,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-24",
+                        "timelineEnd":  "2026-10-07"
                     },
                     {
                         "id":  39,
@@ -400,7 +442,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-21",
+                        "timelineEnd":  "2026-09-03"
                     },
                     {
                         "id":  40,
@@ -419,7 +463,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-29",
+                        "timelineEnd":  "2026-08-10"
                     },
                     {
                         "id":  41,
@@ -438,7 +484,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-10-02",
+                        "timelineEnd":  "2026-10-22"
                     },
                     {
                         "id":  95,
@@ -457,7 +505,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-07",
+                        "timelineEnd":  "2026-09-20"
                     },
                     {
                         "id":  46,
@@ -476,7 +526,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-15",
+                        "timelineEnd":  "2026-10-09"
                     },
                     {
                         "id":  48,
@@ -495,7 +547,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-25",
+                        "timelineEnd":  "2026-09-07"
                     },
                     {
                         "id":  7,
@@ -514,7 +568,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-05-25",
                         "endDate":  "2026-06-19",
-                        "days":  25
+                        "days":  25,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  51,
@@ -533,7 +589,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-04",
+                        "timelineEnd":  "2026-09-17"
                     },
                     {
                         "id":  52,
@@ -552,7 +610,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-10-08",
+                        "timelineEnd":  "2026-10-21"
                     },
                     {
                         "id":  56,
@@ -571,7 +631,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-11",
+                        "timelineEnd":  "2026-08-24"
                     },
                     {
                         "id":  58,
@@ -590,7 +652,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-24",
+                        "timelineEnd":  "2026-10-07"
                     },
                     {
                         "id":  59,
@@ -609,7 +673,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-27",
+                        "timelineEnd":  "2026-09-09"
                     },
                     {
                         "id":  60,
@@ -628,7 +694,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-25",
+                        "timelineEnd":  "2026-09-07"
                     },
                     {
                         "id":  62,
@@ -647,7 +715,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-10-02",
+                        "timelineEnd":  "2026-10-22"
                     },
                     {
                         "id":  65,
@@ -666,7 +736,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-15",
+                        "timelineEnd":  "2026-09-28"
                     },
                     {
                         "id":  67,
@@ -685,7 +757,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-10",
+                        "timelineEnd":  "2026-09-23"
                     },
                     {
                         "id":  69,
@@ -704,7 +778,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-10",
+                        "timelineEnd":  "2026-09-23"
                     },
                     {
                         "id":  70,
@@ -723,7 +799,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-29",
+                        "timelineEnd":  "2026-09-11"
                     },
                     {
                         "id":  72,
@@ -742,7 +820,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-21",
+                        "timelineEnd":  "2026-09-03"
                     },
                     {
                         "id":  73,
@@ -761,7 +841,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-25",
+                        "timelineEnd":  "2026-09-07"
                     },
                     {
                         "id":  75,
@@ -780,7 +862,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-26",
+                        "timelineEnd":  "2026-10-09"
                     },
                     {
                         "id":  76,
@@ -799,7 +883,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-08-19",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-18",
+                        "timelineEnd":  "2026-08-30"
                     },
                     {
                         "id":  79,
@@ -818,7 +904,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-07",
+                        "timelineEnd":  "2026-08-20"
                     },
                     {
                         "id":  80,
@@ -837,7 +925,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-12",
+                        "timelineEnd":  "2026-09-25"
                     },
                     {
                         "id":  83,
@@ -856,7 +946,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-15",
+                        "timelineEnd":  "2026-08-28"
                     },
                     {
                         "id":  84,
@@ -875,7 +967,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  85,
@@ -894,7 +988,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-27",
+                        "timelineEnd":  "2026-09-09"
                     },
                     {
                         "id":  31,
@@ -913,7 +1009,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-07",
+                        "timelineEnd":  "2026-09-20"
                     },
                     {
                         "id":  86,
@@ -932,7 +1030,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-01",
+                        "timelineEnd":  "2026-09-14"
                     },
                     {
                         "id":  88,
@@ -951,7 +1051,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-12",
+                        "timelineEnd":  "2026-09-25"
                     },
                     {
                         "id":  89,
@@ -970,7 +1072,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-11",
+                        "timelineEnd":  "2026-08-24"
                     },
                     {
                         "id":  11,
@@ -989,7 +1093,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-08-13",
                         "endDate":  "2026-08-26",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-11",
+                        "timelineEnd":  "2026-08-24"
                     },
                     {
                         "id":  93,
@@ -1008,7 +1114,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  94,
@@ -1027,7 +1135,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-01",
+                        "timelineEnd":  "2026-08-14"
                     },
                     {
                         "id":  13,
@@ -1046,7 +1156,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-04-08",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-18",
+                        "timelineEnd":  "2026-07-31"
                     },
                     {
                         "id":  98,
@@ -1065,7 +1177,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-29",
+                        "timelineEnd":  "2026-09-11"
                     },
                     {
                         "id":  14,
@@ -1084,7 +1198,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-30",
+                        "timelineEnd":  "2026-08-11"
                     },
                     {
                         "id":  19,
@@ -1103,7 +1219,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-06-12",
                         "endDate":  "2026-07-10",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  92,
@@ -1122,7 +1240,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-05",
+                        "timelineEnd":  "2026-08-19"
                     },
                     {
                         "id":  32,
@@ -1141,7 +1261,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-08-22",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-13",
+                        "timelineEnd":  "2026-08-25"
                     },
                     {
                         "id":  29,
@@ -1160,7 +1282,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-07-09",
                         "endDate":  "2026-07-30",
-                        "days":  21
+                        "days":  21,
+                        "timelineStart":  "2026-07-10",
+                        "timelineEnd":  "2026-08-07"
                     },
                     {
                         "id":  36,
@@ -1179,7 +1303,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-08-15",
                         "endDate":  "2026-08-31",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-17",
+                        "timelineEnd":  "2026-08-30"
                     },
                     {
                         "id":  33,
@@ -1198,7 +1324,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-06-05",
                         "endDate":  "2026-06-23",
-                        "days":  18
+                        "days":  18,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  86,
@@ -1217,7 +1345,9 @@
                         "supervisor":  "",
                         "startDate":  "2026-07-24",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-24",
+                        "timelineEnd":  "2026-08-01"
                     },
                     {
                         "id":  37,
@@ -1236,7 +1366,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-08-13",
                         "endDate":  "2026-08-26",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-13",
+                        "timelineEnd":  "2026-08-28"
                     },
                     {
                         "id":  42,
@@ -1255,7 +1387,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-06-12",
                         "endDate":  "2026-07-10",
-                        "days":  28
+                        "days":  28,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  47,
@@ -1274,7 +1408,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-08-27",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-13",
+                        "timelineEnd":  "2026-08-26"
                     },
                     {
                         "id":  43,
@@ -1293,7 +1429,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-07-06",
                         "endDate":  "2026-07-20",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-06",
+                        "timelineEnd":  "2026-07-15"
                     },
                     {
                         "id":  44,
@@ -1312,7 +1450,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-08-01",
                         "endDate":  "2026-08-21",
-                        "days":  20
+                        "days":  20,
+                        "timelineStart":  "2026-08-06",
+                        "timelineEnd":  "2026-08-20"
                     },
                     {
                         "id":  87,
@@ -1331,7 +1471,9 @@
                         "supervisor":  "",
                         "startDate":  "2026-07-10",
                         "endDate":  "2026-07-22",
-                        "days":  12
+                        "days":  12,
+                        "timelineStart":  "2026-07-10",
+                        "timelineEnd":  "2026-07-22"
                     },
                     {
                         "id":  49,
@@ -1350,7 +1492,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-06-05",
                         "endDate":  "2026-06-23",
-                        "days":  18
+                        "days":  18,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  61,
@@ -1369,7 +1513,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-07-31",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-14",
+                        "timelineEnd":  "2026-08-31"
                     },
                     {
                         "id":  53,
@@ -1388,7 +1534,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-07-01",
                         "endDate":  "2026-07-23",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-04",
+                        "timelineEnd":  "2026-07-13"
                     },
                     {
                         "id":  54,
@@ -1407,7 +1555,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-05-25",
                         "endDate":  "2026-07-30",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  66,
@@ -1426,7 +1576,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-07-08",
                         "endDate":  "2026-08-20",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-04",
+                        "timelineEnd":  "2026-08-20"
                     },
                     {
                         "id":  68,
@@ -1445,7 +1597,9 @@
                         "supervisor":  "JSOTO",
                         "startDate":  "2026-08-22",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-01",
+                        "timelineEnd":  "2026-09-14"
                     },
                     {
                         "id":  55,
@@ -1464,7 +1618,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-06-23",
                         "endDate":  "2026-07-06",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-06-29",
+                        "timelineEnd":  "2026-07-03"
                     },
                     {
                         "id":  77,
@@ -1483,7 +1639,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-08-19",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-19",
+                        "timelineEnd":  "2026-10-04"
                     },
                     {
                         "id":  85,
@@ -1502,7 +1660,9 @@
                         "supervisor":  "",
                         "startDate":  "2026-07-29",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-28",
+                        "timelineEnd":  "2026-08-04"
                     },
                     {
                         "id":  81,
@@ -1521,7 +1681,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-08-19",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-17",
+                        "timelineEnd":  "2026-08-20"
                     },
                     {
                         "id":  82,
@@ -1540,7 +1702,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-08-06",
                         "endDate":  "2026-08-21",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-07",
+                        "timelineEnd":  "2026-08-20"
                     },
                     {
                         "id":  63,
@@ -1559,7 +1723,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-05-27",
                         "endDate":  "2026-06-19",
-                        "days":  23
+                        "days":  23,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  64,
@@ -1578,7 +1744,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-06-11",
                         "endDate":  "2026-06-23",
-                        "days":  12
+                        "days":  12,
+                        "timelineStart":  null,
+                        "timelineEnd":  null
                     },
                     {
                         "id":  74,
@@ -1597,7 +1765,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-07-09",
                         "endDate":  "2026-08-07",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-26",
+                        "timelineEnd":  "2026-08-09"
                     },
                     {
                         "id":  93,
@@ -1616,7 +1786,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-29",
+                        "timelineEnd":  "2026-09-11"
                     },
                     {
                         "id":  91,
@@ -1635,7 +1807,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-29",
+                        "timelineEnd":  "2026-09-06"
                     },
                     {
                         "id":  95,
@@ -1654,7 +1828,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-17",
+                        "timelineEnd":  "2026-08-28"
                     },
                     {
                         "id":  78,
@@ -1673,7 +1849,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-07-16",
                         "endDate":  "2026-08-05",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-15",
+                        "timelineEnd":  "2026-07-28"
                     },
                     {
                         "id":  90,
@@ -1692,7 +1870,9 @@
                         "supervisor":  "",
                         "startDate":  "2026-08-27",
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-09-09",
+                        "timelineEnd":  "2026-09-16"
                     },
                     {
                         "id":  89,
@@ -1711,7 +1891,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-19",
+                        "timelineEnd":  "2026-09-05"
                     },
                     {
                         "id":  92,
@@ -1730,7 +1912,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-07-03",
                         "endDate":  "2026-08-18",
-                        "days":  46
+                        "days":  46,
+                        "timelineStart":  "2026-07-01",
+                        "timelineEnd":  "2026-07-17"
                     },
                     {
                         "id":  96,
@@ -1749,7 +1933,9 @@
                         "supervisor":  "JCAMPOS",
                         "startDate":  "2026-08-05",
                         "endDate":  "2026-08-31",
-                        "days":  26
+                        "days":  26,
+                        "timelineStart":  "2026-08-04",
+                        "timelineEnd":  "2026-08-20"
                     },
                     {
                         "id":  88,
@@ -1768,7 +1954,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-19",
+                        "timelineEnd":  "2026-09-16"
                     },
                     {
                         "id":  97,
@@ -1787,7 +1975,9 @@
                         "supervisor":  "JCARDENAS",
                         "startDate":  "2026-07-20",
                         "endDate":  "2026-08-05",
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-07-15",
+                        "timelineEnd":  "2026-07-28"
                     },
                     {
                         "id":  94,
@@ -1806,7 +1996,9 @@
                         "supervisor":  "",
                         "startDate":  null,
                         "endDate":  null,
-                        "days":  null
+                        "days":  null,
+                        "timelineStart":  "2026-08-16",
+                        "timelineEnd":  "2026-08-25"
                     }
                 ]
 }
