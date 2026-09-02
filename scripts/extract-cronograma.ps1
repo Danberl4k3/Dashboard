@@ -39,7 +39,7 @@ try {
   for ($row = 10; $row -le 209; $row++) {
     $agency = "$($taskSheet.Cells.Item($row, 2).Text)".Trim()
     $provider = "$($taskSheet.Cells.Item($row, 3).Text)".Trim()
-    if (-not $agency -or $provider -notin @('PROSEGUR', 'DOMINION')) { continue }
+    if (-not $agency -or -not $provider) { continue }
 
     $progressValue = $taskSheet.Cells.Item($row, 12).Value2
     $progress = if ($null -eq $progressValue -or "$progressValue" -eq '') { 0 } else { [Math]::Round([double]$progressValue * 100) }
