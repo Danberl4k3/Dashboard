@@ -1,6 +1,9 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import ProviderFilter from '@/components/dashboard/provider-filter';
+import { filterDashboard } from '@/lib/dashboard/filters';
+
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Activity,
   Building2,
@@ -13,6 +16,7 @@ import {
   Clock3,
   Database,
   MapPin,
+  RefreshCw,
   RotateCcw,
   Search,
   TrendingUp,
@@ -29,6 +33,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import type { DashboardSnapshot, WorkRecord, WorkStatus } from '@/lib/dashboard/types';
 
 const PAGE_SIZE = 8;
+const REFRESH_INTERVAL_MS = 90_000;
 const statusColors: Record<WorkStatus, string> = {
   Terminada: '#2f7d32',
   'En proceso': '#f2c94c',
@@ -71,6 +76,10 @@ function formatDate(date: string | null) {
   return new Intl.DateTimeFormat('es-PE', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${date}T00:00:00Z`));
 }
 
+function formatSnapshotDate(date: string) {
+  return Intl.DateTimeFormat('es-PE', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Lima' }).format(new Date(date)).replace(/\s+/g, ' ');
+}
+
 function StatusBadge({ status }: { status: WorkStatus }) {
   const styles = status === 'Terminada'
     ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/15'
@@ -93,10 +102,13 @@ function KpiCard({ label, value, note, icon: Icon, tone }: { label: string; valu
   );
 }
 
-export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
+export function Dashboard({ snapshot: initialSnapshot }: { snapshot: DashboardSnapshot }) {
+  const [snapshot, setSnapshot] = useState(initialSnapshot);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [refreshError, setRefreshError] = useState<string | null>(null);
+  const refreshingRef = useRef(false);
   const [search, setSearch] = useState('');
   const [project, setProject] = useState('Todos');
-  const [provider, setProvider] = useState('Todos');
   const [status, setStatus] = useState('Todos');
   const [location, setLocation] = useState('Todas');
   const [page, setPage] = useState(1);
@@ -106,17 +118,56 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
     return preferred ? `${preferred.projectId}::${preferred.agency}` : '';
   });
 
-  const locations = useMemo(() => [...new Set(snapshot.records.map((record) => record.location).filter(Boolean))].sort(), [snapshot.records]);
-  const providers = useMemo(() => [...new Set(snapshot.records.map((record) => record.provider).filter(Boolean))].sort(), [snapshot.records]);
-  const filtered = useMemo(() => {
-    const term = search.trim().toLocaleLowerCase('es');
-    return snapshot.records.filter((record) => {
-      const matchesText = !term || [record.agency, record.district, record.supervisor].some((value) => value.toLocaleLowerCase('es').includes(term));
-      return matchesText && (project === 'Todos' || record.projectId === project) && (provider === 'Todos' || record.provider === provider) && (status === 'Todos' || record.status === status) && (location === 'Todas' || record.location === location);
-    });
-  }, [snapshot.records, search, project, provider, status, location]);
+  const refresh = useCallback(async (force = false) => {
+    if (refreshingRef.current) return;
+    refreshingRef.current = true;
+    setIsRefreshing(true);
+    setRefreshError(null);
 
-  useEffect(() => { setPage(1); }, [search, project, provider, status, location]);
+    try {
+      const response = await fetch(force ? '/api/dashboard?force=1' : '/api/dashboard', {
+        cache: 'no-store',
+      });
+      if (!response.ok) throw new Error('Dashboard refresh failed');
+      const nextSnapshot = await response.json() as DashboardSnapshot;
+      setSnapshot(nextSnapshot);
+    } catch {
+      setRefreshError('No se pudo actualizar. Se mantienen los datos anteriores.');
+    } finally {
+      refreshingRef.current = false;
+      setIsRefreshing(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => void refresh(false), REFRESH_INTERVAL_MS);
+    return () => window.clearInterval(interval);
+  }, [refresh]);
+
+const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+
+const filterView = useMemo(() => filterDashboard(snapshot.records, {project, search, status, location, providers: selectedProviders}), [snapshot.records, project, search, status, location, selectedProviders]);
+
+const providers = filterView.availableProviders;
+const locations = filterView.availableLocations;
+const activeProviders = filterView.activeProviders;
+const filtered = filterView.records;
+
+useEffect(() => {
+  if (activeProviders.length !== selectedProviders.length || !activeProviders.every(p => selectedProviders.includes(p))) {
+    setSelectedProviders(activeProviders);
+  }
+}, [activeProviders]);
+
+useEffect(() => {
+  if (location !== 'Todas' && !locations.includes(location)) {
+    setLocation('Todas');
+  }
+}, [location, locations]);
+
+useEffect(() => {
+    setPage(1);
+  }, [search, project, activeProviders, status, location]);
 
   const summary = useMemo(() => {
     const completed = filtered.filter((record) => record.status === 'Terminada').length;
@@ -137,12 +188,12 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
   const visibleRows = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const historyAgencies = useMemo(() => {
     const unique = new Map<string, { key: string; agency: string; projectId: string; projectLabel: string }>();
-    snapshot.history.filter((record) => project === 'Todos' || record.projectId === project).forEach((record) => {
+    snapshot.history.filter(record => filtered.some(r => r.projectId === record.projectId && r.agency === record.agency)).forEach((record) => {
       const key = `${record.projectId}::${record.agency}`;
       unique.set(key, { key, agency: record.agency, projectId: record.projectId, projectLabel: record.projectLabel });
     });
     return [...unique.values()].sort((first, second) => first.agency.localeCompare(second.agency, 'es'));
-  }, [snapshot.history, project]);
+  }, [snapshot.history, filtered]);
   useEffect(() => {
     if (!historyAgencies.some((option) => option.key === historyAgency)) setHistoryAgency(historyAgencies[0]?.key || '');
   }, [historyAgencies, historyAgency]);
@@ -151,9 +202,23 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
   const historyFirst = historyData[0];
   const historyLatest = historyData[historyData.length - 1];
   const historyChange = historyFirst && historyLatest ? historyLatest.progress - historyFirst.progress : 0;
-  const activeFilters = [project !== 'Todos', provider !== 'Todos', status !== 'Todos', location !== 'Todas', Boolean(search)].filter(Boolean).length;
+const activeFilters = [project !== 'Todos', activeProviders.length > 0, status !== 'Todos', location !== 'Todas', Boolean(search)].filter(Boolean).length;
+const resetFilters = () => {
+  setSearch('');
+  setProject('Todos');
+  setSelectedProviders([]);
+  setStatus('Todos');
+  setLocation('Todas');
+};
 
-  const resetFilters = () => { setSearch(''); setProject('Todos'); setProvider('Todos'); setStatus('Todos'); setLocation('Todas'); };
+const providerTotals = providers.map(name => ({name, count: filtered.filter(r => r.provider.trim().toUpperCase() === name).length})).filter(item => item.count > 0);
+
+const changeProject = (value:string) => {
+  setProject(value);
+  setSelectedProviders([]);
+  setLocation('Todas');
+};
+
   const toggleHistorySeries = (key: HistorySeriesKey) => setVisibleHistorySeries((current) => current.includes(key) ? current.filter((item) => item !== key) : [...current, key]);
 
   return (
@@ -172,16 +237,28 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
       <div id="resumen" className="mx-auto max-w-[1500px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <section className="mb-6 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
           <div><p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-primary/70">Vista general</p><h1 className="text-2xl font-semibold tracking-[-0.035em] sm:text-3xl">Avance del cronograma</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Lectura consolidada de los dos Excel de SharePoint con contratistas y proyectos independientes.</p></div>
-          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"><span className="inline-flex items-center gap-2 rounded-lg border bg-card px-3 py-2 shadow-sm"><Database className="size-4 text-primary" />Fuente: {snapshot.source}</span><span className="inline-flex items-center gap-2 rounded-lg border bg-card px-3 py-2 shadow-sm"><CalendarDays className="size-4 text-primary" />Corte: {new Intl.DateTimeFormat('es-PE', { dateStyle: 'medium' }).format(new Date(snapshot.extractedAt))}</span></div>
+          <div className="flex flex-col items-start gap-2 lg:items-end">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-2 rounded-lg border bg-card px-3 py-2 shadow-sm"><Database className="size-4 text-primary" />Fuente: {snapshot.source}</span>
+              <span className="inline-flex items-center gap-2 rounded-lg border bg-card px-3 py-2 shadow-sm"><CalendarDays className="size-4 text-primary" />Corte: {formatSnapshotDate(snapshot.extractedAt)}</span>
+              <Button type="button" variant="outline" className="h-9" onClick={() => void refresh(true)} disabled={isRefreshing} aria-label={isRefreshing ? 'Actualizando datos' : 'Actualizar datos ahora'}>
+                <RefreshCw className={isRefreshing ? 'animate-spin' : ''} />{isRefreshing ? 'Actualizando…' : 'Actualizar ahora'}
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">{isRefreshing ? 'Descargando ambos Excel…' : 'Actualización automática cada 90 s'}</p>
+            {refreshError ? <p className="text-xs font-medium text-red-600" aria-live="polite">{refreshError}</p> : null}
+          </div>
         </section>
 
         <section aria-label="Filtros" className="mb-4 grid gap-3 rounded-2xl border bg-card p-3 shadow-[0_8px_24px_rgb(15_23_42/4%)] md:grid-cols-2 xl:grid-cols-[minmax(220px,1fr)_190px_170px_170px_150px_auto]">
           <label className="relative"><span className="sr-only">Buscar agencia, distrito o supervisor</span><Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><Input value={search} onChange={(event) => setSearch(event.target.value)} className="h-9 pl-9" placeholder="Buscar agencia, distrito o supervisor…" /></label>
-          <NativeSelect aria-label="Filtrar por proyecto" value={project} onChange={(event) => setProject(event.target.value)} className="w-full [&_select]:h-9"><NativeSelectOption value="Todos">Todos los proyectos</NativeSelectOption>{snapshot.projects.map((item) => <NativeSelectOption key={item.id} value={item.id}>{item.label}</NativeSelectOption>)}</NativeSelect>
-          <NativeSelect aria-label="Filtrar por contratista" value={provider} onChange={(event) => setProvider(event.target.value)} className="w-full [&_select]:h-9"><NativeSelectOption>Todos</NativeSelectOption>{providers.map((item) => <NativeSelectOption key={item}>{item}</NativeSelectOption>)}</NativeSelect>
+          <NativeSelect aria-label="Filtrar por proyecto" value={project} onChange={(event) => changeProject(event.target.value)} className="w-full [&_select]:h-9"><NativeSelectOption value="Todos">Todos los proyectos</NativeSelectOption>{snapshot.projects.map((item) => <NativeSelectOption key={item.id} value={item.id}>{item.label}</NativeSelectOption>)}</NativeSelect>
           <NativeSelect aria-label="Filtrar por estado" value={status} onChange={(event) => setStatus(event.target.value)} className="w-full [&_select]:h-9"><NativeSelectOption>Todos</NativeSelectOption><NativeSelectOption>Terminada</NativeSelectOption><NativeSelectOption>En proceso</NativeSelectOption><NativeSelectOption>No empezada</NativeSelectOption><NativeSelectOption>Sin reporte</NativeSelectOption></NativeSelect>
           <NativeSelect aria-label="Filtrar por ubicación" value={location} onChange={(event) => setLocation(event.target.value)} className="w-full [&_select]:h-9"><NativeSelectOption>Todas</NativeSelectOption>{locations.map((item) => <NativeSelectOption key={item}>{item}</NativeSelectOption>)}</NativeSelect>
           <Button variant="outline" className="h-9" onClick={resetFilters} disabled={!activeFilters}><RotateCcw />Limpiar{activeFilters ? ` (${activeFilters})` : ''}</Button>
+<div className="col-span-full">
+  <ProviderFilter options={providers} value={activeProviders} onChange={setSelectedProviders} />
+</div>
         </section>
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -264,7 +341,7 @@ export function Dashboard({ snapshot }: { snapshot: DashboardSnapshot }) {
             <div className="flex flex-col gap-3 border-t bg-muted/25 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"><p className="text-xs text-muted-foreground">Mostrando {visibleRows.length ? (page - 1) * PAGE_SIZE + 1 : 0}–{Math.min(page * PAGE_SIZE, filtered.length)} de {filtered.length}</p><div className="flex items-center gap-2"><Button variant="outline" size="sm" aria-label="Página anterior" disabled={page === 1} onClick={() => setPage((current) => Math.max(1, current - 1))}><ChevronLeft /></Button><span className="min-w-20 text-center text-xs font-medium">Página {page} de {totalPages}</span><Button variant="outline" size="sm" aria-label="Página siguiente" disabled={page === totalPages} onClick={() => setPage((current) => Math.min(totalPages, current + 1))}><ChevronRight /></Button></div></div>
           </Card>
         </section>
-        <footer className="mt-5 flex flex-col gap-1 pb-2 text-[11px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><p>Datos leídos desde SharePoint. Los Excel originales no se modifican.</p><p>{providers.map((item) => `${snapshot.records.filter((record) => record.provider === item).length} ${item}`).join(' · ')}</p></footer>
+        <footer className="mt-5 flex flex-col gap-1 pb-2 text-[11px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><p>Datos leídos desde SharePoint. Los Excel originales no se modifican.</p><p>{providerTotals.map(({ name, count }) => `${count} ${name}`).join(' · ')}</p></footer>
       </div>
     </main>
   );

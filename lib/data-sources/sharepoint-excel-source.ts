@@ -1,6 +1,6 @@
 import fallbackSnapshot from '@/app/data/cronograma.json';
 import type { DashboardProject, DashboardSnapshot, ProgressHistoryRecord, WorkRecord, WorkStatus } from '@/lib/dashboard/types';
-import type { DashboardSource } from '@/lib/data-sources/dashboard-source';
+import type { DashboardSource, DashboardSnapshotOptions } from '@/lib/data-sources/dashboard-source';
 import { readXlsx, type XlsxSheet } from '@/lib/data-sources/xlsx-reader';
 
 const projects: DashboardProject[] = [
@@ -13,7 +13,7 @@ const sources = [
   { ...projects[1], env: 'SHAREPOINT_EXCEL_3979_URL' },
 ];
 
-const CACHE_MS = 15 * 60 * 1000;
+const CACHE_MS = 90 * 1000;
 let cache: { expiresAt: number; snapshot: DashboardSnapshot } | null = null;
 
 function stringValue(value: unknown) {
@@ -131,12 +131,18 @@ function extractHistory(sheet: XlsxSheet, project: DashboardProject) {
   return records;
 }
 
-async function loadProject(source: (typeof sources)[number]) {
+async function loadProject(source: (typeof sources)[number], force = false) {
   const url = process.env[source.env];
   if (!url) throw new Error(`Missing ${source.env}`);
-  const downloadUrl = `${url}${url.includes('?') ? '&' : '?'}download=1`;
-  const headers = { 'User-Agent': 'Mozilla/5.0 Dashboard-Sincro/1.0' };
-  const initial = await fetch(downloadUrl, { redirect: 'manual', headers });
+  const downloadUrl = new URL(url);
+  downloadUrl.searchParams.set('download', '1');
+  if (force) downloadUrl.searchParams.set('_dashboard_refresh', Date.now().toString());
+  const headers = {
+    'User-Agent': 'Mozilla/5.0 Dashboard-Sincro/1.0',
+    'Cache-Control': 'no-cache, no-store',
+    Pragma: 'no-cache',
+  };
+  const initial = await fetch(downloadUrl, { redirect: 'manual', headers, cache: 'no-store' });
   let response = initial;
   if (initial.status >= 300 && initial.status < 400) {
     const location = initial.headers.get('location');
@@ -146,7 +152,10 @@ async function loadProject(source: (typeof sources)[number]) {
       .map((cookie) => cookie.split(';', 1)[0])
       .filter(Boolean)
       .join('; ');
-    response = await fetch(new URL(location, downloadUrl), { headers: { ...headers, ...(cookies ? { Cookie: cookies } : {}) } });
+    response = await fetch(new URL(location, downloadUrl), {
+      headers: { ...headers, ...(cookies ? { Cookie: cookies } : {}) },
+      cache: 'no-store',
+    });
   }
   if (!response.ok) throw new Error(`SharePoint returned ${response.status}`);
   const buffer = await response.arrayBuffer();
@@ -175,10 +184,10 @@ function fallback(): DashboardSnapshot {
 }
 
 class SharePointExcelSource implements DashboardSource {
-  async getSnapshot(): Promise<DashboardSnapshot> {
-    if (cache && cache.expiresAt > Date.now()) return cache.snapshot;
+  async getSnapshot(options: DashboardSnapshotOptions = {}): Promise<DashboardSnapshot> {
+    if (!options.force && cache && cache.expiresAt > Date.now()) return cache.snapshot;
     try {
-      const results = await Promise.all(sources.map(loadProject));
+      const results = await Promise.all(sources.map((source) => loadProject(source, options.force === true)));
       const snapshot: DashboardSnapshot = {
         source: 'SharePoint · 2 archivos Excel',
         workbook: 'Proyecto Esparta + Proyecto 3979',

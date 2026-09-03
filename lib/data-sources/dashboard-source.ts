@@ -1,5 +1,9 @@
 import type { DashboardSnapshot } from '@/lib/dashboard/types';
 
+export interface DashboardSnapshotOptions {
+  force?: boolean;
+}
+
 export interface DashboardSource {
-  getSnapshot(): Promise<DashboardSnapshot>;
+  getSnapshot(options?: DashboardSnapshotOptions): Promise<DashboardSnapshot>;
 }
