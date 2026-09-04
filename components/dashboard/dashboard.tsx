@@ -25,7 +25,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Cell,
   Line,
   LineChart,
   Pie,
@@ -282,24 +281,8 @@ export function Dashboard({
     [snapshot.projects, snapshot.records],
   );
 
-  useEffect(() => {
-    if (
-      activeProviders.length !== selectedProviders.length ||
-      !activeProviders.every((p) => selectedProviders.includes(p))
-    ) {
-      setSelectedProviders(activeProviders);
-    }
-  }, [activeProviders]);
-
-  useEffect(() => {
-    if (location !== 'Todas' && !locations.includes(location)) {
-      setLocation('Todas');
-    }
-  }, [location, locations]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [search, project, activeProviders, status, location]);
+  const effectiveLocation =
+    location === 'Todas' || locations.includes(location) ? location : 'Todas';
 
   const summary = useMemo(() => {
     const completed = filtered.filter(
@@ -353,9 +336,14 @@ export function Dashboard({
   const stageData = stageDefinitions.map((stage) => ({
     ...stage,
     average: average(filtered, stage.key),
+    fill: stage.color,
   }));
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const visibleRows = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const currentPage = Math.min(page, totalPages);
+  const visibleRows = filtered.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE,
+  );
   const historyAgencies = useMemo(() => {
     const unique = new Map<
       string,
@@ -380,12 +368,13 @@ export function Dashboard({
       first.agency.localeCompare(second.agency, 'es'),
     );
   }, [snapshot.history, filtered]);
-  useEffect(() => {
-    if (!historyAgencies.some((option) => option.key === historyAgency))
-      setHistoryAgency(historyAgencies[0]?.key || '');
-  }, [historyAgencies, historyAgency]);
-  const selectedHistory = historyAgencies.find(
+  const effectiveHistoryAgency = historyAgencies.some(
     (option) => option.key === historyAgency,
+  )
+    ? historyAgency
+    : historyAgencies[0]?.key || '';
+  const selectedHistory = historyAgencies.find(
+    (option) => option.key === effectiveHistoryAgency,
   );
   const historyData = useMemo(
     () =>
@@ -406,7 +395,7 @@ export function Dashboard({
     project !== 'Todos',
     activeProviders.length > 0,
     status !== 'Todos',
-    location !== 'Todas',
+    effectiveLocation !== 'Todas',
     Boolean(search),
   ].filter(Boolean).length;
   const resetFilters = () => {
@@ -415,6 +404,7 @@ export function Dashboard({
     setSelectedProviders([]);
     setStatus('Todos');
     setLocation('Todas');
+    setPage(1);
   };
 
   const providerTotals = providers
@@ -429,6 +419,7 @@ export function Dashboard({
     setProject(value);
     setSelectedProviders([]);
     setLocation('Todas');
+    setPage(1);
   };
 
   const toggleHistorySeries = (key: HistorySeriesKey) =>
@@ -551,18 +542,22 @@ export function Dashboard({
           aria-label="Filtros"
           className="mb-4 grid gap-3 rounded-2xl border bg-card p-3 shadow-[0_8px_24px_rgb(15_23_42/4%)] md:grid-cols-2 xl:grid-cols-[minmax(220px,1fr)_190px_170px_170px_150px_auto]"
         >
-          <label className="relative">
-            <span className="sr-only">
+          <div className="relative">
+            <label htmlFor="dashboard-search" className="sr-only">
               Buscar agencia, distrito o supervisor
-            </span>
+            </label>
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
+              id="dashboard-search"
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                setPage(1);
+              }}
               className="h-9 pl-9"
               placeholder="Buscar agencia, distrito o supervisor…"
             />
-          </label>
+          </div>
           <NativeSelect
             aria-label="Filtrar por proyecto"
             value={project}
@@ -586,7 +581,10 @@ export function Dashboard({
           <NativeSelect
             aria-label="Filtrar por estado"
             value={status}
-            onChange={(event) => setStatus(event.target.value)}
+            onChange={(event) => {
+              setStatus(event.target.value);
+              setPage(1);
+            }}
             className="w-full [&_select]:h-9"
           >
             <NativeSelectOption>Todos</NativeSelectOption>
@@ -597,8 +595,11 @@ export function Dashboard({
           </NativeSelect>
           <NativeSelect
             aria-label="Filtrar por ubicación"
-            value={location}
-            onChange={(event) => setLocation(event.target.value)}
+            value={effectiveLocation}
+            onChange={(event) => {
+              setLocation(event.target.value);
+              setPage(1);
+            }}
             className="w-full [&_select]:h-9"
           >
             <NativeSelectOption>Todas</NativeSelectOption>
@@ -620,7 +621,10 @@ export function Dashboard({
               key={project}
               options={providers}
               value={activeProviders}
-              onChange={setSelectedProviders}
+              onChange={(value) => {
+                setSelectedProviders(value);
+                setPage(1);
+              }}
             />
           </div>
         </section>
@@ -692,11 +696,7 @@ export function Dashboard({
                     outerRadius={94}
                     paddingAngle={2}
                     strokeWidth={0}
-                  >
-                    {statusData.map((item) => (
-                      <Cell key={item.status} fill={item.fill} />
-                    ))}
-                  </Pie>
+                  />
                   <text
                     x="50%"
                     y="47%"
@@ -799,11 +799,7 @@ export function Dashboard({
                       />
                     }
                   />
-                  <Bar dataKey="average" radius={[0, 7, 7, 0]} barSize={24}>
-                    {stageData.map((item) => (
-                      <Cell key={item.label} fill={item.color} />
-                    ))}
-                  </Bar>
+                  <Bar dataKey="average" radius={[0, 7, 7, 0]} barSize={24} />
                 </BarChart>
               </ChartContainer>
             </CardContent>
@@ -824,7 +820,7 @@ export function Dashboard({
               </div>
               <NativeSelect
                 aria-label="Seleccionar agencia para la línea de tiempo"
-                value={historyAgency}
+                value={effectiveHistoryAgency}
                 onChange={(event) => setHistoryAgency(event.target.value)}
                 className="w-full"
                 data-slot="card-action"
@@ -872,9 +868,8 @@ export function Dashboard({
                     </div>
                   </div>
                   <div className="mb-4 flex flex-col gap-3 border-y border-slate-100 py-3 xl:flex-row xl:items-center xl:justify-between">
-                    <div
+                    <fieldset
                       className="flex flex-wrap gap-2"
-                      role="group"
                       aria-label="Series visibles en la línea de tiempo"
                     >
                       {historySeries.map((series) => {
@@ -900,7 +895,7 @@ export function Dashboard({
                           </button>
                         );
                       })}
-                    </div>
+                    </fieldset>
                     <div className="flex shrink-0 items-center gap-1">
                       <Button
                         type="button"
@@ -1031,7 +1026,9 @@ export function Dashboard({
                 data-slot="card-action"
               >
                 <MapPin className="size-4 text-primary" />
-                {location === 'Todas' ? 'Todas las ubicaciones' : location}
+                {effectiveLocation === 'Todas'
+                  ? 'Todas las ubicaciones'
+                  : effectiveLocation}
               </div>
             </CardHeader>
             <CardContent className="px-0">
@@ -1138,8 +1135,9 @@ export function Dashboard({
             </CardContent>
             <div className="flex flex-col gap-3 border-t bg-muted/25 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-xs text-muted-foreground">
-                Mostrando {visibleRows.length ? (page - 1) * PAGE_SIZE + 1 : 0}–
-                {Math.min(page * PAGE_SIZE, filtered.length)} de{' '}
+                Mostrando{' '}
+                {visibleRows.length ? (currentPage - 1) * PAGE_SIZE + 1 : 0}–
+                {Math.min(currentPage * PAGE_SIZE, filtered.length)} de{' '}
                 {filtered.length}
               </p>
               <div className="flex items-center gap-2">
@@ -1147,22 +1145,20 @@ export function Dashboard({
                   variant="outline"
                   size="sm"
                   aria-label="Página anterior"
-                  disabled={page === 1}
-                  onClick={() => setPage((current) => Math.max(1, current - 1))}
+                  disabled={currentPage === 1}
+                  onClick={() => setPage(Math.max(1, currentPage - 1))}
                 >
                   <ChevronLeft />
                 </Button>
                 <span className="min-w-20 text-center text-xs font-medium">
-                  Página {page} de {totalPages}
+                  Página {currentPage} de {totalPages}
                 </span>
                 <Button
                   variant="outline"
                   size="sm"
                   aria-label="Página siguiente"
-                  disabled={page === totalPages}
-                  onClick={() =>
-                    setPage((current) => Math.min(totalPages, current + 1))
-                  }
+                  disabled={currentPage === totalPages}
+                  onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
                 >
                   <ChevronRight />
                 </Button>

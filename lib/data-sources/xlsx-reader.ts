@@ -14,7 +14,9 @@ function decodeXml(value: string) {
     .replace(/&apos;/g, "'")
     .replace(/&amp;/g, '&')
     .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
-    .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(Number.parseInt(code, 16)));
+    .replace(/&#x([0-9a-f]+);/gi, (_, code) =>
+      String.fromCodePoint(Number.parseInt(code, 16)),
+    );
 }
 
 function attribute(source: string, name: string) {
@@ -35,11 +37,17 @@ function zipPath(base: string, target: string) {
 
 function columnNumber(reference: string) {
   const letters = reference.match(/^[A-Z]+/)?.[0] || '';
-  return [...letters].reduce((value, letter) => value * 26 + letter.charCodeAt(0) - 64, 0);
+  let value = 0;
+  for (const letter of letters) {
+    value = value * 26 + letter.charCodeAt(0) - 64;
+  }
+  return value;
 }
 
 function richText(source: string) {
-  return [...source.matchAll(/<t(?:\s[^>]*)?>([\s\S]*?)<\/t>/g)].map((match) => decodeXml(match[1])).join('');
+  return [...source.matchAll(/<t(?:\s[^>]*)?>([\s\S]*?)<\/t>/g)]
+    .map((match) => decodeXml(match[1]))
+    .join('');
 }
 
 export interface XlsxSheet {
@@ -56,11 +64,18 @@ export function readXlsx(buffer: ArrayBuffer): XlsxWorkbook {
   const workbookXml = text(files['xl/workbook.xml']);
   const relationshipsXml = text(files['xl/_rels/workbook.xml.rels']);
   const sharedStringsXml = text(files['xl/sharedStrings.xml']);
-  const sharedStrings = [...sharedStringsXml.matchAll(/<si(?:\s[^>]*)?>([\s\S]*?)<\/si>/g)].map((match) => richText(match[1]));
+  const sharedStrings = [
+    ...sharedStringsXml.matchAll(/<si(?:\s[^>]*)?>([\s\S]*?)<\/si>/g),
+  ].map((match) => richText(match[1]));
 
   const relationships = new Map<string, string>();
-  for (const match of relationshipsXml.matchAll(/<Relationship\s+([^>]*?)\/?\s*>/g)) {
-    relationships.set(attribute(match[1], 'Id'), zipPath('xl', decodeXml(attribute(match[1], 'Target'))));
+  for (const match of relationshipsXml.matchAll(
+    /<Relationship\s+([^>]*?)\/?\s*>/g,
+  )) {
+    relationships.set(
+      attribute(match[1], 'Id'),
+      zipPath('xl', decodeXml(attribute(match[1], 'Target'))),
+    );
   }
 
   const sheetPaths = new Map<string, string>();
@@ -96,11 +111,16 @@ export function readXlsx(buffer: ArrayBuffer): XlsxWorkbook {
         else if (type === 's') value = sharedStrings[Number(raw)] ?? '';
         else if (type === 'str' || type === 'e') value = decodeXml(raw || '');
         else if (type === 'b') value = raw === '1';
-        else if (raw !== undefined && raw !== '') value = Number.isFinite(Number(raw)) ? Number(raw) : decodeXml(raw);
+        else if (raw !== undefined && raw !== '')
+          value = Number.isFinite(Number(raw)) ? Number(raw) : decodeXml(raw);
         cells.set(`${row}:${column}`, value);
       }
 
-      const sheet = { maxRow, get: (row: number, column: number) => cells.get(`${row}:${column}`) ?? null };
+      const sheet = {
+        maxRow,
+        get: (row: number, column: number) =>
+          cells.get(`${row}:${column}`) ?? null,
+      };
       cache.set(name, sheet);
       return sheet;
     },

@@ -32,12 +32,23 @@ const CACHE_MS = 90 * 1000;
 let cache: { expiresAt: number; snapshot: DashboardSnapshot } | null = null;
 
 function stringValue(value: unknown) {
-  return value === null || value === undefined ? '' : String(value).trim();
+  switch (typeof value) {
+    case 'string':
+      return value.trim();
+    case 'number':
+      return Number.isFinite(value) ? value.toString() : '';
+    case 'boolean':
+    case 'bigint':
+      return value.toString();
+    default:
+      return '';
+  }
 }
 
 function percent(value: unknown) {
-  if (value === null || value === undefined || value === '') return 0;
-  const parsed = Number(String(value).replace('%', '').trim());
+  const source = stringValue(value);
+  if (!source) return 0;
+  const parsed = Number(source.replace('%', '').trim());
   if (!Number.isFinite(parsed)) return 0;
   return Math.round(parsed <= 1 ? parsed * 100 : parsed);
 }
