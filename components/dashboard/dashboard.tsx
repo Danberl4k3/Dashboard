@@ -57,6 +57,7 @@ import {
 } from '@/components/ui/table';
 import type {
   DashboardSnapshot,
+  VisitCheck,
   WorkRecord,
   WorkStatus,
 } from '@/lib/dashboard/types';
@@ -152,6 +153,28 @@ function StatusBadge({ status }: { status: WorkStatus }) {
       className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 ${styles}`}
     >
       {status}
+    </span>
+  );
+}
+
+function VisitCheckMark({
+  visit,
+  label,
+}: {
+  visit: VisitCheck;
+  label: string;
+}) {
+  return visit.checked ? (
+    <span
+      aria-label={`${label} realizada`}
+      className="inline-flex size-7 items-center justify-center text-xl font-bold"
+      style={{ color: visit.color || '#000000' }}
+    >
+      ✓
+    </span>
+  ) : (
+    <span aria-label={`${label} pendiente`} className="text-muted-foreground/45">
+      —
     </span>
   );
 }
@@ -1033,7 +1056,7 @@ export function Dashboard({
             </CardHeader>
             <CardContent className="px-0">
               {visibleRows.length ? (
-                <Table>
+                <Table className="min-w-[1380px]">
                   <TableHeader>
                     <TableRow className="bg-muted/35">
                       <TableHead className="pl-4">Agencia</TableHead>
@@ -1045,6 +1068,14 @@ export function Dashboard({
                         Supervisor
                       </TableHead>
                       <TableHead>Avance</TableHead>
+                      <TableHead className="text-center">Visita 1</TableHead>
+                      <TableHead className="text-center">Visita 2</TableHead>
+                      <TableHead className="text-center">Visita 3</TableHead>
+                      <TableHead className="w-28 text-center whitespace-normal">
+                        TOTAL FINAL
+                        <br />
+                        CÁMARAS
+                      </TableHead>
                       <TableHead className="hidden xl:table-cell">
                         Fechas
                       </TableHead>
@@ -1097,6 +1128,27 @@ export function Dashboard({
                                 : `${record.progress}%`}
                             </span>
                           </div>
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <VisitCheckMark
+                            visit={record.visit1}
+                            label="Visita 1"
+                          />
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <VisitCheckMark
+                            visit={record.visit2}
+                            label="Visita 2"
+                          />
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <VisitCheckMark
+                            visit={record.visit3}
+                            label="Visita 3"
+                          />
+                        </TableCell>
+                        <TableCell className="text-center font-semibold tabular-nums">
+                          {record.totalFinalCameras ?? '—'}
                         </TableCell>
                         <TableCell className="hidden xl:table-cell">
                           <p className="text-xs">

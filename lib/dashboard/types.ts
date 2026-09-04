@@ -5,6 +5,11 @@ export interface DashboardProject {
   label: string;
 }
 
+export interface VisitCheck {
+  checked: boolean;
+  color: string | null;
+}
+
 export interface WorkRecord {
   id: number;
   projectId: string;
@@ -22,6 +27,10 @@ export interface WorkRecord {
   progress: number | null;
   status: WorkStatus;
   supervisor: string;
+  visit1: VisitCheck;
+  visit2: VisitCheck;
+  visit3: VisitCheck;
+  totalFinalCameras: number | null;
   startDate: string | null;
   endDate: string | null;
   days: number | null;

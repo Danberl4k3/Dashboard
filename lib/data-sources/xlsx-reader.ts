@@ -53,10 +53,32 @@ function richText(source: string) {
 export interface XlsxSheet {
   maxRow: number;
   get(row: number, column: number): CellValue;
+  fontColor(row: number, column: number): string | null;
 }
 
 export interface XlsxWorkbook {
   sheet(name: string): XlsxSheet | null;
+}
+
+function styleFontColors(stylesXml: string) {
+  const fontsSource =
+    stylesXml.match(/<fonts(?:\s[^>]*)?>([\s\S]*?)<\/fonts>/)?.[1] || '';
+  const fonts = [
+    ...fontsSource.matchAll(/<font(?:\s[^>]*)?>([\s\S]*?)<\/font>/g),
+  ].map((match) => {
+    const colorAttributes = match[1].match(
+      /<color\s+([^>]*?)\/?\s*>/,
+    )?.[1];
+    const rgb = colorAttributes ? attribute(colorAttributes, 'rgb') : '';
+    return rgb ? `#${rgb.slice(-6).toUpperCase()}` : null;
+  });
+
+  const cellXfsSource =
+    stylesXml.match(/<cellXfs(?:\s[^>]*)?>([\s\S]*?)<\/cellXfs>/)?.[1] ||
+    '';
+  return [
+    ...cellXfsSource.matchAll(/<xf\s+([^>]*?)(?:\/>|>[\s\S]*?<\/xf>)/g),
+  ].map((match) => fonts[Number(attribute(match[1], 'fontId'))] || null);
 }
 
 export function readXlsx(buffer: ArrayBuffer): XlsxWorkbook {
@@ -64,6 +86,7 @@ export function readXlsx(buffer: ArrayBuffer): XlsxWorkbook {
   const workbookXml = text(files['xl/workbook.xml']);
   const relationshipsXml = text(files['xl/_rels/workbook.xml.rels']);
   const sharedStringsXml = text(files['xl/sharedStrings.xml']);
+  const fontColors = styleFontColors(text(files['xl/styles.xml']));
   const sharedStrings = [
     ...sharedStringsXml.matchAll(/<si(?:\s[^>]*)?>([\s\S]*?)<\/si>/g),
   ].map((match) => richText(match[1]));
@@ -93,11 +116,16 @@ export function readXlsx(buffer: ArrayBuffer): XlsxWorkbook {
       const source = text(files[sheetPaths.get(name) || '']);
       if (!source) return null;
 
-      const cells = new Map<string, CellValue>();
+      const cells = new Map<
+        string,
+        { value: CellValue; fontColor: string | null }
+      >();
       let maxRow = 0;
-      for (const match of source.matchAll(/<c\s+([^>]*?)>([\s\S]*?)<\/c>/g)) {
-        const attributes = match[1];
-        const body = match[2];
+      for (const match of source.matchAll(
+        /<c\s+([^>]*?)\/>|<c\s+([^>]*?)>([\s\S]*?)<\/c>/g,
+      )) {
+        const attributes = match[1] || match[2];
+        const body = match[3] || '';
         const reference = attribute(attributes, 'r');
         const row = Number(reference.match(/\d+$/)?.[0] || 0);
         const column = columnNumber(reference);
@@ -113,13 +141,19 @@ export function readXlsx(buffer: ArrayBuffer): XlsxWorkbook {
         else if (type === 'b') value = raw === '1';
         else if (raw !== undefined && raw !== '')
           value = Number.isFinite(Number(raw)) ? Number(raw) : decodeXml(raw);
-        cells.set(`${row}:${column}`, value);
+        const style = Number(attribute(attributes, 's')) || 0;
+        cells.set(`${row}:${column}`, {
+          value,
+          fontColor: fontColors[style] || null,
+        });
       }
 
       const sheet = {
         maxRow,
         get: (row: number, column: number) =>
-          cells.get(`${row}:${column}`) ?? null,
+          cells.get(`${row}:${column}`)?.value ?? null,
+        fontColor: (row: number, column: number) =>
+          cells.get(`${row}:${column}`)?.fontColor ?? null,
       };
       cache.set(name, sheet);
       return sheet;

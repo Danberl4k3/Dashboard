@@ -3,6 +3,7 @@ import type {
   DashboardProject,
   DashboardSnapshot,
   ProgressHistoryRecord,
+  VisitCheck,
   WorkRecord,
   WorkStatus,
 } from '@/lib/dashboard/types';
@@ -65,12 +66,37 @@ function excelDate(value: unknown) {
     : null;
 }
 
+function numericValue(value: unknown) {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+  const source = stringValue(value);
+  if (!source) return null;
+  const parsed = Number(source.replace(',', '.'));
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function visitCheck(sheet: XlsxSheet, row: number, column: number): VisitCheck {
+  const checked = Boolean(stringValue(sheet.get(row, column)));
+  return {
+    checked,
+    color: checked ? sheet.fontColor(row, column) || '#000000' : null,
+  };
+}
+
 function workStatus(progress: number): WorkStatus {
   return progress >= 100
     ? 'Terminada'
     : progress > 0
       ? 'En proceso'
       : 'No empezada';
+}
+
+function normalizedValue(value: unknown) {
+  return stringValue(value)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLocaleUpperCase('es');
 }
 
 function headerValue(value: unknown) {
@@ -130,6 +156,10 @@ function extractCronograma(sheet: XlsxSheet, project: DashboardProject) {
       progress,
       status: workStatus(progress),
       supervisor: stringValue(sheet.get(row, 14)),
+      visit1: visitCheck(sheet, row, 15),
+      visit2: visitCheck(sheet, row, 16),
+      visit3: visitCheck(sheet, row, 17),
+      totalFinalCameras: numericValue(sheet.get(row, 21)),
       startDate: excelDate(sheet.get(row, 22)),
       endDate: excelDate(sheet.get(row, 23)),
       days: Number(sheet.get(row, 24)) || null,
@@ -138,6 +168,54 @@ function extractCronograma(sheet: XlsxSheet, project: DashboardProject) {
     });
   }
   return records;
+}
+
+function applyAvance(sheet: XlsxSheet, records: WorkRecord[]) {
+  const statuses = new Map<
+    string,
+    { progress: number; status: WorkStatus }
+  >();
+
+  const finishedCount = Number(sheet.get(2, 6)) || 0;
+  const inProgressCount = Number(sheet.get(2, 7)) || 0;
+  const notStartedCount = Number(sheet.get(2, 8)) || 0;
+
+  for (let offset = 0; offset < finishedCount; offset += 1) {
+    const agency = normalizedValue(sheet.get(offset + 2, 1));
+    if (agency && agency !== 'SIN REGISTROS')
+      statuses.set(agency, { progress: 100, status: 'Terminada' });
+  }
+  for (let offset = 0; offset < inProgressCount; offset += 1) {
+    const row = offset + 2;
+    const agency = normalizedValue(sheet.get(row, 2));
+    if (agency && agency !== 'SIN REGISTROS')
+      statuses.set(agency, {
+        progress: percent(sheet.get(row, 3)),
+        status: 'En proceso',
+      });
+  }
+  for (let offset = 0; offset < notStartedCount; offset += 1) {
+    const agency = normalizedValue(sheet.get(offset + 2, 4));
+    if (agency && agency !== 'SIN REGISTROS')
+      statuses.set(agency, { progress: 0, status: 'No empezada' });
+  }
+
+  const selectedProvider = normalizedValue(sheet.get(2, 5));
+  const includesAllProviders = ['TODOS', 'TODAS', ''].includes(
+    selectedProvider,
+  );
+
+  return records.map((record) => {
+    const isInScope =
+      includesAllProviders ||
+      normalizedValue(record.provider) === selectedProvider;
+    if (!isInScope) return record;
+
+    const avance = statuses.get(normalizedValue(record.agency));
+    return avance
+      ? { ...record, ...avance }
+      : { ...record, progress: null, status: 'Sin reporte' as const };
+  });
 }
 
 function extractSentinel(sheet: XlsxSheet | null, project: DashboardProject) {
@@ -166,6 +244,10 @@ function extractSentinel(sheet: XlsxSheet | null, project: DashboardProject) {
       progress: null,
       status: 'Sin reporte',
       supervisor: 'FERNANDO IPARRAGUIRRE',
+      visit1: { checked: false, color: null },
+      visit2: { checked: false, color: null },
+      visit3: { checked: false, color: null },
+      totalFinalCameras: null,
       startDate: excelDate(sheet.get(row, 5)),
       endDate: excelDate(sheet.get(row, 6)),
       days: Number(sheet.get(row, 7)) || null,
@@ -240,14 +322,29 @@ async function loadProject(source: (typeof sources)[number], force = false) {
     throw new Error('SharePoint did not return an Excel file');
   const workbook = readXlsx(buffer);
   const cronograma = workbook.sheet('CRONOGRAMA');
+  const avance = workbook.sheet('Avance');
   const history = workbook.sheet('Historial de avance');
-  if (!cronograma || !history)
+  if (!cronograma || !avance || !history)
     throw new Error('Required worksheets are missing');
+  const cronogramaRecords = extractCronograma(cronograma, source);
+  const avanceRecords = applyAvance(avance, cronogramaRecords);
+  const existingRecords = new Set(
+    avanceRecords.map(
+      (record) =>
+        `${normalizedValue(record.provider)}:${normalizedValue(record.agency)}`,
+    ),
+  );
+  const supplementalSentinel = extractSentinel(
+    workbook.sheet('DETALLE SENTINEL'),
+    source,
+  ).filter(
+    (record) =>
+      !existingRecords.has(
+        `${normalizedValue(record.provider)}:${normalizedValue(record.agency)}`,
+      ),
+  );
   return {
-    records: [
-      ...extractCronograma(cronograma, source),
-      ...extractSentinel(workbook.sheet('DETALLE SENTINEL'), source),
-    ],
+    records: [...avanceRecords, ...supplementalSentinel],
     history: extractHistory(history, source),
   };
 }
@@ -266,6 +363,10 @@ function fallback(): DashboardSnapshot {
       ...record,
       projectId: project3979.id,
       projectLabel: project3979.label,
+      visit1: { checked: false, color: null },
+      visit2: { checked: false, color: null },
+      visit3: { checked: false, color: null },
+      totalFinalCameras: null,
     })),
     history: source.history.map((record) => ({
       ...record,
