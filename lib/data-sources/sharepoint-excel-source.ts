@@ -377,6 +377,21 @@ function fallback(): DashboardSnapshot {
 }
 
 class SharePointExcelSource implements DashboardSource {
+  async getSnapshot(
+    options: DashboardSnapshotOptions = {},
+  ): Promise<DashboardSnapshot> {
+    if (!options.force && cache && cache.expiresAt > Date.now())
+      return cache.snapshot;
+    const settledResults = await Promise.allSettled(
+      sources.map((source) => loadProject(source, options.force === true)),
+    );
+    const results = settledResults.flatMap((result, index) => {
+      if (result.status === 'fulfilled')
+        return [{ projectId: sources[index].id, data: result.value }];
+      console.error(`Unable to refresh ${sources[index].label}`, result.reason);
+      return [];
+    });
+
     if (results.length) {
       const allProjectsLive = results.length === sources.length;
       const liveByProject = new Map(
