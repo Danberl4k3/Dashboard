@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "node node_modules/vinext/dist/cli.js dev",
     "build": "node node_modules/vinext/dist/cli.js build",
-    "start": "node node_modules/wrangler/bin/wrangler.js dev --config dist/server/wrangler.json",
+    "start": "node node_modules/vinext/dist/cli.js start",
+    "start:cloudflare": "node node_modules/wrangler/bin/wrangler.js dev --config dist/server/wrangler.json",
     "lint": "node node_modules/oxlint/bin/oxlint",
     "format": "node node_modules/oxfmt/bin/oxfmt"
   },
