@@ -759,7 +759,7 @@ export function Dashboard({
             <p className="text-[10px] text-muted-foreground">
               {isRefreshing
                 ? 'Descargando ambos Excel…'
-                : 'Actualización automática cada 90 s'}
+                : 'Actualización automática cada 30 s'}
             </p>
             {refreshError ? (
               <p
