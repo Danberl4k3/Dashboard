@@ -3,9 +3,9 @@
 import ProviderFilter from '@/components/dashboard/provider-filter';
 import { filterDashboard } from '@/lib/dashboard/filters';
 import { AgencyCard } from './agency-card';
+import { AgencyColumns } from './agency-columns';
 import { AgencySparkline } from './agency-sparkline';
 import { StageStepper } from './stage-stepper';
-import { CircularProgress } from './circular-progress';
 
 import {
   useCallback,
@@ -33,7 +33,6 @@ import {
   Cell,
   CartesianGrid,
   Line,
-  LineChart,
   Area,
   ComposedChart,
   Pie,
@@ -677,16 +676,22 @@ export function Dashboard({
               Resumen
             </a>
             <a
+              href="#agencias"
+              className="dashboard-nav-link rounded-sm border border-transparent px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20"
+            >
+              Agencias (3 Columnas)
+            </a>
+            <a
+              href="#tabla-detalle"
+              className="dashboard-nav-link rounded-sm border border-transparent px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20"
+            >
+              Tabla detallada
+            </a>
+            <a
               href="#linea-tiempo"
               className="dashboard-nav-link rounded-sm border border-transparent px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20"
             >
               Línea de tiempo
-            </a>
-            <a
-              href="#agencias"
-              className="dashboard-nav-link rounded-sm border border-transparent px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20"
-            >
-              Agencias
             </a>
           </nav>
           <Badge
@@ -1104,6 +1109,285 @@ export function Dashboard({
           </Card>
         </section>
 
+        {/* ================= TABLERO DE 3 COLUMNAS (NOMBRES Y % EN PROCESO) ================= */}
+        <section id="agencias" className="mt-3 scroll-mt-20">
+          <Card>
+            <CardHeader className="border-b sm:grid-cols-[1fr_auto]">
+              <div>
+                <CardTitle>Tablero de agencias (3 Columnas)</CardTitle>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Nombres de agencias clasificadas por estado · {filtered.length} agencias encontradas
+                </p>
+              </div>
+              <div
+                className="flex items-center gap-2 text-xs text-muted-foreground"
+                data-slot="card-action"
+              >
+                <MapPin className="size-3.5" />
+                {effectiveLocation === 'Todas'
+                  ? 'Todas las ubicaciones'
+                  : effectiveLocation}
+              </div>
+            </CardHeader>
+            <CardContent className="p-4">
+              <AgencyColumns records={filtered} />
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* ================= TABLA DETALLADA APARTE ================= */}
+        <section id="tabla-detalle" className="mt-3 scroll-mt-20">
+          <Card>
+            <CardHeader className="border-b sm:grid-cols-[1fr_auto]">
+              <div>
+                <CardTitle>Tabla detallada de registros</CardTitle>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  {filtered.length} registros encontrados · orden original del
+                  cronograma
+                </p>
+              </div>
+              <div
+                className="flex items-center gap-4"
+                data-slot="card-action"
+              >
+                <div className="flex items-center rounded-md border p-0.5 bg-muted/50">
+                  <button
+                    type="button"
+                    title="Vista de tabla"
+                    aria-label="Vista de tabla"
+                    aria-pressed={viewMode === 'table'}
+                    onClick={() => setViewMode('table')}
+                    className={`flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-xs font-medium transition-colors ${viewMode === 'table' ? 'bg-background shadow-xs text-foreground' : 'text-muted-foreground hover:bg-background/50'}`}
+                  >
+                    <List className="size-3.5" />
+                    <span className="hidden sm:inline">Tabla</span>
+                  </button>
+                  <button
+                    type="button"
+                    title="Vista de cuadrícula"
+                    aria-label="Vista de cuadrícula"
+                    aria-pressed={viewMode === 'grid'}
+                    onClick={() => setViewMode('grid')}
+                    className={`flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-xs font-medium transition-colors ${viewMode === 'grid' ? 'bg-background shadow-xs text-foreground' : 'text-muted-foreground hover:bg-background/50'}`}
+                  >
+                    <LayoutGrid className="size-3.5" />
+                    <span className="hidden sm:inline">Tarjetas</span>
+                  </button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className={viewMode === 'table' ? 'px-0' : 'p-4'}>
+              {visibleRows.length ? (
+                viewMode === 'table' ? (
+                  <Table className="min-w-[1280px]">
+                    <TableHeader>
+                      <TableRow className="bg-blue-50/45">
+                        <TableHead className="pl-4">Agencia</TableHead>
+                        <TableHead>Proveedor</TableHead>
+                        <TableHead className="hidden md:table-cell">
+                          Ubicación
+                        </TableHead>
+                        <TableHead className="hidden lg:table-cell">
+                          Supervisor
+                        </TableHead>
+                        <TableHead className="text-right">Avance</TableHead>
+                        <TableHead className="text-center">Etapas</TableHead>
+                        <TableHead className="text-center">Tendencia</TableHead>
+                        <TableHead className="text-center">Visita 1</TableHead>
+                        <TableHead className="text-center">Visita 2</TableHead>
+                        <TableHead className="text-center">Visita 3</TableHead>
+                        <TableHead className="w-28 text-right whitespace-normal">
+                          TOTAL FINAL
+                          <br />
+                          CÁMARAS
+                        </TableHead>
+                        <TableHead className="hidden xl:table-cell">
+                          Fechas
+                        </TableHead>
+                        <TableHead className="pr-4">Estado</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {visibleRows.map((record, rowIndex) => {
+                        const agencyHistory = snapshot.history.filter(
+                          (h) => h.projectId === record.projectId && h.agency === record.agency
+                        );
+                        const isAtRisk = isAgencyAtRisk(record);
+                        return (
+                        <TableRow
+                          key={`${record.projectId}-${record.id}-${record.agency}-${tableMotionKey}`}
+                          className={`data-row-refresh ${isAtRisk ? 'bg-rose-50/20' : ''}`}
+                          style={
+                            {
+                              '--row-delay': `${rowIndex * 36}ms`,
+                            } as CSSProperties
+                          }
+                        >
+                          <TableCell className="max-w-[280px] whitespace-normal pl-4 text-xs font-medium">
+                            <div className="flex items-center gap-1.5">
+                              {isAtRisk && <AlertTriangle className="size-3.5 text-rose-500 shrink-0" title="Agencia en riesgo" />}
+                              <span className="line-clamp-2">{record.agency}</span>
+                            </div>
+                            <span className="mt-0.5 block text-[11px] font-normal text-muted-foreground">
+                              {record.projectLabel}
+                              <span className="md:hidden">
+                                {' '}
+                                · {record.district}
+                              </span>
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-xs">
+                            <Badge
+                              variant="outline"
+                              className={`text-[10px] font-medium ${providerBadgeClass(record.provider)}`}
+                            >
+                              {record.provider}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="hidden md:table-cell">
+                            <p className="text-xs">{record.district || '—'}</p>
+                            <p className="text-[11px] text-muted-foreground">
+                              {record.location}
+                            </p>
+                          </TableCell>
+                          <TableCell className="hidden text-xs text-muted-foreground lg:table-cell">
+                            {record.supervisor || '—'}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="ml-auto flex min-w-24 max-w-32 items-center justify-end gap-2">
+                              <ProgressFill
+                                value={record.progress ?? 0}
+                                prefersReducedMotion={prefersReducedMotion}
+                              />
+                              <span className="w-9 text-right font-mono text-xs font-semibold tabular-nums">
+                                {record.progress === null
+                                  ? '—'
+                                  : `${record.progress}%`}
+                              </span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <div className="flex justify-center">
+                              <StageStepper record={record} />
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <div className="flex justify-center">
+                              <AgencySparkline history={agencyHistory} prefersReducedMotion={prefersReducedMotion} />
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <VisitCheckMark
+                              visit={record.visit1}
+                              label="Visita 1"
+                            />
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <VisitCheckMark
+                              visit={record.visit2}
+                              label="Visita 2"
+                            />
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <VisitCheckMark
+                              visit={record.visit3}
+                              label="Visita 3"
+                            />
+                          </TableCell>
+                          <TableCell className="text-right font-mono text-xs font-semibold tabular-nums">
+                            {record.totalFinalCameras ?? '—'}
+                          </TableCell>
+                          <TableCell className="hidden xl:table-cell">
+                            <p className="text-xs">
+                              {formatDate(record.startDate)}
+                            </p>
+                            <p className="mt-0.5 text-[11px] text-muted-foreground">
+                              hasta {formatDate(record.endDate)}
+                            </p>
+                          </TableCell>
+                          <TableCell className="pr-4">
+                            <StatusBadge status={record.status} />
+                          </TableCell>
+                        </TableRow>
+                      )})}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {visibleRows.map((record) => {
+                      const agencyHistory = snapshot.history.filter(
+                        (h) => h.projectId === record.projectId && h.agency === record.agency
+                      );
+                      const isAtRisk = isAgencyAtRisk(record);
+                      return (
+                        <AgencyCard 
+                          key={`${record.projectId}-${record.agency}`}
+                          record={record} 
+                          history={agencyHistory} 
+                          prefersReducedMotion={prefersReducedMotion} 
+                          isAtRisk={isAtRisk}
+                        />
+                      );
+                    })}
+                  </div>
+                )
+              ) : (
+                <div className="grid min-h-48 place-items-center px-6 text-center">
+                  <div>
+                    <p className="text-sm font-medium">
+                      No hay agencias que coincidan
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Prueba con otros filtros o limpia la búsqueda.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-3"
+                      onClick={resetFilters}
+                    >
+                      <RotateCcw />
+                      Limpiar filtros
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+            <div className="flex flex-col gap-2 border-t bg-muted/25 px-4 py-2 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-xs text-muted-foreground">
+                Mostrando{' '}
+                {visibleRows.length ? (currentPage - 1) * PAGE_SIZE + 1 : 0}–
+                {Math.min(currentPage * PAGE_SIZE, filtered.length)} de{' '}
+                {filtered.length}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  aria-label="Página anterior"
+                  disabled={currentPage === 1}
+                  onClick={() => setPage(Math.max(1, currentPage - 1))}
+                >
+                  <ChevronLeft />
+                </Button>
+                <span className="min-w-20 text-center font-mono text-[11px] font-medium tabular-nums">
+                  Página {currentPage} de {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  aria-label="Página siguiente"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
+                >
+                  <ChevronRight />
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </section>
+
+        {/* ================= LÍNEA DE TIEMPO (AL FINAL) ================= */}
         <section id="linea-tiempo" className="mt-3 scroll-mt-20">
           <Card>
             <CardHeader className="border-b lg:grid-cols-[1fr_340px]">
@@ -1360,261 +1644,6 @@ export function Dashboard({
             <div className="border-t bg-muted/25 px-4 py-2 text-[11px] text-muted-foreground">
               {historyData.length} cortes registrados para esta agencia ·
               periodo {historyFirst?.date} a {historyLatest?.date}
-            </div>
-          </Card>
-        </section>
-
-        <section id="agencias" className="mt-3 scroll-mt-20">
-          <Card>
-            <CardHeader className="border-b sm:grid-cols-[1fr_auto]">
-              <div>
-                <CardTitle>Detalle de agencias</CardTitle>
-                <p className="mt-0.5 text-[11px] text-muted-foreground">
-                  {filtered.length} registros encontrados · orden original del
-                  cronograma
-                </p>
-              </div>
-              <div
-                className="flex items-center gap-4"
-                data-slot="card-action"
-              >
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <MapPin className="size-3.5" />
-                  {effectiveLocation === 'Todas'
-                    ? 'Todas las ubicaciones'
-                    : effectiveLocation}
-                </div>
-                <div className="flex items-center rounded-md border p-0.5 bg-muted/50">
-                  <button
-                    type="button"
-                    title="Vista de cuadrícula"
-                    aria-label="Vista de cuadrícula"
-                    aria-pressed={viewMode === 'grid'}
-                    onClick={() => setViewMode('grid')}
-                    className={`rounded-sm p-1 transition-colors ${viewMode === 'grid' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:bg-background/50'}`}
-                  >
-                    <LayoutGrid className="size-4" />
-                  </button>
-                  <button
-                    type="button"
-                    title="Vista de tabla"
-                    aria-label="Vista de tabla"
-                    aria-pressed={viewMode === 'table'}
-                    onClick={() => setViewMode('table')}
-                    className={`rounded-sm p-1 transition-colors ${viewMode === 'table' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:bg-background/50'}`}
-                  >
-                    <List className="size-4" />
-                  </button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className={viewMode === 'grid' ? 'p-4' : 'px-0'}>
-              {visibleRows.length ? (
-                viewMode === 'table' ? (
-                  <Table className="min-w-[1280px]">
-                    <TableHeader>
-                      <TableRow className="bg-blue-50/45">
-                        <TableHead className="pl-4">Agencia</TableHead>
-                        <TableHead>Proveedor</TableHead>
-                        <TableHead className="hidden md:table-cell">
-                          Ubicación
-                        </TableHead>
-                        <TableHead className="hidden lg:table-cell">
-                          Supervisor
-                        </TableHead>
-                        <TableHead className="text-right">Avance</TableHead>
-                        <TableHead className="text-center">Etapas</TableHead>
-                        <TableHead className="text-center">Tendencia</TableHead>
-                        <TableHead className="text-center">Visita 1</TableHead>
-                        <TableHead className="text-center">Visita 2</TableHead>
-                        <TableHead className="text-center">Visita 3</TableHead>
-                        <TableHead className="w-28 text-right whitespace-normal">
-                          TOTAL FINAL
-                          <br />
-                          CÁMARAS
-                        </TableHead>
-                        <TableHead className="hidden xl:table-cell">
-                          Fechas
-                        </TableHead>
-                        <TableHead className="pr-4">Estado</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {visibleRows.map((record, rowIndex) => {
-                        const agencyHistory = snapshot.history.filter(
-                          (h) => h.projectId === record.projectId && h.agency === record.agency
-                        );
-                        const isAtRisk = isAgencyAtRisk(record);
-                        return (
-                        <TableRow
-                          key={`${record.projectId}-${record.id}-${record.agency}-${tableMotionKey}`}
-                          className={`data-row-refresh ${isAtRisk ? 'bg-rose-50/20' : ''}`}
-                          style={
-                            {
-                              '--row-delay': `${rowIndex * 36}ms`,
-                            } as CSSProperties
-                          }
-                        >
-                          <TableCell className="max-w-[280px] whitespace-normal pl-4 text-xs font-medium">
-                            <div className="flex items-center gap-1.5">
-                              {isAtRisk && <AlertTriangle className="size-3.5 text-rose-500 shrink-0" title="Agencia en riesgo" />}
-                              <span className="line-clamp-2">{record.agency}</span>
-                            </div>
-                            <span className="mt-0.5 block text-[11px] font-normal text-muted-foreground">
-                              {record.projectLabel}
-                              <span className="md:hidden">
-                                {' '}
-                                · {record.district}
-                              </span>
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-xs">
-                            <Badge
-                              variant="outline"
-                              className={`text-[10px] font-medium ${providerBadgeClass(record.provider)}`}
-                            >
-                              {record.provider}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="hidden md:table-cell">
-                            <p className="text-xs">{record.district || '—'}</p>
-                            <p className="text-[11px] text-muted-foreground">
-                              {record.location}
-                            </p>
-                          </TableCell>
-                          <TableCell className="hidden text-xs text-muted-foreground lg:table-cell">
-                            {record.supervisor || '—'}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="ml-auto flex min-w-24 max-w-32 items-center justify-end gap-2">
-                              <ProgressFill
-                                value={record.progress ?? 0}
-                                prefersReducedMotion={prefersReducedMotion}
-                              />
-                              <span className="w-9 text-right font-mono text-xs font-semibold tabular-nums">
-                                {record.progress === null
-                                  ? '—'
-                                  : `${record.progress}%`}
-                              </span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <div className="flex justify-center">
-                              <StageStepper record={record} />
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <div className="flex justify-center">
-                              <AgencySparkline history={agencyHistory} prefersReducedMotion={prefersReducedMotion} />
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <VisitCheckMark
-                              visit={record.visit1}
-                              label="Visita 1"
-                            />
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <VisitCheckMark
-                              visit={record.visit2}
-                              label="Visita 2"
-                            />
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <VisitCheckMark
-                              visit={record.visit3}
-                              label="Visita 3"
-                            />
-                          </TableCell>
-                          <TableCell className="text-right font-mono text-xs font-semibold tabular-nums">
-                            {record.totalFinalCameras ?? '—'}
-                          </TableCell>
-                          <TableCell className="hidden xl:table-cell">
-                            <p className="text-xs">
-                              {formatDate(record.startDate)}
-                            </p>
-                            <p className="mt-0.5 text-[11px] text-muted-foreground">
-                              hasta {formatDate(record.endDate)}
-                            </p>
-                          </TableCell>
-                          <TableCell className="pr-4">
-                            <StatusBadge status={record.status} />
-                          </TableCell>
-                        </TableRow>
-                      )})}
-                    </TableBody>
-                  </Table>
-                ) : (
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {visibleRows.map((record) => {
-                      const agencyHistory = snapshot.history.filter(
-                        (h) => h.projectId === record.projectId && h.agency === record.agency
-                      );
-                      const isAtRisk = isAgencyAtRisk(record);
-                      return (
-                        <AgencyCard 
-                          key={`${record.projectId}-${record.agency}`}
-                          record={record} 
-                          history={agencyHistory} 
-                          prefersReducedMotion={prefersReducedMotion} 
-                          isAtRisk={isAtRisk}
-                        />
-                      );
-                    })}
-                  </div>
-                )
-              ) : (
-                <div className="grid min-h-48 place-items-center px-6 text-center">
-                  <div>
-                    <p className="text-sm font-medium">
-                      No hay agencias que coincidan
-                    </p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      Prueba con otros filtros o limpia la búsqueda.
-                    </p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-3"
-                      onClick={resetFilters}
-                    >
-                      <RotateCcw />
-                      Limpiar filtros
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-            <div className="flex flex-col gap-2 border-t bg-muted/25 px-4 py-2 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-xs text-muted-foreground">
-                Mostrando{' '}
-                {visibleRows.length ? (currentPage - 1) * PAGE_SIZE + 1 : 0}–
-                {Math.min(currentPage * PAGE_SIZE, filtered.length)} de{' '}
-                {filtered.length}
-              </p>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  aria-label="Página anterior"
-                  disabled={currentPage === 1}
-                  onClick={() => setPage(Math.max(1, currentPage - 1))}
-                >
-                  <ChevronLeft />
-                </Button>
-                <span className="min-w-20 text-center font-mono text-[11px] font-medium tabular-nums">
-                  Página {currentPage} de {totalPages}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  aria-label="Página siguiente"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
-                >
-                  <ChevronRight />
-                </Button>
-              </div>
             </div>
           </Card>
         </section>
