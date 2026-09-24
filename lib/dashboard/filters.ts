@@ -1,18 +1,37 @@
-import type { DashboardSnapshot, WorkRecord } from './types';
+import type {
+  DashboardSnapshot,
+  ProgressHistoryRecord,
+  WorkRecord,
+} from './types';
 
 export function withoutDya(snapshot: DashboardSnapshot): DashboardSnapshot {
-  const filteredRecords = snapshot.records.filter(
+  const eligibleRecords = snapshot.records.filter(
     (record) => record.provider.trim().toUpperCase() !== 'DYA',
   );
-  const filteredHistory = snapshot.history.filter((entry) =>
-    filteredRecords.some(
-      (record) =>
-        record.projectId === entry.projectId && record.agency === entry.agency,
-    ),
+  const eligibleKeys = new Set(
+    eligibleRecords.map((record) => `${record.projectId}::${record.agency}`),
   );
-  return { ...snapshot, records: filteredRecords, history: filteredHistory };
+  const filteredHistory = snapshot.history.filter((entry) =>
+    eligibleKeys.has(`${entry.projectId}::${entry.agency}`),
+  );
+  return { ...snapshot, records: eligibleRecords, history: filteredHistory };
 }
 
+export function indexHistoryByAgency(
+  snapshot: DashboardSnapshot,
+): Map<string, ProgressHistoryRecord[]> {
+  const index = new Map<string, ProgressHistoryRecord[]>();
+  for (const entry of snapshot.history) {
+    const key = `${entry.projectId}::${entry.agency}`;
+    const existing = index.get(key);
+    if (existing) {
+      existing.push(entry);
+    } else {
+      index.set(key, [entry]);
+    }
+  }
+  return index;
+}
 export interface DashboardFilters {
   project: string;
   providers: string[];

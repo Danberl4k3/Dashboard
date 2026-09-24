@@ -4,6 +4,7 @@ import * as React from 'react';
 import * as RechartsPrimitive from 'recharts';
 import type { TooltipValueType } from 'recharts';
 
+import { useHydrated } from '@/hooks/use-hydrated';
 import { cn } from '@/lib/utils';
 
 // Format: { THEME_NAME: CSS_SELECTOR }
@@ -62,6 +63,7 @@ function ChartContainer({
     height: number;
   };
 }) {
+  const mounted = useHydrated();
   const uniqueId = React.useId();
   const chartId = `chart-${id ?? uniqueId.replace(/:/g, '')}`;
 
@@ -77,11 +79,15 @@ function ChartContainer({
         {...props}
       >
         <ChartStyle id={chartId} config={config} />
-        <RechartsPrimitive.ResponsiveContainer
-          initialDimension={initialDimension}
-        >
-          {children}
-        </RechartsPrimitive.ResponsiveContainer>
+        {mounted ? (
+          <RechartsPrimitive.ResponsiveContainer
+            initialDimension={initialDimension}
+          >
+            {children}
+          </RechartsPrimitive.ResponsiveContainer>
+        ) : (
+          <div aria-hidden="true" className="h-full w-full" />
+        )}
       </div>
     </ChartContext.Provider>
   );

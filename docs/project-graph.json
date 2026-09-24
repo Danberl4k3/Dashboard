@@ -1,0 +1,2865 @@
+{
+  "version": 1,
+  "root": ".",
+  "tsconfigError": null,
+  "entries": [
+    "app/page.tsx",
+    "app/api/dashboard/route.ts",
+    "app/layout.tsx"
+  ],
+  "nodes": {
+    "app/api/dashboard/route.ts": {
+      "path": "app/api/dashboard/route.ts",
+      "kind": "source",
+      "size": 538,
+      "hash": "68cdec274f869c4246b9d8c25a5cf77e76998f27b54b72d2051d1b53eb9026fe",
+      "exports": [
+        "GET",
+        "dynamic",
+        "revalidate"
+      ],
+      "dependencies": [
+        "lib/dashboard/filters.ts",
+        "lib/data-sources/configured-dashboard-source.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 16,
+      "importedBy": []
+    },
+    "app/data/cronograma.json": {
+      "path": "app/data/cronograma.json",
+      "kind": "json",
+      "size": 124306,
+      "mtime": 1788353616460.0337,
+      "importedBy": [
+        "lib/data-sources/excel-snapshot-source.ts",
+        "lib/data-sources/sharepoint-excel-source.ts"
+      ]
+    },
+    "app/globals.css": {
+      "path": "app/globals.css",
+      "kind": "css",
+      "size": 6728,
+      "mtime": 1789752742311.0342,
+      "importedBy": [
+        "app/layout.tsx"
+      ]
+    },
+    "app/layout.tsx": {
+      "path": "app/layout.tsx",
+      "kind": "source",
+      "size": 1524,
+      "hash": "c8a31cfa4bf9de18c5381ce77e0ca1144c951de5def2d8a1f80a8417ca071399",
+      "exports": [
+        "RootLayout",
+        "default",
+        "metadata"
+      ],
+      "dependencies": [
+        "app/globals.css"
+      ],
+      "externalDependencies": [
+        "next"
+      ],
+      "lines": 56,
+      "importedBy": []
+    },
+    "app/loading.tsx": {
+      "path": "app/loading.tsx",
+      "kind": "source",
+      "size": 652,
+      "hash": "3f6e1c989514e58670eaaf5fd91956800aaef197c2dc6e3de77f39c441a2d0f5",
+      "exports": [
+        "Loading",
+        "default"
+      ],
+      "dependencies": [
+        "components/ui/skeleton.tsx"
+      ],
+      "externalDependencies": [],
+      "lines": 19,
+      "importedBy": []
+    },
+    "app/page.tsx": {
+      "path": "app/page.tsx",
+      "kind": "source",
+      "size": 422,
+      "hash": "4968529c99f5c6bb06e54d3e602c49677cd71365907699cdfce4edc87e5e49db",
+      "exports": [
+        "Home",
+        "default",
+        "dynamic",
+        "revalidate"
+      ],
+      "dependencies": [
+        "components/dashboard/dashboard.tsx",
+        "lib/dashboard/filters.ts",
+        "lib/data-sources/configured-dashboard-source.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 12,
+      "importedBy": []
+    },
+    "components/dashboard/agency-card.tsx": {
+      "path": "components/dashboard/agency-card.tsx",
+      "kind": "source",
+      "size": 4805,
+      "hash": "7a0aea61b25291138b093fa94faa24219328282715f4582076e19b3e3d954293",
+      "exports": [
+        "AgencyCard"
+      ],
+      "dependencies": [
+        "components/dashboard/agency-sparkline.tsx",
+        "components/dashboard/circular-progress.tsx",
+        "components/dashboard/stage-stepper.tsx",
+        "components/ui/badge.tsx",
+        "components/ui/card.tsx",
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react"
+      ],
+      "lines": 113,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/dashboard/agency-columns.tsx": {
+      "path": "components/dashboard/agency-columns.tsx",
+      "kind": "source",
+      "size": 15005,
+      "hash": "934af47dc3166a34316057568d37c5f96f96626870503aba663f063fcec85027",
+      "exports": [
+        "AgencyColumns"
+      ],
+      "dependencies": [
+        "components/ui/badge.tsx",
+        "components/ui/input.tsx",
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react",
+        "react"
+      ],
+      "lines": 360,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/dashboard/agency-sparkline.tsx": {
+      "path": "components/dashboard/agency-sparkline.tsx",
+      "kind": "source",
+      "size": 1492,
+      "hash": "f57a56265294ca9bf0d759397bacd078d513d087b26b19bd96e54695ebd6eb8e",
+      "exports": [
+        "AgencySparkline"
+      ],
+      "dependencies": [
+        "hooks/use-hydrated.ts",
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [
+        "recharts"
+      ],
+      "lines": 54,
+      "importedBy": [
+        "components/dashboard/agency-card.tsx",
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/dashboard/circular-progress.tsx": {
+      "path": "components/dashboard/circular-progress.tsx",
+      "kind": "source",
+      "size": 2004,
+      "hash": "a112094e9e4900784551ea40784e3ae7fc3b09af4007c69db7d5d568e4856971",
+      "exports": [
+        "CircularProgress",
+        "progressColor"
+      ],
+      "dependencies": [],
+      "externalDependencies": [
+        "react"
+      ],
+      "lines": 66,
+      "importedBy": [
+        "components/dashboard/agency-card.tsx"
+      ]
+    },
+    "components/dashboard/dashboard.tsx": {
+      "path": "components/dashboard/dashboard.tsx",
+      "kind": "source",
+      "size": 63113,
+      "hash": "e372b6d28822937897b9523720d56974ff8f7bfd199d118a700e196d03ae7802",
+      "exports": [
+        "Dashboard"
+      ],
+      "dependencies": [
+        "components/dashboard/agency-card.tsx",
+        "components/dashboard/agency-columns.tsx",
+        "components/dashboard/agency-sparkline.tsx",
+        "components/dashboard/data-source-status.tsx",
+        "components/dashboard/provider-filter.tsx",
+        "components/dashboard/stage-stepper.tsx",
+        "components/ui/badge.tsx",
+        "components/ui/button.tsx",
+        "components/ui/card.tsx",
+        "components/ui/chart.tsx",
+        "components/ui/input.tsx",
+        "components/ui/native-select.tsx",
+        "components/ui/table.tsx",
+        "hooks/use-dashboard-refresh.ts",
+        "lib/dashboard/filters.ts",
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react",
+        "react",
+        "recharts"
+      ],
+      "lines": 1665,
+      "importedBy": [
+        "app/page.tsx"
+      ]
+    },
+    "components/dashboard/data-source-status.tsx": {
+      "path": "components/dashboard/data-source-status.tsx",
+      "kind": "source",
+      "size": 1475,
+      "hash": "31c79e61bcde888a25a9ac6166931589cff7ba0761f18564013efc2d0c74f3eb",
+      "exports": [
+        "DataSourceStatus"
+      ],
+      "dependencies": [
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 56,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/dashboard/provider-filter.tsx": {
+      "path": "components/dashboard/provider-filter.tsx",
+      "kind": "source",
+      "size": 1969,
+      "hash": "125a85bb7c6c2d62058958c1ec54f1666a9642ff11acdc4bc86355db291bb87e",
+      "exports": [
+        "ProviderFilter",
+        "default"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "components/ui/checkbox.tsx"
+      ],
+      "externalDependencies": [
+        "react"
+      ],
+      "lines": 67,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/dashboard/stage-stepper.tsx": {
+      "path": "components/dashboard/stage-stepper.tsx",
+      "kind": "source",
+      "size": 2154,
+      "hash": "8dec954b43c6895522da956228497a0ee216078fda104cb14c5b4540d2e77439",
+      "exports": [
+        "StageStepper",
+        "stageDefinitions"
+      ],
+      "dependencies": [
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 66,
+      "importedBy": [
+        "components/dashboard/agency-card.tsx",
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/ui/accordion.tsx": {
+      "path": "components/ui/accordion.tsx",
+      "kind": "source",
+      "size": 2664,
+      "hash": "33e1c60ba503f4eb36f9a8b1f68b236174b11656d8efea6bac65abddda2f9019",
+      "exports": [
+        "Accordion",
+        "AccordionContent",
+        "AccordionItem",
+        "AccordionTrigger"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "lines": 79,
+      "importedBy": []
+    },
+    "components/ui/alert-dialog.tsx": {
+      "path": "components/ui/alert-dialog.tsx",
+      "kind": "source",
+      "size": 5301,
+      "hash": "ed0f1fc432bca4c72f9dd8741ae2268a00d2d3429ff1149bf463c4271b13d8e9",
+      "exports": [
+        "AlertDialog",
+        "AlertDialogAction",
+        "AlertDialogCancel",
+        "AlertDialogContent",
+        "AlertDialogDescription",
+        "AlertDialogFooter",
+        "AlertDialogHeader",
+        "AlertDialogMedia",
+        "AlertDialogOverlay",
+        "AlertDialogPortal",
+        "AlertDialogTitle",
+        "AlertDialogTrigger"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "react"
+      ],
+      "lines": 188,
+      "importedBy": []
+    },
+    "components/ui/alert.tsx": {
+      "path": "components/ui/alert.tsx",
+      "kind": "source",
+      "size": 2060,
+      "hash": "e760c470414c9e617d7292094146d906352fee3b1526b790a611d4a118e79196",
+      "exports": [
+        "Alert",
+        "AlertAction",
+        "AlertDescription",
+        "AlertTitle"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "class-variance-authority",
+        "react"
+      ],
+      "lines": 77,
+      "importedBy": []
+    },
+    "components/ui/aspect-ratio.tsx": {
+      "path": "components/ui/aspect-ratio.tsx",
+      "kind": "source",
+      "size": 406,
+      "hash": "b7fb499905e441a0602392ce118828425ad059079060109694d01f9fac00ad20",
+      "exports": [
+        "AspectRatio"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 23,
+      "importedBy": []
+    },
+    "components/ui/attachment.tsx": {
+      "path": "components/ui/attachment.tsx",
+      "kind": "source",
+      "size": 6132,
+      "hash": "dcb9e899f1322158f016d75c400fa8cce9b797ea49bec65528bac686cee2ec5c",
+      "exports": [
+        "Attachment",
+        "AttachmentAction",
+        "AttachmentActions",
+        "AttachmentContent",
+        "AttachmentDescription",
+        "AttachmentGroup",
+        "AttachmentMedia",
+        "AttachmentTitle",
+        "AttachmentTrigger"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "react"
+      ],
+      "lines": 208,
+      "importedBy": []
+    },
+    "components/ui/avatar.tsx": {
+      "path": "components/ui/avatar.tsx",
+      "kind": "source",
+      "size": 3056,
+      "hash": "342f32b683937b826cdff2999d5e3057836d459aa43eadb0c3538b818d195b9a",
+      "exports": [
+        "Avatar",
+        "AvatarBadge",
+        "AvatarFallback",
+        "AvatarGroup",
+        "AvatarGroupCount",
+        "AvatarImage"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "react"
+      ],
+      "lines": 110,
+      "importedBy": []
+    },
+    "components/ui/badge.tsx": {
+      "path": "components/ui/badge.tsx",
+      "kind": "source",
+      "size": 1984,
+      "hash": "89951252c9ec778d117fb3d882f1ca5325cd1823ffd4ac200d8aa83bd6a3086c",
+      "exports": [
+        "Badge",
+        "badgeVariants"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "lines": 53,
+      "importedBy": [
+        "components/dashboard/agency-card.tsx",
+        "components/dashboard/agency-columns.tsx",
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/ui/breadcrumb.tsx": {
+      "path": "components/ui/breadcrumb.tsx",
+      "kind": "source",
+      "size": 2602,
+      "hash": "b28b76d6f8d0feafbbeff2220cf83f9a6b03d8c81f0145b3af4c7d19933ab2c0",
+      "exports": [
+        "Breadcrumb",
+        "BreadcrumbEllipsis",
+        "BreadcrumbItem",
+        "BreadcrumbLink",
+        "BreadcrumbList",
+        "BreadcrumbPage",
+        "BreadcrumbSeparator"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 123,
+      "importedBy": []
+    },
+    "components/ui/bubble.tsx": {
+      "path": "components/ui/bubble.tsx",
+      "kind": "source",
+      "size": 4828,
+      "hash": "dfb9f52ae3b89e4a419b336c3893ab6fb658fc324fb402759d878d54e3b2db5a",
+      "exports": [
+        "Bubble",
+        "BubbleContent",
+        "BubbleGroup",
+        "BubbleReactions"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "react"
+      ],
+      "lines": 129,
+      "importedBy": []
+    },
+    "components/ui/button-group.tsx": {
+      "path": "components/ui/button-group.tsx",
+      "kind": "source",
+      "size": 2494,
+      "hash": "79ad8fb6644a775cc49131c1aa737ca26cae6a563beec0fa52ef6e8d85202fab",
+      "exports": [
+        "ButtonGroup",
+        "ButtonGroupSeparator",
+        "ButtonGroupText",
+        "buttonGroupVariants"
+      ],
+      "dependencies": [
+        "components/ui/separator.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "lines": 88,
+      "importedBy": []
+    },
+    "components/ui/button.tsx": {
+      "path": "components/ui/button.tsx",
+      "kind": "source",
+      "size": 3199,
+      "hash": "d54e1b33e9158d5f410402ff50e445c576265bf2a030d55241fd0a34d9bd798f",
+      "exports": [
+        "Button",
+        "buttonVariants"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "lines": 59,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx",
+        "components/dashboard/provider-filter.tsx",
+        "components/ui/alert-dialog.tsx",
+        "components/ui/attachment.tsx",
+        "components/ui/calendar.tsx",
+        "components/ui/carousel.tsx",
+        "components/ui/combobox.tsx",
+        "components/ui/dialog.tsx",
+        "components/ui/input-group.tsx",
+        "components/ui/message-scroller.tsx",
+        "components/ui/pagination.tsx",
+        "components/ui/sheet.tsx",
+        "components/ui/sidebar.tsx",
+        "components/ui/toast.tsx"
+      ]
+    },
+    "components/ui/calendar.tsx": {
+      "path": "components/ui/calendar.tsx",
+      "kind": "source",
+      "size": 8503,
+      "hash": "e7bc682eff8f2215e6b0aab40d1afb7ee927c5f5bef348ccff207631b9261658",
+      "exports": [
+        "Calendar",
+        "CalendarDayButton"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react",
+        "react",
+        "react-day-picker"
+      ],
+      "lines": 232,
+      "importedBy": []
+    },
+    "components/ui/card.tsx": {
+      "path": "components/ui/card.tsx",
+      "kind": "source",
+      "size": 2717,
+      "hash": "1285c9d8b6542f7cd9bdfc1c5a79a3223c829b5695f939dc551ae28d8e9be562",
+      "exports": [
+        "Card",
+        "CardAction",
+        "CardContent",
+        "CardDescription",
+        "CardFooter",
+        "CardHeader",
+        "CardTitle"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "react"
+      ],
+      "lines": 104,
+      "importedBy": [
+        "components/dashboard/agency-card.tsx",
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/ui/carousel.tsx": {
+      "path": "components/ui/carousel.tsx",
+      "kind": "source",
+      "size": 5727,
+      "hash": "7444126492d4e0b85b1270f0d83a0955350fa95b3d3fb7b88edc2a5c2b4e5d14",
+      "exports": [
+        "Carousel",
+        "CarouselApi",
+        "CarouselContent",
+        "CarouselItem",
+        "CarouselNext",
+        "CarouselPrevious",
+        "useCarousel"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "embla-carousel-react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 243,
+      "importedBy": []
+    },
+    "components/ui/chart.tsx": {
+      "path": "components/ui/chart.tsx",
+      "kind": "source",
+      "size": 11355,
+      "hash": "24bb587ad0f2fdbe1075a4b6a97ba62bcb7ecd0b7baba42f3055e7a3d1ba029e",
+      "exports": [
+        "ChartConfig",
+        "ChartContainer",
+        "ChartLegend",
+        "ChartLegendContent",
+        "ChartStyle",
+        "ChartTooltip",
+        "ChartTooltipContent"
+      ],
+      "dependencies": [
+        "hooks/use-hydrated.ts",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "react",
+        "recharts"
+      ],
+      "lines": 388,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/ui/checkbox.tsx": {
+      "path": "components/ui/checkbox.tsx",
+      "kind": "source",
+      "size": 1589,
+      "hash": "c9044a363f747ac8e93db4031abc83d4562bab4789f56f33800f00586e8fa9b2",
+      "exports": [
+        "Checkbox"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "lines": 29,
+      "importedBy": [
+        "components/dashboard/provider-filter.tsx"
+      ]
+    },
+    "components/ui/collapsible.tsx": {
+      "path": "components/ui/collapsible.tsx",
+      "kind": "source",
+      "size": 664,
+      "hash": "3fdf7ef1ca89c4d85de5ecbb25813d0f572003a53b021baf43c5f3523e48ec97",
+      "exports": [
+        "Collapsible",
+        "CollapsibleContent",
+        "CollapsibleTrigger"
+      ],
+      "dependencies": [],
+      "externalDependencies": [
+        "@base-ui/react"
+      ],
+      "lines": 22,
+      "importedBy": []
+    },
+    "components/ui/combobox.tsx": {
+      "path": "components/ui/combobox.tsx",
+      "kind": "source",
+      "size": 9135,
+      "hash": "282041e2e8c52cc12e7bbc717bbd3f8c9c5ba18e7fa75b97053bc79687e1181e",
+      "exports": [
+        "Combobox",
+        "ComboboxChip",
+        "ComboboxChips",
+        "ComboboxChipsInput",
+        "ComboboxCollection",
+        "ComboboxContent",
+        "ComboboxEmpty",
+        "ComboboxGroup",
+        "ComboboxInput",
+        "ComboboxItem",
+        "ComboboxLabel",
+        "ComboboxList",
+        "ComboboxSeparator",
+        "ComboboxTrigger",
+        "ComboboxValue",
+        "useComboboxAnchor"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "components/ui/input-group.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 301,
+      "importedBy": []
+    },
+    "components/ui/command.tsx": {
+      "path": "components/ui/command.tsx",
+      "kind": "source",
+      "size": 5029,
+      "hash": "9c1eae65aa105935a34c6b736f673b71a2ef939dde53dce29d986221edbf1f9f",
+      "exports": [
+        "Command",
+        "CommandDialog",
+        "CommandEmpty",
+        "CommandGroup",
+        "CommandInput",
+        "CommandItem",
+        "CommandList",
+        "CommandSeparator",
+        "CommandShortcut"
+      ],
+      "dependencies": [
+        "components/ui/dialog.tsx",
+        "components/ui/input-group.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "cmdk",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 194,
+      "importedBy": []
+    },
+    "components/ui/context-menu.tsx": {
+      "path": "components/ui/context-menu.tsx",
+      "kind": "source",
+      "size": 8166,
+      "hash": "05c3646b452f5e3b9eb952eeba3d90657606d2b0875cb77652cdb5eadba0eb5c",
+      "exports": [
+        "ContextMenu",
+        "ContextMenuCheckboxItem",
+        "ContextMenuContent",
+        "ContextMenuGroup",
+        "ContextMenuItem",
+        "ContextMenuLabel",
+        "ContextMenuPortal",
+        "ContextMenuRadioGroup",
+        "ContextMenuRadioItem",
+        "ContextMenuSeparator",
+        "ContextMenuShortcut",
+        "ContextMenuSub",
+        "ContextMenuSubContent",
+        "ContextMenuSubTrigger",
+        "ContextMenuTrigger"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 273,
+      "importedBy": []
+    },
+    "components/ui/dialog.tsx": {
+      "path": "components/ui/dialog.tsx",
+      "kind": "source",
+      "size": 4087,
+      "hash": "8bc85def62538b4e62e8530c6b0ba167a192c38519c05f104bf6e10de73b811f",
+      "exports": [
+        "Dialog",
+        "DialogClose",
+        "DialogContent",
+        "DialogDescription",
+        "DialogFooter",
+        "DialogHeader",
+        "DialogOverlay",
+        "DialogPortal",
+        "DialogTitle",
+        "DialogTrigger"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 160,
+      "importedBy": [
+        "components/ui/command.tsx"
+      ]
+    },
+    "components/ui/direction.tsx": {
+      "path": "components/ui/direction.tsx",
+      "kind": "source",
+      "size": 105,
+      "hash": "2dea8a95accb1723db2454ccc858697d5b1f1454568cf4da5e8fcbd0cf7cc1ee",
+      "exports": [
+        "DirectionProvider",
+        "useDirection"
+      ],
+      "dependencies": [],
+      "externalDependencies": [
+        "@base-ui/react"
+      ],
+      "lines": 7,
+      "importedBy": []
+    },
+    "components/ui/drawer.tsx": {
+      "path": "components/ui/drawer.tsx",
+      "kind": "source",
+      "size": 11396,
+      "hash": "b7ac53d0e5d1fed25fc3f2ac5f5a36e247ca684c677ac376829fa8a7c039b79e",
+      "exports": [
+        "Drawer",
+        "DrawerClose",
+        "DrawerContent",
+        "DrawerDescription",
+        "DrawerFooter",
+        "DrawerHeader",
+        "DrawerOverlay",
+        "DrawerPortal",
+        "DrawerSwipeHandle",
+        "DrawerTitle",
+        "DrawerTrigger"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "react"
+      ],
+      "lines": 229,
+      "importedBy": []
+    },
+    "components/ui/dropdown-menu.tsx": {
+      "path": "components/ui/dropdown-menu.tsx",
+      "kind": "source",
+      "size": 8809,
+      "hash": "efc088f3d79f64cf96e222701ae23dcf385b53947b3cd57ffb7be6f5dadcbfe2",
+      "exports": [
+        "DropdownMenu",
+        "DropdownMenuCheckboxItem",
+        "DropdownMenuContent",
+        "DropdownMenuGroup",
+        "DropdownMenuItem",
+        "DropdownMenuLabel",
+        "DropdownMenuPortal",
+        "DropdownMenuRadioGroup",
+        "DropdownMenuRadioItem",
+        "DropdownMenuSeparator",
+        "DropdownMenuShortcut",
+        "DropdownMenuSub",
+        "DropdownMenuSubContent",
+        "DropdownMenuSubTrigger",
+        "DropdownMenuTrigger"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 273,
+      "importedBy": [
+        "components/ui/menubar.tsx"
+      ]
+    },
+    "components/ui/empty.tsx": {
+      "path": "components/ui/empty.tsx",
+      "kind": "source",
+      "size": 2415,
+      "hash": "bf54bac4881b79f6a53f55e70c18640f58a058add88aed763c71be35c4f64f59",
+      "exports": [
+        "Empty",
+        "EmptyContent",
+        "EmptyDescription",
+        "EmptyHeader",
+        "EmptyMedia",
+        "EmptyTitle"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "class-variance-authority"
+      ],
+      "lines": 105,
+      "importedBy": []
+    },
+    "components/ui/field.tsx": {
+      "path": "components/ui/field.tsx",
+      "kind": "source",
+      "size": 6303,
+      "hash": "79023ca89aae39f9cffa83a9483c9c672099b4547cc821486283db61c6ae9327",
+      "exports": [
+        "Field",
+        "FieldContent",
+        "FieldDescription",
+        "FieldError",
+        "FieldGroup",
+        "FieldLabel",
+        "FieldLegend",
+        "FieldSeparator",
+        "FieldSet",
+        "FieldTitle"
+      ],
+      "dependencies": [
+        "components/ui/label.tsx",
+        "components/ui/separator.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "class-variance-authority",
+        "react"
+      ],
+      "lines": 239,
+      "importedBy": []
+    },
+    "components/ui/hover-card.tsx": {
+      "path": "components/ui/hover-card.tsx",
+      "kind": "source",
+      "size": 1863,
+      "hash": "d8cb7270c5893213fc00b5f270f9bc461e2d7ce5b81f77b8778253a1aeda6a2c",
+      "exports": [
+        "HoverCard",
+        "HoverCardContent",
+        "HoverCardTrigger"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react"
+      ],
+      "lines": 52,
+      "importedBy": []
+    },
+    "components/ui/input-group.tsx": {
+      "path": "components/ui/input-group.tsx",
+      "kind": "source",
+      "size": 5289,
+      "hash": "2e65ddecb4401220be374cc6cfc42344538266cafeb2e590b3c760c7ed6b490a",
+      "exports": [
+        "InputGroup",
+        "InputGroupAddon",
+        "InputGroupButton",
+        "InputGroupInput",
+        "InputGroupText",
+        "InputGroupTextarea"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "components/ui/input.tsx",
+        "components/ui/textarea.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "class-variance-authority",
+        "react"
+      ],
+      "lines": 159,
+      "importedBy": [
+        "components/ui/combobox.tsx",
+        "components/ui/command.tsx"
+      ]
+    },
+    "components/ui/input-otp.tsx": {
+      "path": "components/ui/input-otp.tsx",
+      "kind": "source",
+      "size": 2558,
+      "hash": "867f568259caac95f682d128d72e681b3fe7c31701a396eacc9284401d917a6a",
+      "exports": [
+        "InputOTP",
+        "InputOTPGroup",
+        "InputOTPSeparator",
+        "InputOTPSlot"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "input-otp",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 87,
+      "importedBy": []
+    },
+    "components/ui/input.tsx": {
+      "path": "components/ui/input.tsx",
+      "kind": "source",
+      "size": 1082,
+      "hash": "934a5af5b055c0f3d33e42252b59454b805d42e766c4d98593799a82f67978e0",
+      "exports": [
+        "Input"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "react"
+      ],
+      "lines": 21,
+      "importedBy": [
+        "components/dashboard/agency-columns.tsx",
+        "components/dashboard/dashboard.tsx",
+        "components/ui/input-group.tsx",
+        "components/ui/sidebar.tsx"
+      ]
+    },
+    "components/ui/item.tsx": {
+      "path": "components/ui/item.tsx",
+      "kind": "source",
+      "size": 4888,
+      "hash": "9c5e45e6c4aae5b9c4c1304e1f1208d32681ab616a6e0de9de6e0d6b22690592",
+      "exports": [
+        "Item",
+        "ItemActions",
+        "ItemContent",
+        "ItemDescription",
+        "ItemFooter",
+        "ItemGroup",
+        "ItemHeader",
+        "ItemMedia",
+        "ItemSeparator",
+        "ItemTitle"
+      ],
+      "dependencies": [
+        "components/ui/separator.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "react"
+      ],
+      "lines": 202,
+      "importedBy": []
+    },
+    "components/ui/kbd.tsx": {
+      "path": "components/ui/kbd.tsx",
+      "kind": "source",
+      "size": 842,
+      "hash": "bdfb38a4f7b9b604e196b5cee0d86f12311dae72946f0dbf5928c8ad0638178f",
+      "exports": [
+        "Kbd",
+        "KbdGroup"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 27,
+      "importedBy": []
+    },
+    "components/ui/label.tsx": {
+      "path": "components/ui/label.tsx",
+      "kind": "source",
+      "size": 524,
+      "hash": "e4a6fb662c44a44c468d16d79d02b3a3e5bf7b77bd50aef1e586c4d9613df0f6",
+      "exports": [
+        "Label"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "react"
+      ],
+      "lines": 21,
+      "importedBy": [
+        "components/ui/field.tsx"
+      ]
+    },
+    "components/ui/marker.tsx": {
+      "path": "components/ui/marker.tsx",
+      "kind": "source",
+      "size": 1962,
+      "hash": "cd1e872384cf5001e48b4dc3cc2bb011eba9700561d41c83a89e872b60baf175",
+      "exports": [
+        "Marker",
+        "MarkerContent",
+        "MarkerIcon",
+        "markerVariants"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "react"
+      ],
+      "lines": 72,
+      "importedBy": []
+    },
+    "components/ui/menubar.tsx": {
+      "path": "components/ui/menubar.tsx",
+      "kind": "source",
+      "size": 8315,
+      "hash": "a3715f8e8b78261f5784929c532e100759c58e831c91e842438730797bc9a124",
+      "exports": [
+        "Menubar",
+        "MenubarCheckboxItem",
+        "MenubarContent",
+        "MenubarGroup",
+        "MenubarItem",
+        "MenubarLabel",
+        "MenubarMenu",
+        "MenubarPortal",
+        "MenubarRadioGroup",
+        "MenubarRadioItem",
+        "MenubarSeparator",
+        "MenubarShortcut",
+        "MenubarSub",
+        "MenubarSubContent",
+        "MenubarSubTrigger",
+        "MenubarTrigger"
+      ],
+      "dependencies": [
+        "components/ui/dropdown-menu.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 285,
+      "importedBy": []
+    },
+    "components/ui/message-scroller.tsx": {
+      "path": "components/ui/message-scroller.tsx",
+      "kind": "source",
+      "size": 4070,
+      "hash": "9512c586d1b0885cf3ae4f1c3dd4281cbdfec7428fe98ff48a66b4ba2a7319f4",
+      "exports": [
+        "MessageScroller",
+        "MessageScrollerButton",
+        "MessageScrollerContent",
+        "MessageScrollerItem",
+        "MessageScrollerProvider",
+        "MessageScrollerViewport",
+        "useMessageScroller",
+        "useMessageScrollerScrollable",
+        "useMessageScrollerVisibility"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@shadcn/react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 131,
+      "importedBy": []
+    },
+    "components/ui/message.tsx": {
+      "path": "components/ui/message.tsx",
+      "kind": "source",
+      "size": 2246,
+      "hash": "2fedcc64ed8563a44f6697615e77574d96f819fe6e5e2fa8a555e30f8ed6bbd7",
+      "exports": [
+        "Message",
+        "MessageAvatar",
+        "MessageContent",
+        "MessageFooter",
+        "MessageGroup",
+        "MessageHeader"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "react"
+      ],
+      "lines": 93,
+      "importedBy": []
+    },
+    "components/ui/native-select.tsx": {
+      "path": "components/ui/native-select.tsx",
+      "kind": "source",
+      "size": 2188,
+      "hash": "ef794344ea87a0097b57ca21f9929f937f2cfe2bb0e0bbd045400f5593f2a830",
+      "exports": [
+        "NativeSelect",
+        "NativeSelectOptGroup",
+        "NativeSelectOption"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react",
+        "react"
+      ],
+      "lines": 66,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/ui/navigation-menu.tsx": {
+      "path": "components/ui/navigation-menu.tsx",
+      "kind": "source",
+      "size": 7436,
+      "hash": "c8e64bf5241145b512ae18f1062da8275691edf927736496a3860bec76ad6fa1",
+      "exports": [
+        "NavigationMenu",
+        "NavigationMenuContent",
+        "NavigationMenuIndicator",
+        "NavigationMenuItem",
+        "NavigationMenuLink",
+        "NavigationMenuList",
+        "NavigationMenuPositioner",
+        "NavigationMenuTrigger",
+        "navigationMenuTriggerStyle"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "lines": 172,
+      "importedBy": []
+    },
+    "components/ui/pagination.tsx": {
+      "path": "components/ui/pagination.tsx",
+      "kind": "source",
+      "size": 2928,
+      "hash": "1f3c1713e8824cca7c3c0edacf9da7b0114bfda58640771b8fe0bc6179b370ce",
+      "exports": [
+        "Pagination",
+        "PaginationContent",
+        "PaginationEllipsis",
+        "PaginationItem",
+        "PaginationLink",
+        "PaginationNext",
+        "PaginationPrevious"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react",
+        "react"
+      ],
+      "lines": 134,
+      "importedBy": []
+    },
+    "components/ui/popover.tsx": {
+      "path": "components/ui/popover.tsx",
+      "kind": "source",
+      "size": 2586,
+      "hash": "7376624438588e2d64b6e0c5cdf82cbc5fd4530bbcf1f0235c5f3ee08d12e877",
+      "exports": [
+        "Popover",
+        "PopoverContent",
+        "PopoverDescription",
+        "PopoverHeader",
+        "PopoverTitle",
+        "PopoverTrigger"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "react"
+      ],
+      "lines": 91,
+      "importedBy": []
+    },
+    "components/ui/progress.tsx": {
+      "path": "components/ui/progress.tsx",
+      "kind": "source",
+      "size": 1751,
+      "hash": "0d8ddec9731940e104b851cf3ac67d2fa8589b289824317a9e8f326e090ba65a",
+      "exports": [
+        "Progress",
+        "ProgressIndicator",
+        "ProgressLabel",
+        "ProgressTrack",
+        "ProgressValue"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react"
+      ],
+      "lines": 84,
+      "importedBy": []
+    },
+    "components/ui/radio-group.tsx": {
+      "path": "components/ui/radio-group.tsx",
+      "kind": "source",
+      "size": 1843,
+      "hash": "43f2d6c2f5bdd4a26c57d93e6f141be20472f9bb8777d9a0d61cd8a5e281a999",
+      "exports": [
+        "RadioGroup",
+        "RadioGroupItem"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react"
+      ],
+      "lines": 39,
+      "importedBy": []
+    },
+    "components/ui/resizable.tsx": {
+      "path": "components/ui/resizable.tsx",
+      "kind": "source",
+      "size": 1681,
+      "hash": "ea7b85817d4dc70866e0bcf15264e7e1bd7e1893eb4404261fbc23a4d6ff9029",
+      "exports": [
+        "ResizableHandle",
+        "ResizablePanel",
+        "ResizablePanelGroup"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "react-resizable-panels"
+      ],
+      "lines": 51,
+      "importedBy": []
+    },
+    "components/ui/scroll-area.tsx": {
+      "path": "components/ui/scroll-area.tsx",
+      "kind": "source",
+      "size": 1632,
+      "hash": "730c4cc49f8f1b705eb1389cd32c774056a0a2a7a48a9b092cbe44c608be3a0b",
+      "exports": [
+        "ScrollArea",
+        "ScrollBar"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "react"
+      ],
+      "lines": 56,
+      "importedBy": []
+    },
+    "components/ui/select.tsx": {
+      "path": "components/ui/select.tsx",
+      "kind": "source",
+      "size": 6700,
+      "hash": "45489c502a21fdd5271481d64ad8f762181c9653d8d26bdc6f75450b78c3c852",
+      "exports": [
+        "Select",
+        "SelectContent",
+        "SelectGroup",
+        "SelectItem",
+        "SelectLabel",
+        "SelectScrollDownButton",
+        "SelectScrollUpButton",
+        "SelectSeparator",
+        "SelectTrigger",
+        "SelectValue"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 203,
+      "importedBy": []
+    },
+    "components/ui/separator.tsx": {
+      "path": "components/ui/separator.tsx",
+      "kind": "source",
+      "size": 551,
+      "hash": "92ad5065f03d7edc98f367e729f3ec84ece1d99ee8cd0d3a8137f266d4ab3d8a",
+      "exports": [
+        "Separator"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react"
+      ],
+      "lines": 26,
+      "importedBy": [
+        "components/ui/button-group.tsx",
+        "components/ui/field.tsx",
+        "components/ui/item.tsx",
+        "components/ui/sidebar.tsx"
+      ]
+    },
+    "components/ui/sheet.tsx": {
+      "path": "components/ui/sheet.tsx",
+      "kind": "source",
+      "size": 4446,
+      "hash": "adb432b6f9d7a4733caa45ba8bf510a8a7ff0f6d0dd3aa1f013959fb61268234",
+      "exports": [
+        "Sheet",
+        "SheetClose",
+        "SheetContent",
+        "SheetDescription",
+        "SheetFooter",
+        "SheetHeader",
+        "SheetTitle",
+        "SheetTrigger"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 138,
+      "importedBy": [
+        "components/ui/sidebar.tsx"
+      ]
+    },
+    "components/ui/sidebar.tsx": {
+      "path": "components/ui/sidebar.tsx",
+      "kind": "source",
+      "size": 21779,
+      "hash": "aa3322ca63f098aa1d2abf750f9d097da07362fce25939357f2cefc9b6a03988",
+      "exports": [
+        "Sidebar",
+        "SidebarContent",
+        "SidebarFooter",
+        "SidebarGroup",
+        "SidebarGroupAction",
+        "SidebarGroupContent",
+        "SidebarGroupLabel",
+        "SidebarHeader",
+        "SidebarInput",
+        "SidebarInset",
+        "SidebarMenu",
+        "SidebarMenuAction",
+        "SidebarMenuBadge",
+        "SidebarMenuButton",
+        "SidebarMenuItem",
+        "SidebarMenuSkeleton",
+        "SidebarMenuSub",
+        "SidebarMenuSubButton",
+        "SidebarMenuSubItem",
+        "SidebarProvider",
+        "SidebarRail",
+        "SidebarSeparator",
+        "SidebarTrigger",
+        "useSidebar"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "components/ui/input.tsx",
+        "components/ui/separator.tsx",
+        "components/ui/sheet.tsx",
+        "components/ui/skeleton.tsx",
+        "components/ui/tooltip.tsx",
+        "hooks/use-mobile.ts",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 724,
+      "importedBy": []
+    },
+    "components/ui/skeleton.tsx": {
+      "path": "components/ui/skeleton.tsx",
+      "kind": "source",
+      "size": 278,
+      "hash": "4c342102b2bbf5bd8c04fa151fe5c13c42faee2f9587a3586c27322020ca35d1",
+      "exports": [
+        "Skeleton"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 14,
+      "importedBy": [
+        "app/loading.tsx",
+        "components/ui/sidebar.tsx"
+      ]
+    },
+    "components/ui/slider.tsx": {
+      "path": "components/ui/slider.tsx",
+      "kind": "source",
+      "size": 1879,
+      "hash": "af657e73d672f4dd205f19abf151d21a172cf36abfdca49fd7014a20e12367a9",
+      "exports": [
+        "Slider"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react"
+      ],
+      "lines": 53,
+      "importedBy": []
+    },
+    "components/ui/spinner.tsx": {
+      "path": "components/ui/spinner.tsx",
+      "kind": "source",
+      "size": 360,
+      "hash": "8ddbb330e5564a1f53026da36c2322ed4b027687e91a88f63348ab10f26ae0cb",
+      "exports": [
+        "Spinner"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react"
+      ],
+      "lines": 17,
+      "importedBy": []
+    },
+    "components/ui/switch.tsx": {
+      "path": "components/ui/switch.tsx",
+      "kind": "source",
+      "size": 1818,
+      "hash": "04b085443a1c6a72d408e6eb7dd45df881ca27814415b81b39f614806b52c8fc",
+      "exports": [
+        "Switch"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react"
+      ],
+      "lines": 33,
+      "importedBy": []
+    },
+    "components/ui/table.tsx": {
+      "path": "components/ui/table.tsx",
+      "kind": "source",
+      "size": 2604,
+      "hash": "0b03ef95892922c4dbfbd903c7df44ae18f89c5fbdafb0734892fd368e4be86a",
+      "exports": [
+        "Table",
+        "TableBody",
+        "TableCaption",
+        "TableCell",
+        "TableFooter",
+        "TableHead",
+        "TableHeader",
+        "TableRow"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "react"
+      ],
+      "lines": 117,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/ui/tabs.tsx": {
+      "path": "components/ui/tabs.tsx",
+      "kind": "source",
+      "size": 3510,
+      "hash": "dd914d769bc223b5d5ea56839a7752e534eb475f8d2897d5675606c368bbca1f",
+      "exports": [
+        "Tabs",
+        "TabsContent",
+        "TabsList",
+        "TabsTrigger",
+        "tabsListVariants"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "lines": 83,
+      "importedBy": []
+    },
+    "components/ui/textarea.tsx": {
+      "path": "components/ui/textarea.tsx",
+      "kind": "source",
+      "size": 847,
+      "hash": "7ae7f0f5d907be24658652c771fee1685193102bf3200aafbf578d144d379fbf",
+      "exports": [
+        "Textarea"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "react"
+      ],
+      "lines": 19,
+      "importedBy": [
+        "components/ui/input-group.tsx"
+      ]
+    },
+    "components/ui/toast.tsx": {
+      "path": "components/ui/toast.tsx",
+      "kind": "source",
+      "size": 7353,
+      "hash": "9126b09f47f0b117bf748cf19aaa4987a1f72d0813d10bfc4b4b0128e6439e48",
+      "exports": [
+        "Toast",
+        "ToastAction",
+        "ToastClose",
+        "ToastContent",
+        "ToastDescription",
+        "ToastPortal",
+        "ToastProvider",
+        "ToastTitle",
+        "ToastViewport",
+        "Toaster",
+        "createToastManager",
+        "toast",
+        "useToastManager"
+      ],
+      "dependencies": [
+        "components/ui/button.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "lucide-react",
+        "react"
+      ],
+      "lines": 230,
+      "importedBy": []
+    },
+    "components/ui/toggle-group.tsx": {
+      "path": "components/ui/toggle-group.tsx",
+      "kind": "source",
+      "size": 3201,
+      "hash": "9b006523be0fe3230cd75f7adf78a501829d594fd3506c56c55bb38211ff1850",
+      "exports": [
+        "ToggleGroup",
+        "ToggleGroupItem"
+      ],
+      "dependencies": [
+        "components/ui/toggle.tsx",
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "react"
+      ],
+      "lines": 90,
+      "importedBy": []
+    },
+    "components/ui/toggle.tsx": {
+      "path": "components/ui/toggle.tsx",
+      "kind": "source",
+      "size": 1770,
+      "hash": "6bf41d6f6ffe602c3e28274a82ac029e6ee1331ba3c670a6d814048e1823cc28",
+      "exports": [
+        "Toggle",
+        "toggleVariants"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "lines": 46,
+      "importedBy": [
+        "components/ui/toggle-group.tsx"
+      ]
+    },
+    "components/ui/tooltip.tsx": {
+      "path": "components/ui/tooltip.tsx",
+      "kind": "source",
+      "size": 2855,
+      "hash": "b86e51969931c3d62e88d0bdacd1cd8219105dc6d6b6a588a80011bf92e987cd",
+      "exports": [
+        "Tooltip",
+        "TooltipContent",
+        "TooltipProvider",
+        "TooltipTrigger"
+      ],
+      "dependencies": [
+        "lib/utils.ts"
+      ],
+      "externalDependencies": [
+        "@base-ui/react"
+      ],
+      "lines": 67,
+      "importedBy": [
+        "components/ui/sidebar.tsx"
+      ]
+    },
+    "hooks/use-dashboard-refresh.ts": {
+      "path": "hooks/use-dashboard-refresh.ts",
+      "kind": "source",
+      "size": 1616,
+      "hash": "62d8034fa9c2730d7390179be77f2a0188ca29d9147863cd6c7718f1a5acb00a",
+      "exports": [
+        "useDashboardRefresh"
+      ],
+      "dependencies": [
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [
+        "react"
+      ],
+      "lines": 55,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "hooks/use-hydrated.ts": {
+      "path": "hooks/use-hydrated.ts",
+      "kind": "source",
+      "size": 276,
+      "hash": "bc54d4ebc21fef0aa0c39231e822ec9cb964e10dfe9452ea2034fef15593d7f2",
+      "exports": [
+        "useHydrated"
+      ],
+      "dependencies": [],
+      "externalDependencies": [
+        "react"
+      ],
+      "lines": 12,
+      "importedBy": [
+        "components/dashboard/agency-sparkline.tsx",
+        "components/ui/chart.tsx"
+      ]
+    },
+    "hooks/use-mobile.ts": {
+      "path": "hooks/use-mobile.ts",
+      "kind": "source",
+      "size": 630,
+      "hash": "54683cf69bb85e3302db78eff067ac7c84b982101e54b33a7ac55f43df99c6e7",
+      "exports": [
+        "useIsMobile"
+      ],
+      "dependencies": [],
+      "externalDependencies": [
+        "react"
+      ],
+      "lines": 24,
+      "importedBy": [
+        "components/ui/sidebar.tsx"
+      ]
+    },
+    "lib/dashboard/filters.ts": {
+      "path": "lib/dashboard/filters.ts",
+      "kind": "source",
+      "size": 2989,
+      "hash": "c304b6c8386a87b596859d90d864f3df2bbbed30d1e1b8e6a3c423b832d4a698",
+      "exports": [
+        "DashboardFilters",
+        "filterDashboard",
+        "indexHistoryByAgency",
+        "withoutDya"
+      ],
+      "dependencies": [
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 103,
+      "importedBy": [
+        "app/api/dashboard/route.ts",
+        "app/page.tsx",
+        "components/dashboard/dashboard.tsx",
+        "tests/filters.test.mjs",
+        "tests/history-index.test.mjs"
+      ]
+    },
+    "lib/dashboard/types.ts": {
+      "path": "lib/dashboard/types.ts",
+      "kind": "source",
+      "size": 1703,
+      "hash": "28703a9946b5babeae6fdc378e4ab7f313bd5790f97b00a5261608ad4c0c479c",
+      "exports": [
+        "DashboardProject",
+        "DashboardSnapshot",
+        "ProgressHistoryRecord",
+        "ProjectStatus",
+        "VisitCheck",
+        "WorkRecord",
+        "WorkStatus"
+      ],
+      "dependencies": [],
+      "externalDependencies": [],
+      "lines": 81,
+      "importedBy": [
+        "components/dashboard/agency-card.tsx",
+        "components/dashboard/agency-columns.tsx",
+        "components/dashboard/agency-sparkline.tsx",
+        "components/dashboard/dashboard.tsx",
+        "components/dashboard/data-source-status.tsx",
+        "components/dashboard/stage-stepper.tsx",
+        "hooks/use-dashboard-refresh.ts",
+        "lib/dashboard/filters.ts",
+        "lib/data-sources/dashboard-source.ts",
+        "lib/data-sources/excel-snapshot-source.ts",
+        "lib/data-sources/sharepoint-excel-source.ts"
+      ]
+    },
+    "lib/data-sources/configured-dashboard-source.ts": {
+      "path": "lib/data-sources/configured-dashboard-source.ts",
+      "kind": "source",
+      "size": 947,
+      "hash": "7f82e561f4f4ec28f3a9f084e690a03c94baaf1835e28ea97a0e2fab54255802",
+      "exports": [
+        "dashboardSource"
+      ],
+      "dependencies": [
+        "lib/data-sources/dashboard-source.ts",
+        "lib/data-sources/excel-snapshot-source.ts",
+        "lib/data-sources/sharepoint-excel-source.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 27,
+      "importedBy": [
+        "app/api/dashboard/route.ts",
+        "app/page.tsx"
+      ]
+    },
+    "lib/data-sources/dashboard-source.ts": {
+      "path": "lib/data-sources/dashboard-source.ts",
+      "kind": "source",
+      "size": 247,
+      "hash": "3e773197054fd623d937e29588e36daf8dadc95918fb1fd82fb792e0ffda8552",
+      "exports": [
+        "DashboardSnapshotOptions",
+        "DashboardSource"
+      ],
+      "dependencies": [
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 10,
+      "importedBy": [
+        "lib/data-sources/configured-dashboard-source.ts",
+        "lib/data-sources/excel-snapshot-source.ts",
+        "lib/data-sources/sharepoint-excel-source.ts"
+      ]
+    },
+    "lib/data-sources/excel-snapshot-source.ts": {
+      "path": "lib/data-sources/excel-snapshot-source.ts",
+      "kind": "source",
+      "size": 427,
+      "hash": "75335e31f3f2ebbe4cca9fd0ddec8a82293b9e3b232fdae15673fabeadd163ed",
+      "exports": [
+        "dashboardSource"
+      ],
+      "dependencies": [
+        "app/data/cronograma.json",
+        "lib/dashboard/types.ts",
+        "lib/data-sources/dashboard-source.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 12,
+      "importedBy": [
+        "lib/data-sources/configured-dashboard-source.ts"
+      ]
+    },
+    "lib/data-sources/sharepoint-excel-source.ts": {
+      "path": "lib/data-sources/sharepoint-excel-source.ts",
+      "kind": "source",
+      "size": 16869,
+      "hash": "9bcaa63ce8e8a51245e4fe51352bf613700aeac01371f87df487366e2a781c1e",
+      "exports": [
+        "dashboardSource"
+      ],
+      "dependencies": [
+        "app/data/cronograma.json",
+        "lib/dashboard/types.ts",
+        "lib/data-sources/dashboard-source.ts",
+        "lib/data-sources/xlsx-reader.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 530,
+      "importedBy": [
+        "lib/data-sources/configured-dashboard-source.ts"
+      ]
+    },
+    "lib/data-sources/xlsx-reader.ts": {
+      "path": "lib/data-sources/xlsx-reader.ts",
+      "kind": "source",
+      "size": 5583,
+      "hash": "99276b4f33ca5101b4629bfd9e74dbf56a25bbb25a1c4d8a3b53796b9a2b20c2",
+      "exports": [
+        "XlsxSheet",
+        "XlsxWorkbook",
+        "readXlsx"
+      ],
+      "dependencies": [],
+      "externalDependencies": [
+        "fflate"
+      ],
+      "lines": 163,
+      "importedBy": [
+        "lib/data-sources/sharepoint-excel-source.ts",
+        "tests/xlsx-reader.test.mjs"
+      ]
+    },
+    "lib/utils.ts": {
+      "path": "lib/utils.ts",
+      "kind": "source",
+      "size": 169,
+      "hash": "9304a861c8673bee09e0f12de31773abbde503b02e59dfd74763ddec2e37cf05",
+      "exports": [
+        "cn"
+      ],
+      "dependencies": [],
+      "externalDependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "lines": 7,
+      "importedBy": [
+        "components/ui/accordion.tsx",
+        "components/ui/alert-dialog.tsx",
+        "components/ui/alert.tsx",
+        "components/ui/aspect-ratio.tsx",
+        "components/ui/attachment.tsx",
+        "components/ui/avatar.tsx",
+        "components/ui/badge.tsx",
+        "components/ui/breadcrumb.tsx",
+        "components/ui/bubble.tsx",
+        "components/ui/button-group.tsx",
+        "components/ui/button.tsx",
+        "components/ui/calendar.tsx",
+        "components/ui/card.tsx",
+        "components/ui/carousel.tsx",
+        "components/ui/chart.tsx",
+        "components/ui/checkbox.tsx",
+        "components/ui/combobox.tsx",
+        "components/ui/command.tsx",
+        "components/ui/context-menu.tsx",
+        "components/ui/dialog.tsx",
+        "components/ui/drawer.tsx",
+        "components/ui/dropdown-menu.tsx",
+        "components/ui/empty.tsx",
+        "components/ui/field.tsx",
+        "components/ui/hover-card.tsx",
+        "components/ui/input-group.tsx",
+        "components/ui/input-otp.tsx",
+        "components/ui/input.tsx",
+        "components/ui/item.tsx",
+        "components/ui/kbd.tsx",
+        "components/ui/label.tsx",
+        "components/ui/marker.tsx",
+        "components/ui/menubar.tsx",
+        "components/ui/message-scroller.tsx",
+        "components/ui/message.tsx",
+        "components/ui/native-select.tsx",
+        "components/ui/navigation-menu.tsx",
+        "components/ui/pagination.tsx",
+        "components/ui/popover.tsx",
+        "components/ui/progress.tsx",
+        "components/ui/radio-group.tsx",
+        "components/ui/resizable.tsx",
+        "components/ui/scroll-area.tsx",
+        "components/ui/select.tsx",
+        "components/ui/separator.tsx",
+        "components/ui/sheet.tsx",
+        "components/ui/sidebar.tsx",
+        "components/ui/skeleton.tsx",
+        "components/ui/slider.tsx",
+        "components/ui/spinner.tsx",
+        "components/ui/switch.tsx",
+        "components/ui/table.tsx",
+        "components/ui/tabs.tsx",
+        "components/ui/textarea.tsx",
+        "components/ui/toast.tsx",
+        "components/ui/toggle-group.tsx",
+        "components/ui/toggle.tsx",
+        "components/ui/tooltip.tsx"
+      ]
+    },
+    "next.config.ts": {
+      "path": "next.config.ts",
+      "kind": "config",
+      "size": 104,
+      "hash": "d063bebef3a4878ae82f9f9547c2c9675b8b6945ab23702932dcb63a011a9fc9",
+      "exports": [
+        "default"
+      ],
+      "dependencies": [],
+      "externalDependencies": [
+        "next"
+      ],
+      "lines": 6,
+      "importedBy": []
+    },
+    "package.json": {
+      "path": "package.json",
+      "kind": "json",
+      "size": 1928,
+      "mtime": 1790265580841.173
+    },
+    "scripts/extract-cronograma.ps1": {
+      "path": "scripts/extract-cronograma.ps1",
+      "kind": "script",
+      "size": 5478,
+      "hash": "231fc2dfb366d6815f594173f29080f7fda8eed01cbe24803366fcdd14617996"
+    },
+    "scripts/project-map.mjs": {
+      "path": "scripts/project-map.mjs",
+      "kind": "script",
+      "size": 18330,
+      "hash": "5058ce7886bf6bd7eaf68caf91b5a0f255eb82f78ab45cb9e6197787a5d1ad56",
+      "exports": [],
+      "dependencies": [],
+      "externalDependencies": [
+        "typescript"
+      ],
+      "lines": 588,
+      "importedBy": []
+    },
+    "tests/filters.test.mjs": {
+      "path": "tests/filters.test.mjs",
+      "kind": "script",
+      "size": 711,
+      "hash": "63562d572b65520c2d9d1a0662532ea39318f59fcb7b46f2b39da6e4e6b22d67",
+      "exports": [],
+      "dependencies": [
+        "lib/dashboard/filters.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 26,
+      "importedBy": []
+    },
+    "tests/history-index.test.mjs": {
+      "path": "tests/history-index.test.mjs",
+      "kind": "script",
+      "size": 685,
+      "hash": "c1202088eb6efc864e3850431cc5ed895d169ecd60fda5b0d940478515562697",
+      "exports": [],
+      "dependencies": [
+        "lib/dashboard/filters.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 23,
+      "importedBy": []
+    },
+    "tests/xlsx-reader.test.mjs": {
+      "path": "tests/xlsx-reader.test.mjs",
+      "kind": "script",
+      "size": 1894,
+      "hash": "d0764d232adddcc98c9f610e41bb9abd38688b0f6e83453afa4c842f8321b205",
+      "exports": [],
+      "dependencies": [
+        "lib/data-sources/xlsx-reader.ts"
+      ],
+      "externalDependencies": [
+        "fflate"
+      ],
+      "lines": 63,
+      "importedBy": []
+    },
+    "tsconfig.json": {
+      "path": "tsconfig.json",
+      "kind": "json",
+      "size": 671,
+      "mtime": 1788350280336.8408
+    },
+    "vite.config.ts": {
+      "path": "vite.config.ts",
+      "kind": "config",
+      "size": 1933,
+      "hash": "f0dc24209523c3ece6515971a7095bfcd215d7f34e74d8b2247beaa4bc197260",
+      "exports": [
+        "default"
+      ],
+      "dependencies": [
+        ".openai/hosting.json"
+      ],
+      "externalDependencies": [
+        "@cloudflare/vite-plugin",
+        "@openai/sites-vite-plugin",
+        "@tailwindcss/postcss",
+        "vinext",
+        "vite"
+      ],
+      "lines": 65,
+      "importedBy": []
+    }
+  },
+  "edges": [
+    {
+      "from": "app/api/dashboard/route.ts",
+      "to": "lib/dashboard/filters.ts",
+      "kind": "import"
+    },
+    {
+      "from": "app/api/dashboard/route.ts",
+      "to": "lib/data-sources/configured-dashboard-source.ts",
+      "kind": "import"
+    },
+    {
+      "from": "app/layout.tsx",
+      "to": "app/globals.css",
+      "kind": "import"
+    },
+    {
+      "from": "app/loading.tsx",
+      "to": "components/ui/skeleton.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "app/page.tsx",
+      "to": "components/dashboard/dashboard.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "app/page.tsx",
+      "to": "lib/dashboard/filters.ts",
+      "kind": "import"
+    },
+    {
+      "from": "app/page.tsx",
+      "to": "lib/data-sources/configured-dashboard-source.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-card.tsx",
+      "to": "components/dashboard/agency-sparkline.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-card.tsx",
+      "to": "components/dashboard/circular-progress.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-card.tsx",
+      "to": "components/dashboard/stage-stepper.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-card.tsx",
+      "to": "components/ui/badge.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-card.tsx",
+      "to": "components/ui/card.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-card.tsx",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-columns.tsx",
+      "to": "components/ui/badge.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-columns.tsx",
+      "to": "components/ui/input.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-columns.tsx",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-sparkline.tsx",
+      "to": "hooks/use-hydrated.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-sparkline.tsx",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "app/api/dashboard/route.ts",
+      "kind": "http-fetch",
+      "endpoint": "/api/dashboard"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/agency-card.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/agency-columns.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/agency-sparkline.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/data-source-status.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/provider-filter.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/stage-stepper.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/ui/badge.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/ui/card.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/ui/chart.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/ui/input.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/ui/native-select.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/ui/table.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "hooks/use-dashboard-refresh.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "lib/dashboard/filters.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/data-source-status.tsx",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/provider-filter.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/provider-filter.tsx",
+      "to": "components/ui/checkbox.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/stage-stepper.tsx",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/accordion.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/alert-dialog.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/alert-dialog.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/alert.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/aspect-ratio.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/attachment.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/attachment.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/avatar.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/badge.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/breadcrumb.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/bubble.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/button-group.tsx",
+      "to": "components/ui/separator.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/button-group.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/button.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/calendar.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/calendar.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/card.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/carousel.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/carousel.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/chart.tsx",
+      "to": "hooks/use-hydrated.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/chart.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/checkbox.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/combobox.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/combobox.tsx",
+      "to": "components/ui/input-group.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/combobox.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/command.tsx",
+      "to": "components/ui/dialog.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/command.tsx",
+      "to": "components/ui/input-group.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/command.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/context-menu.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/dialog.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/dialog.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/drawer.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/dropdown-menu.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/empty.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/field.tsx",
+      "to": "components/ui/label.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/field.tsx",
+      "to": "components/ui/separator.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/field.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/hover-card.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/input-group.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/input-group.tsx",
+      "to": "components/ui/input.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/input-group.tsx",
+      "to": "components/ui/textarea.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/input-group.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/input-otp.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/input.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/item.tsx",
+      "to": "components/ui/separator.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/item.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/kbd.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/label.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/marker.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/menubar.tsx",
+      "to": "components/ui/dropdown-menu.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/menubar.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/message-scroller.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/message-scroller.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/message.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/native-select.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/navigation-menu.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/pagination.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/pagination.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/popover.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/progress.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/radio-group.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/resizable.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/scroll-area.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/select.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/separator.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/sheet.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/sheet.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/sidebar.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/sidebar.tsx",
+      "to": "components/ui/input.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/sidebar.tsx",
+      "to": "components/ui/separator.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/sidebar.tsx",
+      "to": "components/ui/sheet.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/sidebar.tsx",
+      "to": "components/ui/skeleton.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/sidebar.tsx",
+      "to": "components/ui/tooltip.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/sidebar.tsx",
+      "to": "hooks/use-mobile.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/sidebar.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/skeleton.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/slider.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/spinner.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/switch.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/table.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/tabs.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/textarea.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/toast.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/toast.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/toggle-group.tsx",
+      "to": "components/ui/toggle.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/toggle-group.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/toggle.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/ui/tooltip.tsx",
+      "to": "lib/utils.ts",
+      "kind": "import"
+    },
+    {
+      "from": "hooks/use-dashboard-refresh.ts",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/dashboard/filters.ts",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/configured-dashboard-source.ts",
+      "to": "lib/data-sources/dashboard-source.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/configured-dashboard-source.ts",
+      "to": "lib/data-sources/excel-snapshot-source.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/configured-dashboard-source.ts",
+      "to": "lib/data-sources/sharepoint-excel-source.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/dashboard-source.ts",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/excel-snapshot-source.ts",
+      "to": "app/data/cronograma.json",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/excel-snapshot-source.ts",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/excel-snapshot-source.ts",
+      "to": "lib/data-sources/dashboard-source.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/sharepoint-excel-source.ts",
+      "to": "app/data/cronograma.json",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/sharepoint-excel-source.ts",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/sharepoint-excel-source.ts",
+      "to": "lib/data-sources/dashboard-source.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/sharepoint-excel-source.ts",
+      "to": "lib/data-sources/xlsx-reader.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/filters.test.mjs",
+      "to": "lib/dashboard/filters.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/history-index.test.mjs",
+      "to": "lib/dashboard/filters.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/xlsx-reader.test.mjs",
+      "to": "lib/data-sources/xlsx-reader.ts",
+      "kind": "import"
+    },
+    {
+      "from": "vite.config.ts",
+      "to": ".openai/hosting.json",
+      "kind": "import"
+    }
+  ],
+  "manualRelations": [
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "app/api/dashboard/route.ts",
+      "kind": "http-fetch",
+      "endpoint": "/api/dashboard",
+      "note": "Relación HTTP manual (fetch), no es import estático"
+    }
+  ],
+  "unresolved": []
+}

@@ -1,14 +1,15 @@
 'use client';
 
 import ProviderFilter from '@/components/dashboard/provider-filter';
-import { filterDashboard } from '@/lib/dashboard/filters';
+import { filterDashboard, indexHistoryByAgency } from '@/lib/dashboard/filters';
+import { DataSourceStatus } from './data-source-status';
+import { useDashboardRefresh } from '@/hooks/use-dashboard-refresh';
 import { AgencyCard } from './agency-card';
 import { AgencyColumns } from './agency-columns';
 import { AgencySparkline } from './agency-sparkline';
 import { StageStepper } from './stage-stepper';
 
 import {
-  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -30,7 +31,6 @@ import {
 import {
   Bar,
   BarChart,
-  Cell,
   CartesianGrid,
   Line,
   Area,
@@ -404,10 +404,14 @@ export function Dashboard({
 }: {
   snapshot: DashboardSnapshot;
 }) {
-  const [snapshot, setSnapshot] = useState(initialSnapshot);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [refreshError, setRefreshError] = useState<string | null>(null);
-  const refreshingRef = useRef(false);
+  const { snapshot, isRefreshing, refreshError, refresh } = useDashboardRefresh(
+    initialSnapshot,
+    REFRESH_INTERVAL_MS,
+  );
+  const historyByAgency = useMemo(
+    () => indexHistoryByAgency(snapshot),
+    [snapshot],
+  );
   const [search, setSearch] = useState('');
   const [project, setProject] = useState('Todos');
   const [status, setStatus] = useState('Todos');
@@ -427,40 +431,6 @@ export function Dashboard({
     return preferred ? `${preferred.projectId}::${preferred.agency}` : '';
   });
   const prefersReducedMotion = usePrefersReducedMotion();
-
-  const refresh = useCallback(async (force = false) => {
-    if (refreshingRef.current) return;
-    refreshingRef.current = true;
-    setIsRefreshing(true);
-    setRefreshError(null);
-
-    try {
-      const response = await fetch(
-        force ? '/api/dashboard?force=1' : '/api/dashboard',
-        {
-          cache: 'no-store',
-        },
-      );
-      if (!response.ok) throw new Error('Dashboard refresh failed');
-      const nextSnapshot = (await response.json()) as DashboardSnapshot;
-      setSnapshot(nextSnapshot);
-    } catch {
-      setRefreshError(
-        'No se pudo actualizar. Se mantienen los datos anteriores.',
-      );
-    } finally {
-      refreshingRef.current = false;
-      setIsRefreshing(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    const interval = window.setInterval(
-      () => void refresh(false),
-      REFRESH_INTERVAL_MS,
-    );
-    return () => window.clearInterval(interval);
-  }, [refresh]);
 
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
 
@@ -588,12 +558,10 @@ export function Dashboard({
   );
   const historyData = useMemo(
     () =>
-      snapshot.history.filter(
-        (record) =>
-          record.projectId === selectedHistory?.projectId &&
-          record.agency === selectedHistory?.agency,
-      ),
-    [snapshot.history, selectedHistory],
+      historyByAgency.get(
+        `${selectedHistory?.projectId}::${selectedHistory?.agency}`,
+      ) ?? [],
+    [historyByAgency, selectedHistory],
   );
   const historyFirst = historyData[0];
   const historyLatest = historyData[historyData.length - 1];
@@ -701,7 +669,13 @@ export function Dashboard({
             <span
               className={`size-1.5 rounded-full ${snapshot.isLive ? 'bg-emerald-500' : 'bg-amber-500'}`}
             />
-            {snapshot.isLive ? 'Excel online conectado' : 'Copia de respaldo'}
+            {snapshot.isLive
+              ? 'Excel online conectado'
+              : snapshot.status === 'partial'
+                ? 'Datos parciales'
+                : snapshot.status === 'stale'
+                  ? 'Datos guardados'
+                  : 'Copia de respaldo'}
           </Badge>
         </div>
         {isRefreshing ? (
@@ -764,7 +738,7 @@ export function Dashboard({
             <p className="text-[10px] text-muted-foreground">
               {isRefreshing
                 ? 'Descargando ambos Excel…'
-                : 'Actualización automática cada 30 s'}
+                : `Actualización automática cada ${REFRESH_INTERVAL_MS / 1000} s`}
             </p>
             {refreshError ? (
               <p
@@ -776,6 +750,11 @@ export function Dashboard({
             ) : null}
           </div>
         </section>
+
+        <DataSourceStatus
+          projectStatuses={snapshot.projectStatuses}
+          status={snapshot.status}
+        />
 
         <section
           aria-label="Filtros"
@@ -984,11 +963,7 @@ export function Dashboard({
                       }
                     }}
                     className="cursor-pointer"
-                  >
-                    {statusData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.fill} />
-                    ))}
-                  </Pie>
+                  />
                   <text
                     x="50%"
                     y="47%"
@@ -1101,7 +1076,6 @@ export function Dashboard({
                     isAnimationActive={!prefersReducedMotion}
                     animationDuration={MOTION_DURATION_MS}
                     animationEasing="ease-out"
-                    animateNewValues
                   />
                 </BarChart>
               </ChartContainer>
@@ -1116,7 +1090,8 @@ export function Dashboard({
               <div>
                 <CardTitle>Tablero de agencias (3 Columnas)</CardTitle>
                 <p className="mt-0.5 text-[11px] text-muted-foreground">
-                  Nombres de agencias clasificadas por estado · {filtered.length} agencias encontradas
+                  Nombres de agencias clasificadas por estado ·{' '}
+                  {filtered.length} agencias encontradas
                 </p>
               </div>
               <div
@@ -1146,10 +1121,7 @@ export function Dashboard({
                   cronograma
                 </p>
               </div>
-              <div
-                className="flex items-center gap-4"
-                data-slot="card-action"
-              >
+              <div className="flex items-center gap-4" data-slot="card-action">
                 <div className="flex items-center rounded-md border p-0.5 bg-muted/50">
                   <button
                     type="button"
@@ -1209,122 +1181,137 @@ export function Dashboard({
                     </TableHeader>
                     <TableBody>
                       {visibleRows.map((record, rowIndex) => {
-                        const agencyHistory = snapshot.history.filter(
-                          (h) => h.projectId === record.projectId && h.agency === record.agency
-                        );
+                        const agencyHistory =
+                          historyByAgency.get(
+                            `${record.projectId}::${record.agency}`,
+                          ) ?? [];
                         const isAtRisk = isAgencyAtRisk(record);
                         return (
-                        <TableRow
-                          key={`${record.projectId}-${record.id}-${record.agency}-${tableMotionKey}`}
-                          className={`data-row-refresh ${isAtRisk ? 'bg-rose-50/20' : ''}`}
-                          style={
-                            {
-                              '--row-delay': `${rowIndex * 36}ms`,
-                            } as CSSProperties
-                          }
-                        >
-                          <TableCell className="max-w-[280px] whitespace-normal pl-4 text-xs font-medium">
-                            <div className="flex items-center gap-1.5">
-                              {isAtRisk && <AlertTriangle className="size-3.5 text-rose-500 shrink-0" title="Agencia en riesgo" />}
-                              <span className="line-clamp-2">{record.agency}</span>
-                            </div>
-                            <span className="mt-0.5 block text-[11px] font-normal text-muted-foreground">
-                              {record.projectLabel}
-                              <span className="md:hidden">
-                                {' '}
-                                · {record.district}
+                          <TableRow
+                            key={`${record.projectId}-${record.id}-${record.agency}-${tableMotionKey}`}
+                            className={`data-row-refresh ${isAtRisk ? 'bg-rose-50/20' : ''}`}
+                            style={
+                              {
+                                '--row-delay': `${rowIndex * 36}ms`,
+                              } as CSSProperties
+                            }
+                          >
+                            <TableCell className="max-w-[280px] whitespace-normal pl-4 text-xs font-medium">
+                              <div className="flex items-center gap-1.5">
+                                {isAtRisk && (
+                                  <AlertTriangle
+                                    className="size-3.5 text-rose-500 shrink-0"
+                                    aria-label="Agencia en riesgo"
+                                  />
+                                )}
+                                <span className="line-clamp-2">
+                                  {record.agency}
+                                </span>
+                              </div>
+                              <span className="mt-0.5 block text-[11px] font-normal text-muted-foreground">
+                                {record.projectLabel}
+                                <span className="md:hidden">
+                                  {' '}
+                                  · {record.district}
+                                </span>
                               </span>
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-xs">
-                            <Badge
-                              variant="outline"
-                              className={`text-[10px] font-medium ${providerBadgeClass(record.provider)}`}
-                            >
-                              {record.provider}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="hidden md:table-cell">
-                            <p className="text-xs">{record.district || '—'}</p>
-                            <p className="text-[11px] text-muted-foreground">
-                              {record.location}
-                            </p>
-                          </TableCell>
-                          <TableCell className="hidden text-xs text-muted-foreground lg:table-cell">
-                            {record.supervisor || '—'}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="ml-auto flex min-w-24 max-w-32 items-center justify-end gap-2">
-                              <ProgressFill
-                                value={record.progress ?? 0}
-                                prefersReducedMotion={prefersReducedMotion}
+                            </TableCell>
+                            <TableCell className="text-xs">
+                              <Badge
+                                variant="outline"
+                                className={`text-[10px] font-medium ${providerBadgeClass(record.provider)}`}
+                              >
+                                {record.provider}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="hidden md:table-cell">
+                              <p className="text-xs">
+                                {record.district || '—'}
+                              </p>
+                              <p className="text-[11px] text-muted-foreground">
+                                {record.location}
+                              </p>
+                            </TableCell>
+                            <TableCell className="hidden text-xs text-muted-foreground lg:table-cell">
+                              {record.supervisor || '—'}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="ml-auto flex min-w-24 max-w-32 items-center justify-end gap-2">
+                                <ProgressFill
+                                  value={record.progress ?? 0}
+                                  prefersReducedMotion={prefersReducedMotion}
+                                />
+                                <span className="w-9 text-right font-mono text-xs font-semibold tabular-nums">
+                                  {record.progress === null
+                                    ? '—'
+                                    : `${record.progress}%`}
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <div className="flex justify-center">
+                                <StageStepper record={record} />
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <div className="flex justify-center">
+                                <AgencySparkline
+                                  history={agencyHistory}
+                                  prefersReducedMotion={prefersReducedMotion}
+                                />
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <VisitCheckMark
+                                visit={record.visit1}
+                                label="Visita 1"
                               />
-                              <span className="w-9 text-right font-mono text-xs font-semibold tabular-nums">
-                                {record.progress === null
-                                  ? '—'
-                                  : `${record.progress}%`}
-                              </span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <div className="flex justify-center">
-                              <StageStepper record={record} />
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <div className="flex justify-center">
-                              <AgencySparkline history={agencyHistory} prefersReducedMotion={prefersReducedMotion} />
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <VisitCheckMark
-                              visit={record.visit1}
-                              label="Visita 1"
-                            />
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <VisitCheckMark
-                              visit={record.visit2}
-                              label="Visita 2"
-                            />
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <VisitCheckMark
-                              visit={record.visit3}
-                              label="Visita 3"
-                            />
-                          </TableCell>
-                          <TableCell className="text-right font-mono text-xs font-semibold tabular-nums">
-                            {record.totalFinalCameras ?? '—'}
-                          </TableCell>
-                          <TableCell className="hidden xl:table-cell">
-                            <p className="text-xs">
-                              {formatDate(record.startDate)}
-                            </p>
-                            <p className="mt-0.5 text-[11px] text-muted-foreground">
-                              hasta {formatDate(record.endDate)}
-                            </p>
-                          </TableCell>
-                          <TableCell className="pr-4">
-                            <StatusBadge status={record.status} />
-                          </TableCell>
-                        </TableRow>
-                      )})}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <VisitCheckMark
+                                visit={record.visit2}
+                                label="Visita 2"
+                              />
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <VisitCheckMark
+                                visit={record.visit3}
+                                label="Visita 3"
+                              />
+                            </TableCell>
+                            <TableCell className="text-right font-mono text-xs font-semibold tabular-nums">
+                              {record.totalFinalCameras ?? '—'}
+                            </TableCell>
+                            <TableCell className="hidden xl:table-cell">
+                              <p className="text-xs">
+                                {formatDate(record.startDate)}
+                              </p>
+                              <p className="mt-0.5 text-[11px] text-muted-foreground">
+                                hasta {formatDate(record.endDate)}
+                              </p>
+                            </TableCell>
+                            <TableCell className="pr-4">
+                              <StatusBadge status={record.status} />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                     </TableBody>
                   </Table>
                 ) : (
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {visibleRows.map((record) => {
-                      const agencyHistory = snapshot.history.filter(
-                        (h) => h.projectId === record.projectId && h.agency === record.agency
-                      );
+                      const agencyHistory =
+                        historyByAgency.get(
+                          `${record.projectId}::${record.agency}`,
+                        ) ?? [];
                       const isAtRisk = isAgencyAtRisk(record);
                       return (
-                        <AgencyCard 
+                        <AgencyCard
                           key={`${record.projectId}-${record.agency}`}
-                          record={record} 
-                          history={agencyHistory} 
-                          prefersReducedMotion={prefersReducedMotion} 
+                          record={record}
+                          history={agencyHistory}
+                          prefersReducedMotion={prefersReducedMotion}
                           isAtRisk={isAtRisk}
                         />
                       );
@@ -1540,9 +1527,23 @@ export function Dashboard({
                       margin={{ left: 4, right: 18, top: 12, bottom: 4 }}
                     >
                       <defs>
-                        <linearGradient id="colorProgress" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#1e40af" stopOpacity={0.4} />
-                          <stop offset="95%" stopColor="#1e40af" stopOpacity={0.0} />
+                        <linearGradient
+                          id="colorProgress"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="5%"
+                            stopColor="#1e40af"
+                            stopOpacity={0.4}
+                          />
+                          <stop
+                            offset="95%"
+                            stopColor="#1e40af"
+                            stopOpacity={0.0}
+                          />
                         </linearGradient>
                       </defs>
                       <CartesianGrid vertical={false} strokeDasharray="4 4" />

@@ -1,5 +1,5 @@
 import { withoutDya } from '@/lib/dashboard/filters';
-import { dashboardSource } from '@/lib/data-sources/sharepoint-excel-source';
+import { dashboardSource } from '@/lib/data-sources/configured-dashboard-source';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;

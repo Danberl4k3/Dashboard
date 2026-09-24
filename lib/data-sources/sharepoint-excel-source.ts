@@ -171,10 +171,7 @@ function extractCronograma(sheet: XlsxSheet, project: DashboardProject) {
 }
 
 function applyAvance(sheet: XlsxSheet, records: WorkRecord[]) {
-  const statuses = new Map<
-    string,
-    { progress: number; status: WorkStatus }
-  >();
+  const statuses = new Map<string, { progress: number; status: WorkStatus }>();
 
   const finishedCount = Number(sheet.get(2, 6)) || 0;
   const inProgressCount = Number(sheet.get(2, 7)) || 0;
@@ -286,6 +283,7 @@ function extractHistory(sheet: XlsxSheet, project: DashboardProject) {
 async function loadProject(source: (typeof sources)[number], force = false) {
   const url = process.env[source.env];
   if (!url) throw new Error(`Missing ${source.env}`);
+  const signal = AbortSignal.timeout(30_000);
   const downloadUrl = new URL(url);
   downloadUrl.searchParams.set('download', '1');
   if (force)
@@ -299,6 +297,7 @@ async function loadProject(source: (typeof sources)[number], force = false) {
     redirect: 'manual',
     headers,
     cache: 'no-store',
+    signal,
   });
   let response = initial;
   if (initial.status >= 300 && initial.status < 400) {
@@ -313,6 +312,7 @@ async function loadProject(source: (typeof sources)[number], force = false) {
     response = await fetch(new URL(location, downloadUrl), {
       headers: { ...headers, ...(cookies ? { Cookie: cookies } : {}) },
       cache: 'no-store',
+      signal,
     });
   }
   if (!response.ok) throw new Error(`SharePoint returned ${response.status}`);
@@ -377,57 +377,152 @@ function fallback(): DashboardSnapshot {
 }
 
 class SharePointExcelSource implements DashboardSource {
+  private inFlight: Promise<DashboardSnapshot> | null = null;
+
   async getSnapshot(
     options: DashboardSnapshotOptions = {},
   ): Promise<DashboardSnapshot> {
     if (!options.force && cache && cache.expiresAt > Date.now())
       return cache.snapshot;
+
+    if (!this.inFlight) {
+      this.inFlight = this.fetchSnapshot(options).finally(() => {
+        this.inFlight = null;
+      });
+    }
+    return this.inFlight;
+  }
+
+  private async fetchSnapshot(
+    options: DashboardSnapshotOptions,
+  ): Promise<DashboardSnapshot> {
+    const priorCache = cache;
+    if (!options.force && priorCache && priorCache.expiresAt > Date.now())
+      return priorCache.snapshot;
+
     const settledResults = await Promise.allSettled(
       sources.map((source) => loadProject(source, options.force === true)),
     );
-    const results = settledResults.flatMap((result, index) => {
+
+    const successful = settledResults.flatMap((result, index) => {
       if (result.status === 'fulfilled')
         return [{ projectId: sources[index].id, data: result.value }];
       console.error(`Unable to refresh ${sources[index].label}`, result.reason);
       return [];
     });
 
-    if (results.length) {
-      const allProjectsLive = results.length === sources.length;
-      const liveByProject = new Map(
-        results.map((result) => [result.projectId, result.data]),
-      );
-      const previousSnapshot = cache?.snapshot || fallback();
-      const snapshot: DashboardSnapshot = {
-        source: allProjectsLive
-          ? 'SharePoint · 2 archivos Excel'
-          : `SharePoint · ${results.length} de 2 archivos Excel`,
-        workbook: 'Proyecto Esparta 1 + Proyecto Esparta 2',
-        extractedAt: new Date().toISOString(),
-        scheduleStart: '',
-        scheduleEnd: '',
-        projects,
-        isLive: allProjectsLive,
-        records: projects.flatMap(
-          (project) =>
-            liveByProject.get(project.id)?.records ||
-            previousSnapshot.records.filter(
-              (record) => record.projectId === project.id,
-            ),
-        ),
-        history: projects.flatMap(
-          (project) =>
-            liveByProject.get(project.id)?.history ||
-            previousSnapshot.history.filter(
-              (record) => record.projectId === project.id,
-            ),
-        ),
+    if (!successful.length) {
+      if (priorCache) {
+        const staleSnapshot: DashboardSnapshot = {
+          ...priorCache.snapshot,
+          status: 'stale',
+          isLive: false,
+          projectStatuses: priorCache.snapshot.projectStatuses?.map(
+            (status) => ({
+              ...status,
+              status:
+                status.status === 'fallback'
+                  ? ('fallback' as const)
+                  : ('cached' as const),
+            }),
+          ),
+        };
+        cache = { expiresAt: Date.now() + CACHE_MS, snapshot: staleSnapshot };
+        return staleSnapshot;
+      }
+
+      const fallbackSnapshot: DashboardSnapshot = {
+        ...fallback(),
+        status: 'fallback',
+        isLive: false,
+        projectStatuses: sources.map((source) => ({
+          projectId: source.id,
+          label: source.label,
+          status: 'fallback' as const,
+          updatedAt: null,
+        })),
       };
-      cache = { expiresAt: Date.now() + CACHE_MS, snapshot };
-      return snapshot;
+      cache = { expiresAt: Date.now() + CACHE_MS, snapshot: fallbackSnapshot };
+      return fallbackSnapshot;
     }
 
-    return cache?.snapshot || fallback();
+    const allProjectsLive = successful.length === sources.length;
+    const liveByProject = new Map(
+      successful.map((result) => [result.projectId, result.data]),
+    );
+    const previousSnapshot = priorCache?.snapshot || fallback();
+    const extractedAt = new Date().toISOString();
+
+    const projectStatuses = sources.map((source) => {
+      const liveData = liveByProject.get(source.id);
+      if (liveData) {
+        return {
+          projectId: source.id,
+          label: source.label,
+          status: 'live' as const,
+          updatedAt: extractedAt,
+        };
+      }
+
+      const previousStatus = previousSnapshot.projectStatuses?.find(
+        (status) => status.projectId === source.id,
+      );
+      if (previousStatus) {
+        if (previousStatus.status === 'fallback') {
+          return {
+            projectId: source.id,
+            label: source.label,
+            status: 'fallback' as const,
+            updatedAt: null,
+          };
+        }
+
+        return {
+          projectId: source.id,
+          label: source.label,
+          status: 'cached' as const,
+          updatedAt: previousStatus.updatedAt ?? previousSnapshot.extractedAt,
+        };
+      }
+
+      return {
+        projectId: source.id,
+        label: source.label,
+        status: 'fallback' as const,
+        updatedAt: null,
+      };
+    });
+
+    const snapshot: DashboardSnapshot = {
+      source: allProjectsLive
+        ? 'SharePoint · 2 archivos Excel'
+        : `SharePoint · ${successful.length} de 2 archivos Excel`,
+      workbook: 'Proyecto Esparta 1 + Proyecto Esparta 2',
+      extractedAt,
+      scheduleStart: '',
+      scheduleEnd: '',
+      projects,
+      isLive: allProjectsLive,
+      status: allProjectsLive ? 'live' : 'partial',
+      projectStatuses,
+      records: projects.flatMap(
+        (project) =>
+          liveByProject.get(project.id)?.records ||
+          previousSnapshot.records.filter(
+            (record) => record.projectId === project.id,
+          ),
+      ),
+      history: projects.flatMap(
+        (project) =>
+          liveByProject.get(project.id)?.history ||
+          previousSnapshot.history.filter(
+            (record) => record.projectId === project.id,
+          ),
+      ),
+    };
+
+    cache = { expiresAt: Date.now() + CACHE_MS, snapshot };
+    return snapshot;
   }
 }
 

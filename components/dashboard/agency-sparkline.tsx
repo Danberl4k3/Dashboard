@@ -1,4 +1,5 @@
 import { Line, LineChart, ResponsiveContainer, YAxis } from 'recharts';
+import { useHydrated } from '@/hooks/use-hydrated';
 import type { ProgressHistoryRecord } from '@/lib/dashboard/types';
 
 export function AgencySparkline({
@@ -12,6 +13,8 @@ export function AgencySparkline({
   width?: number;
   height?: number;
 }) {
+  const mounted = useHydrated();
+
   if (!history || history.length < 2) {
     return (
       <div 
@@ -29,19 +32,21 @@ export function AgencySparkline({
 
   return (
     <div style={{ width, height }} title={`Tendencia: ${change >= 0 ? '+' : ''}${change}%`}>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={history}>
-          <YAxis domain={[0, 100]} hide />
-          <Line
-            type="monotone"
-            dataKey="progress"
-            stroke={color}
-            strokeWidth={2}
-            dot={false}
-            isAnimationActive={!prefersReducedMotion}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      {mounted ? (
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={history}>
+            <YAxis domain={[0, 100]} hide />
+            <Line
+              type="monotone"
+              dataKey="progress"
+              stroke={color}
+              strokeWidth={2}
+              dot={false}
+              isAnimationActive={!prefersReducedMotion}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      ) : null}
     </div>
   );
 }

@@ -11,6 +11,7 @@
     "start": "node node_modules/vinext/dist/cli.js start",
     "start:cloudflare": "node node_modules/wrangler/bin/wrangler.js dev --config dist/server/wrangler.json",
     "lint": "node node_modules/oxlint/bin/oxlint",
+    "test": "node --experimental-strip-types --test tests/filters.test.mjs tests/history-index.test.mjs tests/xlsx-reader.test.mjs",
     "format": "node node_modules/oxfmt/bin/oxfmt"
   },
   "dependencies": {

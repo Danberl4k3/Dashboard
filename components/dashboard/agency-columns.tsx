@@ -29,7 +29,10 @@ function providerBadgeClass(provider: string) {
     SELECTEC: 'border-rose-200 bg-rose-50 text-rose-700',
     SENTINEL: 'border-emerald-200 bg-emerald-50 text-emerald-700',
   };
-  return styles[provider.trim().toUpperCase()] ?? 'border-slate-200 bg-slate-50 text-slate-700';
+  return (
+    styles[provider.trim().toUpperCase()] ??
+    'border-slate-200 bg-slate-50 text-slate-700'
+  );
 }
 
 function isAgencyAtRisk(record: WorkRecord) {
@@ -54,30 +57,42 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
           r.agency.toLowerCase().includes(term) ||
           r.district.toLowerCase().includes(term) ||
           r.provider.toLowerCase().includes(term) ||
-          r.location.toLowerCase().includes(term)
+          r.location.toLowerCase().includes(term),
       );
     },
-    [searchTerm]
+    [searchTerm],
   );
 
   const terminadas = useMemo(
     () => records.filter((r) => r.status === 'Terminada'),
-    [records]
+    [records],
   );
 
   const enProceso = useMemo(
     () => records.filter((r) => r.status === 'En proceso'),
-    [records]
+    [records],
   );
 
   const noTerminadas = useMemo(
-    () => records.filter((r) => r.status === 'No empezada' || r.status === 'Sin reporte'),
-    [records]
+    () =>
+      records.filter(
+        (r) => r.status === 'No empezada' || r.status === 'Sin reporte',
+      ),
+    [records],
   );
 
-  const filteredTerminadas = useMemo(() => filterList(terminadas), [filterList, terminadas]);
-  const filteredEnProceso = useMemo(() => filterList(enProceso), [filterList, enProceso]);
-  const filteredNoTerminadas = useMemo(() => filterList(noTerminadas), [filterList, noTerminadas]);
+  const filteredTerminadas = useMemo(
+    () => filterList(terminadas),
+    [filterList, terminadas],
+  );
+  const filteredEnProceso = useMemo(
+    () => filterList(enProceso),
+    [filterList, enProceso],
+  );
+  const filteredNoTerminadas = useMemo(
+    () => filterList(noTerminadas),
+    [filterList, noTerminadas],
+  );
 
   const avgEnProceso = useMemo(() => {
     if (!enProceso.length) return 0;
@@ -93,13 +108,22 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
           <span className="text-xs font-semibold text-foreground">
             Clasificación de agencias ({records.length}):
           </span>
-          <Badge variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700 text-[11px] font-medium">
+          <Badge
+            variant="outline"
+            className="border-emerald-200 bg-emerald-50 text-emerald-700 text-[11px] font-medium"
+          >
             {terminadas.length} Terminadas
           </Badge>
-          <Badge variant="outline" className="border-amber-200 bg-amber-50 text-amber-800 text-[11px] font-medium">
+          <Badge
+            variant="outline"
+            className="border-amber-200 bg-amber-50 text-amber-800 text-[11px] font-medium"
+          >
             {enProceso.length} En proceso ({avgEnProceso}% prom.)
           </Badge>
-          <Badge variant="outline" className="border-slate-200 bg-slate-50 text-slate-700 text-[11px] font-medium">
+          <Badge
+            variant="outline"
+            className="border-slate-200 bg-slate-50 text-slate-700 text-[11px] font-medium"
+          >
             {noTerminadas.length} No terminadas
           </Badge>
         </div>
@@ -220,7 +244,7 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
                         {isAtRisk && (
                           <AlertTriangle
                             className="size-3 text-rose-500 shrink-0"
-                            title="Agencia en riesgo"
+                            aria-label="Agencia en riesgo"
                           />
                         )}
                         <span
@@ -246,7 +270,9 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
                     <div className="ml-7 mr-1 h-1 overflow-hidden rounded-full bg-muted/80">
                       <div
                         className="h-full rounded-full bg-amber-500 transition-all"
-                        style={{ width: `${Math.min(100, Math.max(0, progressVal))}%` }}
+                        style={{
+                          width: `${Math.min(100, Math.max(0, progressVal))}%`,
+                        }}
                       />
                     </div>
                   </div>
@@ -294,7 +320,7 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
                       {isAtRisk && (
                         <AlertTriangle
                           className="size-3 text-rose-500 shrink-0"
-                          title="Retrasada en inicio"
+                          aria-label="Retrasada en inicio"
                         />
                       )}
                       <span

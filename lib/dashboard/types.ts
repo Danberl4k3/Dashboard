@@ -1,4 +1,8 @@
-export type WorkStatus = 'Terminada' | 'En proceso' | 'No empezada' | 'Sin reporte';
+export type WorkStatus =
+  | 'Terminada'
+  | 'En proceso'
+  | 'No empezada'
+  | 'Sin reporte';
 
 export interface DashboardProject {
   id: string;
@@ -64,4 +68,13 @@ export interface DashboardSnapshot {
   isLive: boolean;
   records: WorkRecord[];
   history: ProgressHistoryRecord[];
+  status?: 'live' | 'partial' | 'stale' | 'fallback';
+  projectStatuses?: ProjectStatus[];
+}
+
+export interface ProjectStatus {
+  projectId: string;
+  label: string;
+  status: 'live' | 'cached' | 'fallback';
+  updatedAt: string | null;
 }

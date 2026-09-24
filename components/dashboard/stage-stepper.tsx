@@ -1,12 +1,4 @@
 import type { WorkRecord } from '@/lib/dashboard/types';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'; // Wait, do we have Tooltip? Let me check if ui/tooltip exists.
-
-// Let me use standard HTML titles if Tooltip is not available, but I'll write the stepper first.
 export const stageDefinitions: Array<{
   key: keyof WorkRecord;
   label: string;
@@ -26,16 +18,20 @@ export function StageStepper({ record }: { record: WorkRecord }) {
         const value = (record[stage.key] as number) ?? 0;
         const isComplete = value === 100;
         const isStarted = value > 0;
-        
+
         return (
-          <div key={stage.key} className="flex items-center" title={`${stage.label}: ${value}%`}>
+          <div
+            key={stage.key}
+            className="flex items-center"
+            title={`${stage.label}: ${value}%`}
+          >
             {index > 0 && (
-              <div 
-                className="h-[2px] w-3" 
-                style={{ 
+              <div
+                className="h-[2px] w-3"
+                style={{
                   backgroundColor: isStarted ? stage.color : '#e2e8f0',
-                  opacity: isStarted ? 0.5 : 1
-                }} 
+                  opacity: isStarted ? 0.5 : 1,
+                }}
               />
             )}
             <div
@@ -46,8 +42,18 @@ export function StageStepper({ record }: { record: WorkRecord }) {
               }}
             >
               {isComplete && (
-                <svg className="size-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                <svg
+                  className="size-2.5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               )}
             </div>
@@ -57,4 +63,3 @@ export function StageStepper({ record }: { record: WorkRecord }) {
     </div>
   );
 }
-
