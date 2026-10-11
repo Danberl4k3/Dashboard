@@ -1,3 +1,4 @@
+import { cronogramaScheduleColumns } from './cronograma-columns';
 import fallbackSnapshot from '@/app/data/cronograma.json';
 import type {
   DashboardProject,
@@ -130,6 +131,7 @@ function cronogramaIdentityColumns(sheet: XlsxSheet) {
 
 function extractCronograma(sheet: XlsxSheet, project: DashboardProject) {
   const records: WorkRecord[] = [];
+  const scheduleColumns = cronogramaScheduleColumns(sheet);
   const { firstDataRow, agencyColumn, providerColumn } =
     cronogramaIdentityColumns(sheet);
   for (let row = firstDataRow; row <= sheet.maxRow; row += 1) {
@@ -159,10 +161,10 @@ function extractCronograma(sheet: XlsxSheet, project: DashboardProject) {
       visit1: visitCheck(sheet, row, 15),
       visit2: visitCheck(sheet, row, 16),
       visit3: visitCheck(sheet, row, 17),
-      totalFinalCameras: numericValue(sheet.get(row, 21)),
-      startDate: excelDate(sheet.get(row, 22)),
-      endDate: excelDate(sheet.get(row, 23)),
-      days: Number(sheet.get(row, 24)) || null,
+      totalFinalCameras: numericValue(sheet.get(row, scheduleColumns.cameras)),
+      startDate: excelDate(sheet.get(row, scheduleColumns.startDate)),
+      endDate: excelDate(sheet.get(row, scheduleColumns.endDate)),
+      days: Number(sheet.get(row, scheduleColumns.days)) || null,
       timelineStart: null,
       timelineEnd: null,
     });

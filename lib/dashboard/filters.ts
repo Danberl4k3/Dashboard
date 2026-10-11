@@ -73,7 +73,12 @@ export function filterDashboard(
   const activeProviders = Array.from(
     new Set(filters.providers.map((p) => p.trim().toUpperCase())),
   ).filter((p) => availableProviders.includes(p));
-  const term = filters.search.trim().toLocaleLowerCase('es');
+  const normalize = (value: string) =>
+    value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLocaleLowerCase('es');
+  const terms = normalize(filters.search).trim().split(/\s+/).filter(Boolean);
 
   const filteredRecords = projectRecords.filter((r) => {
     const matchesProvider =
@@ -84,12 +89,18 @@ export function filterDashboard(
     const matchesLocation =
       filters.location === 'Todas' ||
       !availableLocations.includes(filters.location) ||
-      r.location === filters.location;
-    const matchesText =
-      !term ||
-      [r.agency, r.district, r.supervisor].some((v) =>
-        v.toLocaleLowerCase('es').includes(term),
-      );
+      r.location.trim() === filters.location;
+    const searchableText = normalize(
+      [
+        r.agency,
+        r.district,
+        r.supervisor,
+        r.provider,
+        r.location,
+        r.projectLabel,
+      ].join(' '),
+    );
+    const matchesText = terms.every((term) => searchableText.includes(term));
     return matchesProvider && matchesStatus && matchesLocation && matchesText;
   });
 

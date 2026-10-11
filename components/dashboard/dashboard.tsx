@@ -1,5 +1,13 @@
 'use client';
 
+import { AttentionPanel } from './attention-panel';
+import {
+  limaDate,
+  recordAttention,
+  recordsCsv,
+  sortRecords,
+  type RecordOrder,
+} from '@/lib/dashboard/tools';
 import ProviderFilter from '@/components/dashboard/provider-filter';
 import { filterDashboard, indexHistoryByAgency } from '@/lib/dashboard/filters';
 import { DataSourceStatus } from './data-source-status';
@@ -27,6 +35,9 @@ import {
   LayoutGrid,
   List,
   AlertTriangle,
+  Download,
+  X,
+  Activity,
 } from 'lucide-react';
 import {
   Bar,
@@ -390,15 +401,6 @@ function KpiCard({
   );
 }
 
-function isAgencyAtRisk(record: WorkRecord) {
-  if (record.status === 'No empezada' && record.startDate) {
-    const start = new Date(`${record.startDate}T00:00:00Z`);
-    const now = new Date();
-    if (start < now) return true;
-  }
-  return false;
-}
-
 export function Dashboard({
   snapshot: initialSnapshot,
 }: {
@@ -412,6 +414,28 @@ export function Dashboard({
     () => indexHistoryByAgency(snapshot),
     [snapshot],
   );
+  const referenceDate = limaDate(snapshot.extractedAt);
+  const isAgencyAtRisk = (record: WorkRecord) =>
+    recordAttention(record, referenceDate) === 'late';
+  const [attention, setAttention] = useState<'all' | 'late' | 'unreported'>(
+    'all',
+  );
+  const [order, setOrder] = useState<RecordOrder>('original');
+  const [pageSize, setPageSize] = useState(PAGE_SIZE);
+  const [activeSection, setActiveSection] = useState('resumen');
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: '-15% 0px -65% 0px' },
+    );
+    document
+      .querySelectorAll('main section[id]')
+      .forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
   const [search, setSearch] = useState('');
   const [project, setProject] = useState('Todos');
   const [status, setStatus] = useState('Todos');
@@ -449,7 +473,41 @@ export function Dashboard({
   const providers = filterView.availableProviders;
   const locations = filterView.availableLocations;
   const activeProviders = filterView.activeProviders;
-  const filtered = filterView.records;
+  const filtered = useMemo(
+    () =>
+      attention === 'all'
+        ? filterView.records
+        : filterView.records.filter(
+            (record) => recordAttention(record, referenceDate) === attention,
+          ),
+    [filterView.records, attention, referenceDate],
+  );
+  const orderedRecords = useMemo(
+    () => sortRecords(filtered, order),
+    [filtered, order],
+  );
+  const attentionCounts = {
+    late: filterView.records.filter(
+      (record) => recordAttention(record, referenceDate) === 'late',
+    ).length,
+    unreported: filterView.records.filter(
+      (record) => recordAttention(record, referenceDate) === 'unreported',
+    ).length,
+  };
+  const exportCsv = () => {
+    const url = URL.createObjectURL(
+      new Blob([recordsCsv(orderedRecords)], {
+        type: 'text/csv;charset=utf-8',
+      }),
+    );
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `seguimiento-${referenceDate || 'registros'}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
   const projectOptions = useMemo(
     () =>
       snapshot.projects.map((item) => ({
@@ -518,23 +576,22 @@ export function Dashboard({
     average: average(filtered, stage.key),
     fill: stage.color,
   }));
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = Math.min(page, totalPages);
-  const visibleRows = filtered.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE,
+  const visibleRows = orderedRecords.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
   );
   const historyAgencies = useMemo(() => {
     const unique = new Map<
       string,
       { key: string; agency: string; projectId: string; projectLabel: string }
     >();
+    const keys = new Set(
+      filtered.map((record) => `${record.projectId}::${record.agency}`),
+    );
     snapshot.history
-      .filter((record) =>
-        filtered.some(
-          (r) => r.projectId === record.projectId && r.agency === record.agency,
-        ),
-      )
+      .filter((record) => keys.has(`${record.projectId}::${record.agency}`))
       .forEach((record) => {
         const key = `${record.projectId}::${record.agency}`;
         unique.set(key, {
@@ -574,7 +631,8 @@ export function Dashboard({
     activeProviders.length > 0,
     status !== 'Todos',
     effectiveLocation !== 'Todas',
-    Boolean(search),
+    Boolean(search.trim()),
+    attention !== 'all',
   ].filter(Boolean).length;
   const tableMotionKey = [
     project,
@@ -583,6 +641,7 @@ export function Dashboard({
     effectiveLocation,
   ].join('|');
   const resetFilters = () => {
+    setAttention('all');
     setSearch('');
     setProject('Todos');
     setSelectedProviders([]);
@@ -606,6 +665,18 @@ export function Dashboard({
     setPage(1);
   };
 
+  const showRecord = (record: WorkRecord) => {
+    resetFilters();
+    setProject(record.projectId);
+    setSearch(record.agency);
+    document.getElementById('tabla-detalle')?.scrollIntoView({
+      behavior: prefersReducedMotion ? 'instant' : 'smooth',
+      block: 'start',
+    });
+  };
+  const showHistory = (record: WorkRecord) =>
+    setHistoryAgency(`${record.projectId}::${record.agency}`);
+
   const toggleHistorySeries = (key: HistorySeriesKey) =>
     setVisibleHistorySeries((current) =>
       current.includes(key)
@@ -618,13 +689,16 @@ export function Dashboard({
       className="dashboard-root min-h-screen bg-background text-foreground"
       data-dashboard-root
     >
+      <a className="dashboard-skip-link" href="#resumen">
+        Ir al contenido
+      </a>
       <header className="dashboard-header sticky top-0 z-40 border-b border-border bg-card">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-2.5 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
             <div className="grid size-8 shrink-0 place-items-center rounded-sm border border-slate-800 bg-slate-900 font-mono text-[10px] font-semibold tracking-wider text-white">
-              CI
+              <Activity className="size-4" aria-hidden="true" />
             </div>
-            <div className="hidden min-w-0 sm:block">
+            <div className="min-w-0">
               <p className="truncate text-sm font-semibold tracking-tight">
                 Control de implementación
               </p>
@@ -635,32 +709,26 @@ export function Dashboard({
           </div>
           <nav
             aria-label="Navegación principal"
-            className="hidden items-center gap-0.5 md:flex"
+            className="hidden items-center gap-1 md:flex"
           >
-            <a
-              href="#resumen"
-              className="dashboard-nav-link rounded-sm border border-blue-200 bg-blue-50 px-2.5 py-1.5 text-xs font-medium text-blue-700 transition-colors hover:border-blue-300 hover:bg-blue-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20"
-            >
-              Resumen
-            </a>
-            <a
-              href="#agencias"
-              className="dashboard-nav-link rounded-sm border border-transparent px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20"
-            >
-              Agencias (3 Columnas)
-            </a>
-            <a
-              href="#tabla-detalle"
-              className="dashboard-nav-link rounded-sm border border-transparent px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20"
-            >
-              Tabla detallada
-            </a>
-            <a
-              href="#linea-tiempo"
-              className="dashboard-nav-link rounded-sm border border-transparent px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20"
-            >
-              Línea de tiempo
-            </a>
+            {[
+              { id: 'resumen', label: 'Resumen' },
+              { id: 'prioridades', label: 'Prioridades' },
+              { id: 'agencias', label: 'Agencias' },
+              { id: 'tabla-detalle', label: 'Registros' },
+              { id: 'linea-tiempo', label: 'Histórico' },
+            ].map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                aria-current={
+                  activeSection === item.id ? 'location' : undefined
+                }
+                className={`dashboard-nav-link px-3 py-2 text-xs font-medium rounded-md ${activeSection === item.id ? 'bg-blue-50 text-blue-700' : 'text-muted-foreground hover:bg-muted'}`}
+              >
+                {item.label}
+              </a>
+            ))}
           </nav>
           <Badge
             variant="outline"
@@ -678,6 +746,26 @@ export function Dashboard({
                   : 'Copia de respaldo'}
           </Badge>
         </div>
+        <nav
+          aria-label="Navegación móvil"
+          className="mobile-navigation md:hidden"
+        >
+          {[
+            { id: 'resumen', label: 'Resumen' },
+            { id: 'prioridades', label: 'Prioridades' },
+            { id: 'agencias', label: 'Agencias' },
+            { id: 'tabla-detalle', label: 'Registros' },
+            { id: 'linea-tiempo', label: 'Histórico' },
+          ].map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              aria-current={activeSection === item.id ? 'location' : undefined}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
         {isRefreshing ? (
           <>
             <div className="refresh-track" aria-hidden="true">
@@ -690,7 +778,7 @@ export function Dashboard({
         ) : null}
       </header>
 
-      <div className="mx-auto max-w-[1500px] px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
+      <div className="dashboard-content mx-auto max-w-[1500px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <section
           id="resumen"
           className="mb-4 flex flex-col justify-between gap-3 lg:flex-row lg:items-end"
@@ -700,12 +788,12 @@ export function Dashboard({
               <span className="h-1.5 w-5 rounded-sm bg-blue-600" />
               Control operativo
             </p>
-            <h1 className="text-xl font-semibold tracking-[-0.025em] sm:text-2xl">
-              Seguimiento de implementación
+            <h1 className="text-2xl font-semibold tracking-[-0.04em] sm:text-3xl lg:text-4xl">
+              Tu operación, en una sola vista
             </h1>
             <p className="mt-1 max-w-2xl text-xs text-muted-foreground">
-              Estado por agencia, contratista y frente de trabajo al corte
-              seleccionado.
+              Seguimiento de implementación por agencia, proveedor y etapa.
+              Explora el avance y prioriza los próximos pasos.
             </p>
           </div>
           <div className="flex flex-col items-start gap-1.5 lg:items-end">
@@ -735,6 +823,16 @@ export function Dashboard({
                 {isRefreshing ? 'Actualizando…' : 'Actualizar ahora'}
               </Button>
             </div>
+            <Button
+              type="button"
+              onClick={exportCsv}
+              disabled={!filtered.length}
+              size="sm"
+              className="gap-2"
+            >
+              <Download className="size-4" />
+              Exportar CSV
+            </Button>
             <p className="text-[10px] text-muted-foreground">
               {isRefreshing
                 ? 'Descargando ambos Excel…'
@@ -777,7 +875,7 @@ export function Dashboard({
                   setPage(1);
                 }}
                 className="pl-8"
-                placeholder="Agencia, distrito o supervisor"
+                placeholder="Agencia, proveedor, distrito…"
               />
             </div>
           </div>
@@ -877,6 +975,144 @@ export function Dashboard({
               }}
             />
           </div>
+          <div className="col-span-full flex flex-wrap items-center justify-between gap-3 border-t pt-3">
+            <div
+              className="flex flex-wrap gap-2"
+              role="group"
+              aria-label="Prioridad de los registros"
+            >
+              {(
+                [
+                  {
+                    key: 'all',
+                    label: 'Todos',
+                    count: filterView.records.length,
+                  },
+                  {
+                    key: 'late',
+                    label: 'Fechas vencidas',
+                    count: attentionCounts.late,
+                  },
+                  {
+                    key: 'unreported',
+                    label: 'Sin reporte',
+                    count: attentionCounts.unreported,
+                  },
+                ] as const
+              ).map((item) => (
+                <button
+                  type="button"
+                  key={item.key}
+                  aria-pressed={attention === item.key}
+                  className="scope-chip"
+                  onClick={() => {
+                    setAttention(item.key);
+                    setPage(1);
+                  }}
+                >
+                  {item.label}
+                  <span>{item.count}</span>
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground" aria-live="polite">
+              {filtered.length} de {snapshot.records.length} registros ·{' '}
+              {activeFilters
+                ? `${activeFilters} ${activeFilters === 1 ? 'filtro activo' : 'filtros activos'}`
+                : 'Vista completa'}
+            </p>
+          </div>
+          {activeFilters > 0 && (
+            <div
+              className="col-span-full flex flex-wrap gap-2"
+              aria-label="Filtros activos"
+            >
+              {attention !== 'all' && (
+                <button
+                  className="filter-chip"
+                  type="button"
+                  onClick={() => {
+                    setAttention('all');
+                    setPage(1);
+                  }}
+                >
+                  {attention === 'late' ? 'Fechas vencidas' : 'Sin reporte'}
+                  <X className="size-3" />
+                  <span className="sr-only">Quitar prioridad</span>
+                </button>
+              )}
+              {search.trim() && (
+                <button
+                  className="filter-chip"
+                  type="button"
+                  onClick={() => {
+                    setSearch('');
+                    setPage(1);
+                  }}
+                >
+                  Búsqueda: {search}
+                  <X className="size-3" />
+                  <span className="sr-only">Quitar búsqueda</span>
+                </button>
+              )}
+              {project !== 'Todos' && (
+                <button
+                  className="filter-chip"
+                  type="button"
+                  onClick={() => changeProject('Todos')}
+                >
+                  {projectOptions.find((item) => item.id === project)?.label}
+                  <X className="size-3" />
+                  <span className="sr-only">Quitar proyecto</span>
+                </button>
+              )}
+              {status !== 'Todos' && (
+                <button
+                  className="filter-chip"
+                  type="button"
+                  onClick={() => {
+                    setStatus('Todos');
+                    setPage(1);
+                  }}
+                >
+                  {status}
+                  <X className="size-3" />
+                  <span className="sr-only">Quitar estado</span>
+                </button>
+              )}
+              {effectiveLocation !== 'Todas' && (
+                <button
+                  className="filter-chip"
+                  type="button"
+                  onClick={() => {
+                    setLocation('Todas');
+                    setPage(1);
+                  }}
+                >
+                  {effectiveLocation}
+                  <X className="size-3" />
+                  <span className="sr-only">Quitar ubicación</span>
+                </button>
+              )}
+              {activeProviders.map((provider) => (
+                <button
+                  key={provider}
+                  className="filter-chip"
+                  type="button"
+                  onClick={() => {
+                    setSelectedProviders((current) =>
+                      current.filter((value) => value !== provider),
+                    );
+                    setPage(1);
+                  }}
+                >
+                  {provider}
+                  <X className="size-3" />
+                  <span className="sr-only">Quitar proveedor</span>
+                </button>
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="kpi-grid grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
@@ -918,7 +1154,7 @@ export function Dashboard({
             suffix="%"
             note="Avance reportado"
             tone="teal"
-            className="xl:col-span-2"
+            className="kpi-featured xl:col-span-2"
             prefersReducedMotion={prefersReducedMotion}
           />
           <p className="sr-only" aria-live="polite">
@@ -927,6 +1163,12 @@ export function Dashboard({
             avance promedio.
           </p>
         </section>
+
+        <AttentionPanel
+          records={filtered}
+          referenceDate={referenceDate}
+          onSelect={showRecord}
+        />
 
         <section className="chart-grid mt-3 grid gap-3 lg:grid-cols-[0.82fr_1.18fr]">
           <Card>
@@ -1088,7 +1330,7 @@ export function Dashboard({
           <Card>
             <CardHeader className="border-b sm:grid-cols-[1fr_auto]">
               <div>
-                <CardTitle>Tablero de agencias (3 Columnas)</CardTitle>
+                <CardTitle>Agencias por estado</CardTitle>
                 <p className="mt-0.5 text-[11px] text-muted-foreground">
                   Nombres de agencias clasificadas por estado ·{' '}
                   {filtered.length} agencias encontradas
@@ -1105,7 +1347,7 @@ export function Dashboard({
               </div>
             </CardHeader>
             <CardContent className="p-4">
-              <AgencyColumns records={filtered} />
+              <AgencyColumns records={filtered} referenceDate={referenceDate} />
             </CardContent>
           </Card>
         </section>
@@ -1117,11 +1359,38 @@ export function Dashboard({
               <div>
                 <CardTitle>Tabla detallada de registros</CardTitle>
                 <p className="mt-0.5 text-[11px] text-muted-foreground">
-                  {filtered.length} registros encontrados · orden original del
-                  cronograma
+                  {filtered.length} registros encontrados · exportación con
+                  todos los filtros aplicados
                 </p>
               </div>
-              <div className="flex items-center gap-4" data-slot="card-action">
+              <div
+                className="flex flex-wrap items-center gap-3"
+                data-slot="card-action"
+              >
+                <NativeSelect
+                  aria-label="Ordenar registros"
+                  value={order}
+                  onChange={(event) => {
+                    setOrder(event.target.value as RecordOrder);
+                    setPage(1);
+                  }}
+                >
+                  <NativeSelectOption value="original">
+                    Orden del Excel
+                  </NativeSelectOption>
+                  <NativeSelectOption value="agency">
+                    Agencia A–Z
+                  </NativeSelectOption>
+                  <NativeSelectOption value="progress-up">
+                    Menor avance primero
+                  </NativeSelectOption>
+                  <NativeSelectOption value="progress-down">
+                    Mayor avance primero
+                  </NativeSelectOption>
+                  <NativeSelectOption value="deadline">
+                    Fecha de cierre
+                  </NativeSelectOption>
+                </NativeSelect>
                 <div className="flex items-center rounded-md border p-0.5 bg-muted/50">
                   <button
                     type="button"
@@ -1148,6 +1417,12 @@ export function Dashboard({
                 </div>
               </div>
             </CardHeader>
+            {viewMode === 'table' && (
+              <p className="table-scroll-hint px-4 text-xs text-muted-foreground">
+                Desliza la tabla para consultar etapas, visitas y cámaras. La
+                columna Agencia permanece visible.
+              </p>
+            )}
             <CardContent className={viewMode === 'table' ? 'px-0' : 'p-4'}>
               {visibleRows.length ? (
                 viewMode === 'table' ? (
@@ -1204,9 +1479,20 @@ export function Dashboard({
                                     aria-label="Agencia en riesgo"
                                   />
                                 )}
-                                <span className="line-clamp-2">
-                                  {record.agency}
-                                </span>
+                                {agencyHistory.length ? (
+                                  <a
+                                    href="#linea-tiempo"
+                                    onClick={() => showHistory(record)}
+                                    className="line-clamp-2 text-primary underline-offset-4 hover:underline"
+                                    aria-label={`Ver histórico de ${record.agency}`}
+                                  >
+                                    {record.agency}
+                                  </a>
+                                ) : (
+                                  <span className="line-clamp-2">
+                                    {record.agency}
+                                  </span>
+                                )}
                               </div>
                               <span className="mt-0.5 block text-[11px] font-normal text-muted-foreground">
                                 {record.projectLabel}
@@ -1343,11 +1629,25 @@ export function Dashboard({
             <div className="flex flex-col gap-2 border-t bg-muted/25 px-4 py-2 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-xs text-muted-foreground">
                 Mostrando{' '}
-                {visibleRows.length ? (currentPage - 1) * PAGE_SIZE + 1 : 0}–
-                {Math.min(currentPage * PAGE_SIZE, filtered.length)} de{' '}
+                {visibleRows.length ? (currentPage - 1) * pageSize + 1 : 0}–
+                {Math.min(currentPage * pageSize, filtered.length)} de{' '}
                 {filtered.length}
               </p>
-              <div className="flex items-center gap-2">
+              <div className="pagination-controls flex flex-wrap items-center gap-2">
+                <NativeSelect
+                  aria-label="Registros por página"
+                  value={String(pageSize)}
+                  onChange={(event) => {
+                    setPageSize(Number(event.target.value));
+                    setPage(1);
+                  }}
+                >
+                  {[8, 16, 32].map((size) => (
+                    <NativeSelectOption key={size} value={String(size)}>
+                      {size} por página
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
                 <Button
                   variant="outline"
                   size="sm"
@@ -1644,7 +1944,9 @@ export function Dashboard({
             </CardContent>
             <div className="border-t bg-muted/25 px-4 py-2 text-[11px] text-muted-foreground">
               {historyData.length} cortes registrados para esta agencia ·
-              periodo {historyFirst?.date} a {historyLatest?.date}
+              {historyFirst && historyLatest
+                ? `periodo ${historyFirst.date} a ${historyLatest.date}`
+                : 'sin periodo disponible'}
             </div>
           </Card>
         </section>

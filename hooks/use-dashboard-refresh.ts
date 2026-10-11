@@ -41,8 +41,24 @@ export function useDashboardRefresh(
   }, []);
 
   useEffect(() => {
-    const interval = window.setInterval(() => void refresh(false), intervalMs);
-    return () => window.clearInterval(interval);
+    let interval: number | undefined;
+    const start = () => {
+      if (interval !== undefined) window.clearInterval(interval);
+      interval = undefined;
+      if (!document.hidden) {
+        interval = window.setInterval(() => void refresh(false), intervalMs);
+      }
+    };
+    const handleVisibility = () => {
+      start();
+      if (!document.hidden) void refresh(false);
+    };
+    start();
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      if (interval !== undefined) window.clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, [refresh, intervalMs]);
 
   return {

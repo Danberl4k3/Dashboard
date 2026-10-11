@@ -27,25 +27,43 @@ export function DataSourceStatus({
   status,
   projectStatuses,
 }: DataSourceStatusProps) {
-  if (!projectStatuses || projectStatuses.length === 0) {
-    return null;
-  }
-
   const overallMessage =
     status && status !== 'live' ? overallStatusMessages[status] : null;
+  if (!overallMessage && !projectStatuses?.length) return null;
 
   return (
-    <div className="border-border bg-muted rounded p-3 text-xs">
-      {overallMessage ? <p>{overallMessage}</p> : null}
-      <ul>
-        {projectStatuses.map((project) => (
-          <li key={project.projectId}>
-            <span>{project.label}</span>
-            <span> </span>
-            <span>{projectStatusLabels[project.status]}</span>
-            <span> </span>
+    <div
+      className="mb-4 rounded-lg border border-border bg-card px-4 py-3 text-xs"
+      role="status"
+    >
+      {overallMessage ? (
+        <p className="mb-2 font-medium text-amber-800">{overallMessage}</p>
+      ) : null}
+      <ul className="flex flex-wrap gap-x-6 gap-y-2">
+        {projectStatuses?.map((project) => (
+          <li
+            key={project.projectId}
+            className="flex flex-wrap items-center gap-2"
+          >
+            <span
+              className={`size-1.5 rounded-full ${project.status === 'live' ? 'bg-emerald-600' : 'bg-amber-600'}`}
+              aria-hidden="true"
+            />
+            <span className="font-medium">{project.label}</span>
+            <span className="text-muted-foreground">
+              {projectStatusLabels[project.status]}
+            </span>
             <time dateTime={project.updatedAt ?? undefined}>
-              {project.updatedAt}
+              {project.updatedAt &&
+              Number.isFinite(Date.parse(project.updatedAt))
+                ? new Intl.DateTimeFormat('es-PE', {
+                    timeZone: 'America/Lima',
+                    day: '2-digit',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  }).format(new Date(project.updatedAt))
+                : 'Sin fecha'}
             </time>
           </li>
         ))}

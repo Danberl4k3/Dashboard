@@ -39,8 +39,8 @@
     "app/globals.css": {
       "path": "app/globals.css",
       "kind": "css",
-      "size": 6728,
-      "mtime": 1789752742311.0342,
+      "size": 12130,
+      "mtime": 1791738516991.1091,
       "importedBy": [
         "app/layout.tsx"
       ]
@@ -127,21 +127,22 @@
     "components/dashboard/agency-columns.tsx": {
       "path": "components/dashboard/agency-columns.tsx",
       "kind": "source",
-      "size": 15005,
-      "hash": "934af47dc3166a34316057568d37c5f96f96626870503aba663f063fcec85027",
+      "size": 16296,
+      "hash": "6d1182f3246b7fd5b9f2e883b8df71cd145be4152f47114f6a2cf903ede74c72",
       "exports": [
         "AgencyColumns"
       ],
       "dependencies": [
         "components/ui/badge.tsx",
         "components/ui/input.tsx",
+        "lib/dashboard/tools.ts",
         "lib/dashboard/types.ts"
       ],
       "externalDependencies": [
         "lucide-react",
         "react"
       ],
-      "lines": 360,
+      "lines": 398,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -167,6 +168,26 @@
         "components/dashboard/dashboard.tsx"
       ]
     },
+    "components/dashboard/attention-panel.tsx": {
+      "path": "components/dashboard/attention-panel.tsx",
+      "kind": "source",
+      "size": 3421,
+      "hash": "3c7bfe11b9844d507218cbe6cac409c3185f956f9e273c62b40fcfb955fd379f",
+      "exports": [
+        "AttentionPanel"
+      ],
+      "dependencies": [
+        "lib/dashboard/tools.ts",
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react"
+      ],
+      "lines": 93,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
     "components/dashboard/circular-progress.tsx": {
       "path": "components/dashboard/circular-progress.tsx",
       "kind": "source",
@@ -188,8 +209,8 @@
     "components/dashboard/dashboard.tsx": {
       "path": "components/dashboard/dashboard.tsx",
       "kind": "source",
-      "size": 63113,
-      "hash": "e372b6d28822937897b9523720d56974ff8f7bfd199d118a700e196d03ae7802",
+      "size": 73655,
+      "hash": "6a6e3ed635f47567aca51265b1a165ee34f9b5badf3ef5df05f22a52fcda0b41",
       "exports": [
         "Dashboard"
       ],
@@ -197,6 +218,7 @@
         "components/dashboard/agency-card.tsx",
         "components/dashboard/agency-columns.tsx",
         "components/dashboard/agency-sparkline.tsx",
+        "components/dashboard/attention-panel.tsx",
         "components/dashboard/data-source-status.tsx",
         "components/dashboard/provider-filter.tsx",
         "components/dashboard/stage-stepper.tsx",
@@ -209,6 +231,7 @@
         "components/ui/table.tsx",
         "hooks/use-dashboard-refresh.ts",
         "lib/dashboard/filters.ts",
+        "lib/dashboard/tools.ts",
         "lib/dashboard/types.ts"
       ],
       "externalDependencies": [
@@ -216,7 +239,7 @@
         "react",
         "recharts"
       ],
-      "lines": 1665,
+      "lines": 1967,
       "importedBy": [
         "app/page.tsx"
       ]
@@ -224,8 +247,8 @@
     "components/dashboard/data-source-status.tsx": {
       "path": "components/dashboard/data-source-status.tsx",
       "kind": "source",
-      "size": 1475,
-      "hash": "31c79e61bcde888a25a9ac6166931589cff7ba0761f18564013efc2d0c74f3eb",
+      "size": 2308,
+      "hash": "2c64f0c49969ed7dc75764cb0c93ca517776856ff168e73c7b48908143248672",
       "exports": [
         "DataSourceStatus"
       ],
@@ -233,7 +256,7 @@
         "lib/dashboard/types.ts"
       ],
       "externalDependencies": [],
-      "lines": 56,
+      "lines": 74,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -1740,8 +1763,8 @@
     "hooks/use-dashboard-refresh.ts": {
       "path": "hooks/use-dashboard-refresh.ts",
       "kind": "source",
-      "size": 1616,
-      "hash": "62d8034fa9c2730d7390179be77f2a0188ca29d9147863cd6c7718f1a5acb00a",
+      "size": 2124,
+      "hash": "7a82879e9b23bb21da142669564ed700ae2a6dfdd21b8f386b4ce546c7992876",
       "exports": [
         "useDashboardRefresh"
       ],
@@ -1751,7 +1774,7 @@
       "externalDependencies": [
         "react"
       ],
-      "lines": 55,
+      "lines": 71,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -1794,8 +1817,8 @@
     "lib/dashboard/filters.ts": {
       "path": "lib/dashboard/filters.ts",
       "kind": "source",
-      "size": 2989,
-      "hash": "c304b6c8386a87b596859d90d864f3df2bbbed30d1e1b8e6a3c423b832d4a698",
+      "size": 3278,
+      "hash": "f075c1a0150019a556c54a5ef56cd64a71249e49fea94cba6c87aa2ae299a568",
       "exports": [
         "DashboardFilters",
         "filterDashboard",
@@ -1806,13 +1829,40 @@
         "lib/dashboard/types.ts"
       ],
       "externalDependencies": [],
-      "lines": 103,
+      "lines": 114,
       "importedBy": [
         "app/api/dashboard/route.ts",
         "app/page.tsx",
         "components/dashboard/dashboard.tsx",
+        "tests/dashboard-tools.test.mjs",
         "tests/filters.test.mjs",
         "tests/history-index.test.mjs"
+      ]
+    },
+    "lib/dashboard/tools.ts": {
+      "path": "lib/dashboard/tools.ts",
+      "kind": "source",
+      "size": 3453,
+      "hash": "6a2f2e819644738de1bb6053f780cb8123fa098f3ade74eea1bfb381205d00d4",
+      "exports": [
+        "Attention",
+        "RecordOrder",
+        "attentionReason",
+        "limaDate",
+        "recordAttention",
+        "recordsCsv",
+        "sortRecords"
+      ],
+      "dependencies": [
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 132,
+      "importedBy": [
+        "components/dashboard/agency-columns.tsx",
+        "components/dashboard/attention-panel.tsx",
+        "components/dashboard/dashboard.tsx",
+        "tests/dashboard-tools.test.mjs"
       ]
     },
     "lib/dashboard/types.ts": {
@@ -1836,11 +1886,13 @@
         "components/dashboard/agency-card.tsx",
         "components/dashboard/agency-columns.tsx",
         "components/dashboard/agency-sparkline.tsx",
+        "components/dashboard/attention-panel.tsx",
         "components/dashboard/dashboard.tsx",
         "components/dashboard/data-source-status.tsx",
         "components/dashboard/stage-stepper.tsx",
         "hooks/use-dashboard-refresh.ts",
         "lib/dashboard/filters.ts",
+        "lib/dashboard/tools.ts",
         "lib/data-sources/dashboard-source.ts",
         "lib/data-sources/excel-snapshot-source.ts",
         "lib/data-sources/sharepoint-excel-source.ts"
@@ -1864,6 +1916,24 @@
       "importedBy": [
         "app/api/dashboard/route.ts",
         "app/page.tsx"
+      ]
+    },
+    "lib/data-sources/cronograma-columns.ts": {
+      "path": "lib/data-sources/cronograma-columns.ts",
+      "kind": "source",
+      "size": 988,
+      "hash": "ff3822ce48ab519038e780f7483c43cbed199fa0de8511fc9429878f928c69f0",
+      "exports": [
+        "cronogramaScheduleColumns"
+      ],
+      "dependencies": [
+        "lib/data-sources/xlsx-reader.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 30,
+      "importedBy": [
+        "lib/data-sources/sharepoint-excel-source.ts",
+        "tests/dashboard-tools.test.mjs"
       ]
     },
     "lib/data-sources/dashboard-source.ts": {
@@ -1908,19 +1978,20 @@
     "lib/data-sources/sharepoint-excel-source.ts": {
       "path": "lib/data-sources/sharepoint-excel-source.ts",
       "kind": "source",
-      "size": 16869,
-      "hash": "9bcaa63ce8e8a51245e4fe51352bf613700aeac01371f87df487366e2a781c1e",
+      "size": 17078,
+      "hash": "8606ea4cab120e86fd4b31feb40162e4ce42f8be666c2ab46328a1991625d79d",
       "exports": [
         "dashboardSource"
       ],
       "dependencies": [
         "app/data/cronograma.json",
         "lib/dashboard/types.ts",
+        "lib/data-sources/cronograma-columns.ts",
         "lib/data-sources/dashboard-source.ts",
         "lib/data-sources/xlsx-reader.ts"
       ],
       "externalDependencies": [],
-      "lines": 530,
+      "lines": 532,
       "importedBy": [
         "lib/data-sources/configured-dashboard-source.ts"
       ]
@@ -1941,6 +2012,7 @@
       ],
       "lines": 163,
       "importedBy": [
+        "lib/data-sources/cronograma-columns.ts",
         "lib/data-sources/sharepoint-excel-source.ts",
         "tests/xlsx-reader.test.mjs"
       ]
@@ -2038,8 +2110,8 @@
     "package.json": {
       "path": "package.json",
       "kind": "json",
-      "size": 1928,
-      "mtime": 1790265580841.173
+      "size": 1959,
+      "mtime": 1791738171425.8909
     },
     "scripts/extract-cronograma.ps1": {
       "path": "scripts/extract-cronograma.ps1",
@@ -2058,6 +2130,21 @@
         "typescript"
       ],
       "lines": 588,
+      "importedBy": []
+    },
+    "tests/dashboard-tools.test.mjs": {
+      "path": "tests/dashboard-tools.test.mjs",
+      "kind": "script",
+      "size": 4048,
+      "hash": "3c7032d27244681ddd76bfc3bcfe96baba55f615b75487704a6d775de4d33984",
+      "exports": [],
+      "dependencies": [
+        "lib/dashboard/filters.ts",
+        "lib/dashboard/tools.ts",
+        "lib/data-sources/cronograma-columns.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 145,
       "importedBy": []
     },
     "tests/filters.test.mjs": {
@@ -2207,6 +2294,11 @@
     },
     {
       "from": "components/dashboard/agency-columns.tsx",
+      "to": "lib/dashboard/tools.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/agency-columns.tsx",
       "to": "lib/dashboard/types.ts",
       "kind": "import"
     },
@@ -2217,6 +2309,16 @@
     },
     {
       "from": "components/dashboard/agency-sparkline.tsx",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/attention-panel.tsx",
+      "to": "lib/dashboard/tools.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/attention-panel.tsx",
       "to": "lib/dashboard/types.ts",
       "kind": "import"
     },
@@ -2239,6 +2341,11 @@
     {
       "from": "components/dashboard/dashboard.tsx",
       "to": "components/dashboard/agency-sparkline.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/attention-panel.tsx",
       "kind": "import"
     },
     {
@@ -2299,6 +2406,11 @@
     {
       "from": "components/dashboard/dashboard.tsx",
       "to": "lib/dashboard/filters.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "lib/dashboard/tools.ts",
       "kind": "import"
     },
     {
@@ -2777,6 +2889,11 @@
       "kind": "import"
     },
     {
+      "from": "lib/dashboard/tools.ts",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
       "from": "lib/data-sources/configured-dashboard-source.ts",
       "to": "lib/data-sources/dashboard-source.ts",
       "kind": "import"
@@ -2789,6 +2906,11 @@
     {
       "from": "lib/data-sources/configured-dashboard-source.ts",
       "to": "lib/data-sources/sharepoint-excel-source.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/cronograma-columns.ts",
+      "to": "lib/data-sources/xlsx-reader.ts",
       "kind": "import"
     },
     {
@@ -2823,12 +2945,32 @@
     },
     {
       "from": "lib/data-sources/sharepoint-excel-source.ts",
+      "to": "lib/data-sources/cronograma-columns.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/data-sources/sharepoint-excel-source.ts",
       "to": "lib/data-sources/dashboard-source.ts",
       "kind": "import"
     },
     {
       "from": "lib/data-sources/sharepoint-excel-source.ts",
       "to": "lib/data-sources/xlsx-reader.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/dashboard-tools.test.mjs",
+      "to": "lib/dashboard/filters.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/dashboard-tools.test.mjs",
+      "to": "lib/dashboard/tools.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/dashboard-tools.test.mjs",
+      "to": "lib/data-sources/cronograma-columns.ts",
       "kind": "import"
     },
     {

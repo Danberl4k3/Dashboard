@@ -1,5 +1,6 @@
 'use client';
 
+import { recordAttention } from '@/lib/dashboard/tools';
 import { useCallback, useMemo, useState } from 'react';
 import {
   CheckCircle2,
@@ -15,6 +16,7 @@ import type { ProgressHistoryRecord, WorkRecord } from '@/lib/dashboard/types';
 
 interface AgencyColumnsProps {
   records: WorkRecord[];
+  referenceDate: string;
   history?: ProgressHistoryRecord[];
   prefersReducedMotion?: boolean;
   onSelectRecord?: (record: WorkRecord) => void;
@@ -35,16 +37,10 @@ function providerBadgeClass(provider: string) {
   );
 }
 
-function isAgencyAtRisk(record: WorkRecord) {
-  if (record.status === 'No empezada' && record.startDate) {
-    const start = new Date(`${record.startDate}T00:00:00Z`);
-    const now = new Date();
-    if (start < now) return true;
-  }
-  return false;
-}
-
-export function AgencyColumns({ records }: AgencyColumnsProps) {
+export function AgencyColumns({ records, referenceDate }: AgencyColumnsProps) {
+  const [mobileColumn, setMobileColumn] = useState('progress');
+  const isAgencyAtRisk = (record: WorkRecord) =>
+    recordAttention(record, referenceDate) === 'late';
   const [searchTerm, setSearchTerm] = useState('');
 
   // Filtrado local por texto
@@ -132,12 +128,14 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
           <Input
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label="Buscar en el tablero de agencias"
             placeholder="Filtrar nombres de agencias..."
             className="h-8 pl-8 text-xs bg-background"
           />
           {searchTerm && (
             <button
               type="button"
+              aria-label="Limpiar búsqueda del tablero"
               onClick={() => setSearchTerm('')}
               className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground"
             >
@@ -147,10 +145,46 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
         </div>
       </div>
 
+      <div
+        className="flex gap-2 overflow-x-auto pb-1 lg:hidden"
+        role="group"
+        aria-label="Estado del tablero"
+      >
+        {[
+          {
+            key: 'completed',
+            label: 'Terminadas',
+            count: filteredTerminadas.length,
+          },
+          {
+            key: 'progress',
+            label: 'En proceso',
+            count: filteredEnProceso.length,
+          },
+          {
+            key: 'pending',
+            label: 'Pendientes',
+            count: filteredNoTerminadas.length,
+          },
+        ].map((item) => (
+          <button
+            className="scope-chip shrink-0"
+            key={item.key}
+            type="button"
+            aria-pressed={mobileColumn === item.key}
+            onClick={() => setMobileColumn(item.key)}
+          >
+            {item.label}
+            <span>{item.count}</span>
+          </button>
+        ))}
+      </div>
       {/* 3 Columnas enfocadas en los nombres */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* ==================== COLUMNA 1: TERMINADAS ==================== */}
-        <div className="flex flex-col rounded-lg border border-emerald-200 bg-card shadow-xs overflow-hidden">
+        <div
+          className={`${mobileColumn === 'completed' ? 'flex' : 'hidden'} lg:flex flex-col rounded-lg border border-emerald-200 bg-card shadow-xs overflow-hidden`}
+        >
           {/* Header */}
           <div className="border-b border-emerald-200 bg-emerald-50/80 px-3.5 py-2.5 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -165,7 +199,7 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
           </div>
 
           {/* Tabla / Lista de Nombres */}
-          <div className="flex-1 divide-y divide-border/60 max-h-[560px] overflow-y-auto">
+          <div className="flex-1 divide-y divide-border/60 lg:max-h-[560px] lg:overflow-y-auto">
             {filteredTerminadas.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground">
                 <FilterX className="size-5 text-muted-foreground/60 mb-1" />
@@ -206,7 +240,9 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
         </div>
 
         {/* ==================== COLUMNA 2: EN PROCESO (CON PORCENTAJE) ==================== */}
-        <div className="flex flex-col rounded-lg border border-amber-200 bg-card shadow-xs overflow-hidden">
+        <div
+          className={`${mobileColumn === 'progress' ? 'flex' : 'hidden'} lg:flex flex-col rounded-lg border border-amber-200 bg-card shadow-xs overflow-hidden`}
+        >
           {/* Header */}
           <div className="border-b border-amber-200 bg-amber-50/80 px-3.5 py-2.5 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -221,7 +257,7 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
           </div>
 
           {/* Tabla / Lista de Nombres con Porcentaje */}
-          <div className="flex-1 divide-y divide-border/60 max-h-[560px] overflow-y-auto">
+          <div className="flex-1 divide-y divide-border/60 lg:max-h-[560px] lg:overflow-y-auto">
             {filteredEnProceso.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground">
                 <FilterX className="size-5 text-muted-foreground/60 mb-1" />
@@ -283,7 +319,9 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
         </div>
 
         {/* ==================== COLUMNA 3: NO TERMINADAS ==================== */}
-        <div className="flex flex-col rounded-lg border border-slate-200 bg-card shadow-xs overflow-hidden">
+        <div
+          className={`${mobileColumn === 'pending' ? 'flex' : 'hidden'} lg:flex flex-col rounded-lg border border-slate-200 bg-card shadow-xs overflow-hidden`}
+        >
           {/* Header */}
           <div className="border-b border-slate-200 bg-slate-100/80 px-3.5 py-2.5 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -298,7 +336,7 @@ export function AgencyColumns({ records }: AgencyColumnsProps) {
           </div>
 
           {/* Tabla / Lista de Nombres */}
-          <div className="flex-1 divide-y divide-border/60 max-h-[560px] overflow-y-auto">
+          <div className="flex-1 divide-y divide-border/60 lg:max-h-[560px] lg:overflow-y-auto">
             {filteredNoTerminadas.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center text-muted-foreground">
                 <FilterX className="size-5 text-muted-foreground/60 mb-1" />
