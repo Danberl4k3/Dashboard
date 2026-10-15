@@ -39,8 +39,8 @@
     "app/globals.css": {
       "path": "app/globals.css",
       "kind": "css",
-      "size": 12130,
-      "mtime": 1791738516991.1091,
+      "size": 26582,
+      "mtime": 1791773977494.6768,
       "importedBy": [
         "app/layout.tsx"
       ]
@@ -171,8 +171,8 @@
     "components/dashboard/attention-panel.tsx": {
       "path": "components/dashboard/attention-panel.tsx",
       "kind": "source",
-      "size": 3421,
-      "hash": "3c7bfe11b9844d507218cbe6cac409c3185f956f9e273c62b40fcfb955fd379f",
+      "size": 4118,
+      "hash": "4ad1a92b676e93b12a076b015ba737703a7b0a3a4542b556c3581b111d3397a0",
       "exports": [
         "AttentionPanel"
       ],
@@ -181,9 +181,10 @@
         "lib/dashboard/types.ts"
       ],
       "externalDependencies": [
-        "lucide-react"
+        "lucide-react",
+        "react"
       ],
-      "lines": 93,
+      "lines": 112,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -206,11 +207,32 @@
         "components/dashboard/agency-card.tsx"
       ]
     },
+    "components/dashboard/dashboard-navigation.tsx": {
+      "path": "components/dashboard/dashboard-navigation.tsx",
+      "kind": "source",
+      "size": 3025,
+      "hash": "1a83736c1addfbd00b7a857b9409677506ef904df47392956daae5f6272c288a",
+      "exports": [
+        "DashboardTab",
+        "dashboardTabs",
+        "useDashboardNavigation"
+      ],
+      "dependencies": [],
+      "externalDependencies": [
+        "lucide-react",
+        "react"
+      ],
+      "lines": 112,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx",
+        "components/dashboard/operations-overview.tsx"
+      ]
+    },
     "components/dashboard/dashboard.tsx": {
       "path": "components/dashboard/dashboard.tsx",
       "kind": "source",
-      "size": 73655,
-      "hash": "6a6e3ed635f47567aca51265b1a165ee34f9b5badf3ef5df05f22a52fcda0b41",
+      "size": 84020,
+      "hash": "63250e31f318b10d71d6482e83b5b068197ee08b868acd059854307dc9eb53c2",
       "exports": [
         "Dashboard"
       ],
@@ -219,7 +241,10 @@
         "components/dashboard/agency-columns.tsx",
         "components/dashboard/agency-sparkline.tsx",
         "components/dashboard/attention-panel.tsx",
+        "components/dashboard/dashboard-navigation.tsx",
         "components/dashboard/data-source-status.tsx",
+        "components/dashboard/halfway-milestones.tsx",
+        "components/dashboard/operations-overview.tsx",
         "components/dashboard/provider-filter.tsx",
         "components/dashboard/stage-stepper.tsx",
         "components/ui/badge.tsx",
@@ -229,8 +254,10 @@
         "components/ui/input.tsx",
         "components/ui/native-select.tsx",
         "components/ui/table.tsx",
+        "components/ui/tabs.tsx",
         "hooks/use-dashboard-refresh.ts",
         "lib/dashboard/filters.ts",
+        "lib/dashboard/milestones.ts",
         "lib/dashboard/tools.ts",
         "lib/dashboard/types.ts"
       ],
@@ -239,7 +266,7 @@
         "react",
         "recharts"
       ],
-      "lines": 1967,
+      "lines": 2102,
       "importedBy": [
         "app/page.tsx"
       ]
@@ -261,11 +288,52 @@
         "components/dashboard/dashboard.tsx"
       ]
     },
+    "components/dashboard/halfway-milestones.tsx": {
+      "path": "components/dashboard/halfway-milestones.tsx",
+      "kind": "source",
+      "size": 3626,
+      "hash": "0dc971ff2b082f417c41acbdfb044878447326db031fc08bab59683297fa9c60",
+      "exports": [
+        "HalfwayMilestones"
+      ],
+      "dependencies": [
+        "lib/dashboard/milestones.ts",
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react"
+      ],
+      "lines": 69,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
+    "components/dashboard/operations-overview.tsx": {
+      "path": "components/dashboard/operations-overview.tsx",
+      "kind": "source",
+      "size": 7848,
+      "hash": "457c248e23e8b8a6a209979bc62b09e5b29672dfefc06ff7a2fd248b337a9d51",
+      "exports": [
+        "OperationsOverview"
+      ],
+      "dependencies": [
+        "components/dashboard/dashboard-navigation.tsx",
+        "lib/dashboard/tools.ts",
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react"
+      ],
+      "lines": 250,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
+    },
     "components/dashboard/provider-filter.tsx": {
       "path": "components/dashboard/provider-filter.tsx",
       "kind": "source",
-      "size": 1969,
-      "hash": "125a85bb7c6c2d62058958c1ec54f1666a9642ff11acdc4bc86355db291bb87e",
+      "size": 2022,
+      "hash": "6112590471c4e5bca21598df6653596e8d8db26f2b2e547cc56d5ab296f4dd34",
       "exports": [
         "ProviderFilter",
         "default"
@@ -277,7 +345,7 @@
       "externalDependencies": [
         "react"
       ],
-      "lines": 67,
+      "lines": 69,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -1643,7 +1711,9 @@
         "class-variance-authority"
       ],
       "lines": 83,
-      "importedBy": []
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
+      ]
     },
     "components/ui/textarea.tsx": {
       "path": "components/ui/textarea.tsx",
@@ -1839,6 +1909,26 @@
         "tests/history-index.test.mjs"
       ]
     },
+    "lib/dashboard/milestones.ts": {
+      "path": "lib/dashboard/milestones.ts",
+      "kind": "source",
+      "size": 1622,
+      "hash": "4b7a1b0710830b9ada4d1bf09f7ea334dac97a8ed8916a52cf9cfc67f97ac4c1",
+      "exports": [
+        "HalfwayMilestone",
+        "latestHalfwayMilestones"
+      ],
+      "dependencies": [
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 47,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx",
+        "components/dashboard/halfway-milestones.tsx",
+        "tests/milestones.test.mjs"
+      ]
+    },
     "lib/dashboard/tools.ts": {
       "path": "lib/dashboard/tools.ts",
       "kind": "source",
@@ -1862,6 +1952,7 @@
         "components/dashboard/agency-columns.tsx",
         "components/dashboard/attention-panel.tsx",
         "components/dashboard/dashboard.tsx",
+        "components/dashboard/operations-overview.tsx",
         "tests/dashboard-tools.test.mjs"
       ]
     },
@@ -1889,9 +1980,12 @@
         "components/dashboard/attention-panel.tsx",
         "components/dashboard/dashboard.tsx",
         "components/dashboard/data-source-status.tsx",
+        "components/dashboard/halfway-milestones.tsx",
+        "components/dashboard/operations-overview.tsx",
         "components/dashboard/stage-stepper.tsx",
         "hooks/use-dashboard-refresh.ts",
         "lib/dashboard/filters.ts",
+        "lib/dashboard/milestones.ts",
         "lib/dashboard/tools.ts",
         "lib/data-sources/dashboard-source.ts",
         "lib/data-sources/excel-snapshot-source.ts",
@@ -2110,8 +2204,8 @@
     "package.json": {
       "path": "package.json",
       "kind": "json",
-      "size": 1959,
-      "mtime": 1791738171425.8909
+      "size": 1985,
+      "mtime": 1792069823956.6643
     },
     "scripts/extract-cronograma.ps1": {
       "path": "scripts/extract-cronograma.ps1",
@@ -2171,6 +2265,19 @@
       ],
       "externalDependencies": [],
       "lines": 23,
+      "importedBy": []
+    },
+    "tests/milestones.test.mjs": {
+      "path": "tests/milestones.test.mjs",
+      "kind": "script",
+      "size": 1880,
+      "hash": "511bae3e37bc42126c52bbf16eb4f189db4aa2ebc48f971a30d59dcf194658d1",
+      "exports": [],
+      "dependencies": [
+        "lib/dashboard/milestones.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 68,
       "importedBy": []
     },
     "tests/xlsx-reader.test.mjs": {
@@ -2350,7 +2457,22 @@
     },
     {
       "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/dashboard-navigation.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
       "to": "components/dashboard/data-source-status.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/halfway-milestones.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/operations-overview.tsx",
       "kind": "import"
     },
     {
@@ -2400,12 +2522,22 @@
     },
     {
       "from": "components/dashboard/dashboard.tsx",
+      "to": "components/ui/tabs.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
       "to": "hooks/use-dashboard-refresh.ts",
       "kind": "import"
     },
     {
       "from": "components/dashboard/dashboard.tsx",
       "to": "lib/dashboard/filters.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "lib/dashboard/milestones.ts",
       "kind": "import"
     },
     {
@@ -2420,6 +2552,31 @@
     },
     {
       "from": "components/dashboard/data-source-status.tsx",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/halfway-milestones.tsx",
+      "to": "lib/dashboard/milestones.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/halfway-milestones.tsx",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/operations-overview.tsx",
+      "to": "components/dashboard/dashboard-navigation.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/operations-overview.tsx",
+      "to": "lib/dashboard/tools.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/operations-overview.tsx",
       "to": "lib/dashboard/types.ts",
       "kind": "import"
     },
@@ -2889,6 +3046,11 @@
       "kind": "import"
     },
     {
+      "from": "lib/dashboard/milestones.ts",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
       "from": "lib/dashboard/tools.ts",
       "to": "lib/dashboard/types.ts",
       "kind": "import"
@@ -2981,6 +3143,11 @@
     {
       "from": "tests/history-index.test.mjs",
       "to": "lib/dashboard/filters.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/milestones.test.mjs",
+      "to": "lib/dashboard/milestones.ts",
       "kind": "import"
     },
     {

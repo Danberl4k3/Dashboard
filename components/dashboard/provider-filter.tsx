@@ -33,9 +33,11 @@ export default function ProviderFilter({
         options.map((name) => (
           <label
             key={name}
+            htmlFor={`provider-${encodeURIComponent(name)}`}
             className="inline-flex cursor-pointer items-center gap-2 text-foreground hover:text-primary"
           >
             <Checkbox
+              id={`provider-${encodeURIComponent(name)}`}
               checked={value.includes(name)}
               onCheckedChange={(checked) =>
                 onChange(

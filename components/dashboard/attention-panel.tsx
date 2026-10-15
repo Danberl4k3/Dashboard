@@ -3,16 +3,20 @@
 import { AlertTriangle, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { attentionReason, recordAttention } from '@/lib/dashboard/tools';
 import type { WorkRecord } from '@/lib/dashboard/types';
+import { useState } from 'react';
 
 export function AttentionPanel({
   records,
   referenceDate,
   onSelect,
+  expanded = false,
 }: {
   records: WorkRecord[];
   referenceDate: string;
   onSelect: (record: WorkRecord) => void;
+  expanded?: boolean;
 }) {
+  const [visibleCount, setVisibleCount] = useState(12);
   const priorityRecords = records
     .filter((record) => recordAttention(record, referenceDate) !== null)
     .sort((a, b) =>
@@ -46,40 +50,55 @@ export function AttentionPanel({
         </span>
       </div>
       {priorityRecords.length ? (
-        <details className="mt-3">
+        <details className="mt-3" open={expanded || undefined}>
           <summary className="w-fit cursor-pointer text-xs font-semibold text-primary">
-            Revisar primeras {Math.min(4, priorityRecords.length)} prioridades
+            Revisar{' '}
+            {Math.min(expanded ? visibleCount : 4, priorityRecords.length)} de{' '}
+            {priorityRecords.length} prioridades
           </summary>
           <div className="mt-3 grid gap-2 md:grid-cols-2">
-            {priorityRecords.slice(0, 4).map((record) => (
-              <button
-                key={`${record.projectId}-${record.id}-${record.agency}`}
-                type="button"
-                onClick={() => onSelect(record)}
-                className="priority-record text-left"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="text-xs font-semibold break-words">
-                    {record.agency}
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {record.projectLabel} · {record.provider}
-                  </p>
-                  <p className="mt-1 text-xs text-amber-800">
-                    {attentionReason(record, referenceDate)}
-                    {recordAttention(record, referenceDate) === 'late'
-                      ? ` · ${record.endDate && record.endDate < referenceDate ? record.endDate : record.startDate}`
-                      : ''}
-                  </p>
-                </div>
-                <ArrowUpRight
-                  className="size-4 shrink-0 text-primary"
-                  aria-hidden="true"
-                />
-                <span className="sr-only">Ver detalle de {record.agency}</span>
-              </button>
-            ))}
+            {priorityRecords
+              .slice(0, expanded ? visibleCount : 4)
+              .map((record) => (
+                <button
+                  key={`${record.projectId}-${record.id}-${record.agency}`}
+                  type="button"
+                  onClick={() => onSelect(record)}
+                  className="priority-record text-left"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-semibold break-words">
+                      {record.agency}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {record.projectLabel} · {record.provider}
+                    </p>
+                    <p className="mt-1 text-xs text-amber-800">
+                      {attentionReason(record, referenceDate)}
+                      {recordAttention(record, referenceDate) === 'late'
+                        ? ` · ${record.endDate && record.endDate < referenceDate ? record.endDate : record.startDate}`
+                        : ''}
+                    </p>
+                  </div>
+                  <ArrowUpRight
+                    className="size-4 shrink-0 text-primary"
+                    aria-hidden="true"
+                  />
+                  <span className="sr-only">
+                    Ver detalle de {record.agency}
+                  </span>
+                </button>
+              ))}
           </div>
+          {expanded && priorityRecords.length > visibleCount && (
+            <button
+              type="button"
+              className="overview-link mt-4"
+              onClick={() => setVisibleCount((count) => count + 12)}
+            >
+              Mostrar 12 más
+            </button>
+          )}
         </details>
       ) : (
         <p className="mt-3 flex items-center gap-2 text-xs text-emerald-700">
