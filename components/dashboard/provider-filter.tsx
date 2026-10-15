@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 
 const providerDotStyles: Record<string, string> = {
@@ -36,12 +35,14 @@ export default function ProviderFilter({
             htmlFor={`provider-${encodeURIComponent(name)}`}
             className="inline-flex cursor-pointer items-center gap-2 text-foreground hover:text-primary"
           >
-            <Checkbox
+            <input
+              type="checkbox"
+              className="provider-checkbox"
               id={`provider-${encodeURIComponent(name)}`}
               checked={value.includes(name)}
-              onCheckedChange={(checked) =>
+              onChange={(event) =>
                 onChange(
-                  checked
+                  event.target.checked
                     ? [...value, name]
                     : value.filter((item) => item !== name),
                 )

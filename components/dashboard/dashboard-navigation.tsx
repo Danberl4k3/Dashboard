@@ -70,16 +70,8 @@ export function useDashboardNavigation() {
     if (previousTab.current === activeTab) return;
     previousTab.current = activeTab;
     const frame = window.requestAnimationFrame(() => {
-      const workspace = document.getElementById('dashboard-workspace');
-      const header = document.querySelector('.dashboard-header');
-      if (!workspace) return;
-      const top =
-        workspace.getBoundingClientRect().top +
-        window.scrollY -
-        (header?.getBoundingClientRect().height ?? 110) -
-        20;
       window.scrollTo({
-        top: Math.max(0, top),
+        top: 0,
         behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
           ? 'auto'
           : 'smooth',

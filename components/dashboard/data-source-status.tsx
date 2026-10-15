@@ -1,3 +1,4 @@
+import { formatLimaTimestamp } from '@/lib/dashboard/format';
 import type { DashboardSnapshot, ProjectStatus } from '@/lib/dashboard/types';
 
 interface DataSourceStatusProps {
@@ -32,10 +33,7 @@ export function DataSourceStatus({
   if (!overallMessage && !projectStatuses?.length) return null;
 
   return (
-    <div
-      className="mb-4 rounded-lg border border-border bg-card px-4 py-3 text-xs"
-      role="status"
-    >
+    <div className="data-source-strip" role="status">
       {overallMessage ? (
         <p className="mb-2 font-medium text-amber-800">{overallMessage}</p>
       ) : null}
@@ -54,16 +52,7 @@ export function DataSourceStatus({
               {projectStatusLabels[project.status]}
             </span>
             <time dateTime={project.updatedAt ?? undefined}>
-              {project.updatedAt &&
-              Number.isFinite(Date.parse(project.updatedAt))
-                ? new Intl.DateTimeFormat('es-PE', {
-                    timeZone: 'America/Lima',
-                    day: '2-digit',
-                    month: 'short',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  }).format(new Date(project.updatedAt))
-                : 'Sin fecha'}
+              {formatLimaTimestamp(project.updatedAt)}
             </time>
           </li>
         ))}

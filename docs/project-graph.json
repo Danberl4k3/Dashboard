@@ -11,8 +11,8 @@
     "app/api/dashboard/route.ts": {
       "path": "app/api/dashboard/route.ts",
       "kind": "source",
-      "size": 538,
-      "hash": "68cdec274f869c4246b9d8c25a5cf77e76998f27b54b72d2051d1b53eb9026fe",
+      "size": 553,
+      "hash": "d9a3a7d7b7c4beea9ff410b40ed97018be1281bdff178cf0c7b42ab39f5fe0b9",
       "exports": [
         "GET",
         "dynamic",
@@ -30,7 +30,7 @@
       "path": "app/data/cronograma.json",
       "kind": "json",
       "size": 124306,
-      "mtime": 1788353616460.0337,
+      "mtime": 1788456636206.1567,
       "importedBy": [
         "lib/data-sources/excel-snapshot-source.ts",
         "lib/data-sources/sharepoint-excel-source.ts"
@@ -39,8 +39,8 @@
     "app/globals.css": {
       "path": "app/globals.css",
       "kind": "css",
-      "size": 26582,
-      "mtime": 1791773977494.6768,
+      "size": 38812,
+      "mtime": 1792089431907.3977,
       "importedBy": [
         "app/layout.tsx"
       ]
@@ -48,8 +48,8 @@
     "app/layout.tsx": {
       "path": "app/layout.tsx",
       "kind": "source",
-      "size": 1524,
-      "hash": "c8a31cfa4bf9de18c5381ce77e0ca1144c951de5def2d8a1f80a8417ca071399",
+      "size": 1469,
+      "hash": "470f2517e96f89498ebeacfd3979b057b1b123e69f5145c7b48d65e169b717ad",
       "exports": [
         "RootLayout",
         "default",
@@ -67,8 +67,8 @@
     "app/loading.tsx": {
       "path": "app/loading.tsx",
       "kind": "source",
-      "size": 652,
-      "hash": "3f6e1c989514e58670eaaf5fd91956800aaef197c2dc6e3de77f39c441a2d0f5",
+      "size": 634,
+      "hash": "be3723d75af9f4975c49b79317b695be4a6d4d34aea5cd6e55e9889bb2d0fdfb",
       "exports": [
         "Loading",
         "default"
@@ -83,8 +83,8 @@
     "app/page.tsx": {
       "path": "app/page.tsx",
       "kind": "source",
-      "size": 422,
-      "hash": "4968529c99f5c6bb06e54d3e602c49677cd71365907699cdfce4edc87e5e49db",
+      "size": 433,
+      "hash": "ca3c5588be8ee3e0a04ae6528dec6b574d6ffa64123091664323d703ec7137d3",
       "exports": [
         "Home",
         "default",
@@ -103,8 +103,8 @@
     "components/dashboard/agency-card.tsx": {
       "path": "components/dashboard/agency-card.tsx",
       "kind": "source",
-      "size": 4805,
-      "hash": "7a0aea61b25291138b093fa94faa24219328282715f4582076e19b3e3d954293",
+      "size": 4693,
+      "hash": "8434398e8db65d9f1142a45e448d2387a33689b2f5bb9a3ab52343bbafa6bc99",
       "exports": [
         "AgencyCard"
       ],
@@ -127,14 +127,12 @@
     "components/dashboard/agency-columns.tsx": {
       "path": "components/dashboard/agency-columns.tsx",
       "kind": "source",
-      "size": 16296,
-      "hash": "6d1182f3246b7fd5b9f2e883b8df71cd145be4152f47114f6a2cf903ede74c72",
+      "size": 5884,
+      "hash": "2b4c8b514ae35038d0d18bc3c477103ead7d87b42b5a9d6f534f2f17c31dac1c",
       "exports": [
         "AgencyColumns"
       ],
       "dependencies": [
-        "components/ui/badge.tsx",
-        "components/ui/input.tsx",
         "lib/dashboard/tools.ts",
         "lib/dashboard/types.ts"
       ],
@@ -142,7 +140,7 @@
         "lucide-react",
         "react"
       ],
-      "lines": 398,
+      "lines": 169,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -150,8 +148,8 @@
     "components/dashboard/agency-sparkline.tsx": {
       "path": "components/dashboard/agency-sparkline.tsx",
       "kind": "source",
-      "size": 1492,
-      "hash": "f57a56265294ca9bf0d759397bacd078d513d087b26b19bd96e54695ebd6eb8e",
+      "size": 1512,
+      "hash": "a44c5a19307160c75dd9006c8629b6f5ccbfb3a8d1867bbb2e9d78815cbd6d5b",
       "exports": [
         "AgencySparkline"
       ],
@@ -171,8 +169,8 @@
     "components/dashboard/attention-panel.tsx": {
       "path": "components/dashboard/attention-panel.tsx",
       "kind": "source",
-      "size": 4118,
-      "hash": "4ad1a92b676e93b12a076b015ba737703a7b0a3a4542b556c3581b111d3397a0",
+      "size": 4229,
+      "hash": "da3a9e8afd5f9c613eebf8a238595f356ee4623559a76ea60de60c5a759ef2ae",
       "exports": [
         "AttentionPanel"
       ],
@@ -192,8 +190,8 @@
     "components/dashboard/circular-progress.tsx": {
       "path": "components/dashboard/circular-progress.tsx",
       "kind": "source",
-      "size": 2004,
-      "hash": "a112094e9e4900784551ea40784e3ae7fc3b09af4007c69db7d5d568e4856971",
+      "size": 1939,
+      "hash": "650a0f97e13a4c622d91768ca67672f3d9a2f5ddc089a54185b43f5d25e935f3",
       "exports": [
         "CircularProgress",
         "progressColor"
@@ -210,8 +208,8 @@
     "components/dashboard/dashboard-navigation.tsx": {
       "path": "components/dashboard/dashboard-navigation.tsx",
       "kind": "source",
-      "size": 3025,
-      "hash": "1a83736c1addfbd00b7a857b9409677506ef904df47392956daae5f6272c288a",
+      "size": 2681,
+      "hash": "b22dae259f2a2b774419842937866f60449fab67fe532052c5f11654b904d60c",
       "exports": [
         "DashboardTab",
         "dashboardTabs",
@@ -222,17 +220,44 @@
         "lucide-react",
         "react"
       ],
-      "lines": 112,
+      "lines": 104,
       "importedBy": [
+        "components/dashboard/dashboard-shell.tsx",
         "components/dashboard/dashboard.tsx",
         "components/dashboard/operations-overview.tsx"
+      ]
+    },
+    "components/dashboard/dashboard-shell.tsx": {
+      "path": "components/dashboard/dashboard-shell.tsx",
+      "kind": "source",
+      "size": 6615,
+      "hash": "0bae5611fba0db2894fc9624d5f221eae56f3e121c4e3d56cb4be3e29d7eaac8",
+      "exports": [
+        "DashboardHeading",
+        "DashboardSidebar",
+        "useWideDashboard"
+      ],
+      "dependencies": [
+        "components/dashboard/dashboard-navigation.tsx",
+        "components/ui/button.tsx",
+        "components/ui/tabs.tsx",
+        "lib/dashboard/format.ts",
+        "lib/dashboard/types.ts"
+      ],
+      "externalDependencies": [
+        "lucide-react",
+        "react"
+      ],
+      "lines": 224,
+      "importedBy": [
+        "components/dashboard/dashboard.tsx"
       ]
     },
     "components/dashboard/dashboard.tsx": {
       "path": "components/dashboard/dashboard.tsx",
       "kind": "source",
-      "size": 84020,
-      "hash": "63250e31f318b10d71d6482e83b5b068197ee08b868acd059854307dc9eb53c2",
+      "size": 79767,
+      "hash": "8b45edff4393ca2ae46b1ce88cd478b44216e282a46c9a8ddc47629b5205620f",
       "exports": [
         "Dashboard"
       ],
@@ -242,6 +267,7 @@
         "components/dashboard/agency-sparkline.tsx",
         "components/dashboard/attention-panel.tsx",
         "components/dashboard/dashboard-navigation.tsx",
+        "components/dashboard/dashboard-shell.tsx",
         "components/dashboard/data-source-status.tsx",
         "components/dashboard/halfway-milestones.tsx",
         "components/dashboard/operations-overview.tsx",
@@ -266,7 +292,7 @@
         "react",
         "recharts"
       ],
-      "lines": 2102,
+      "lines": 2029,
       "importedBy": [
         "app/page.tsx"
       ]
@@ -274,16 +300,17 @@
     "components/dashboard/data-source-status.tsx": {
       "path": "components/dashboard/data-source-status.tsx",
       "kind": "source",
-      "size": 2308,
-      "hash": "2c64f0c49969ed7dc75764cb0c93ca517776856ff168e73c7b48908143248672",
+      "size": 1931,
+      "hash": "bc13c70bc888e826f8de6144cfe66c747ddb50405c266e677c670aff99e8ee91",
       "exports": [
         "DataSourceStatus"
       ],
       "dependencies": [
+        "lib/dashboard/format.ts",
         "lib/dashboard/types.ts"
       ],
       "externalDependencies": [],
-      "lines": 74,
+      "lines": 63,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -291,8 +318,8 @@
     "components/dashboard/halfway-milestones.tsx": {
       "path": "components/dashboard/halfway-milestones.tsx",
       "kind": "source",
-      "size": 3626,
-      "hash": "0dc971ff2b082f417c41acbdfb044878447326db031fc08bab59683297fa9c60",
+      "size": 3694,
+      "hash": "cb5f8acf33090f4f318c9ec0dd92921a86abea859f3190171b4082073ea80390",
       "exports": [
         "HalfwayMilestones"
       ],
@@ -311,8 +338,8 @@
     "components/dashboard/operations-overview.tsx": {
       "path": "components/dashboard/operations-overview.tsx",
       "kind": "source",
-      "size": 7848,
-      "hash": "457c248e23e8b8a6a209979bc62b09e5b29672dfefc06ff7a2fd248b337a9d51",
+      "size": 11352,
+      "hash": "465f79a5ceb3cf29e43ac63ca137fe94fe4e52a16eb8358922b672170c6dac59",
       "exports": [
         "OperationsOverview"
       ],
@@ -324,7 +351,7 @@
       "externalDependencies": [
         "lucide-react"
       ],
-      "lines": 250,
+      "lines": 334,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -332,20 +359,19 @@
     "components/dashboard/provider-filter.tsx": {
       "path": "components/dashboard/provider-filter.tsx",
       "kind": "source",
-      "size": 2022,
-      "hash": "6112590471c4e5bca21598df6653596e8d8db26f2b2e547cc56d5ab296f4dd34",
+      "size": 2044,
+      "hash": "db1ba0cc2c300e5d1a84561a09d8dad82d714a8e534df56e1bd7e625e64ea62c",
       "exports": [
         "ProviderFilter",
         "default"
       ],
       "dependencies": [
-        "components/ui/button.tsx",
-        "components/ui/checkbox.tsx"
+        "components/ui/button.tsx"
       ],
       "externalDependencies": [
         "react"
       ],
-      "lines": 69,
+      "lines": 70,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -353,8 +379,8 @@
     "components/dashboard/stage-stepper.tsx": {
       "path": "components/dashboard/stage-stepper.tsx",
       "kind": "source",
-      "size": 2154,
-      "hash": "8dec954b43c6895522da956228497a0ee216078fda104cb14c5b4540d2e77439",
+      "size": 2219,
+      "hash": "9208c5bc52fcc3216eeec7ccc116853a8ba65ff5719673e71c2eecc392d65e15",
       "exports": [
         "StageStepper",
         "stageDefinitions"
@@ -372,8 +398,8 @@
     "components/ui/accordion.tsx": {
       "path": "components/ui/accordion.tsx",
       "kind": "source",
-      "size": 2664,
-      "hash": "33e1c60ba503f4eb36f9a8b1f68b236174b11656d8efea6bac65abddda2f9019",
+      "size": 2742,
+      "hash": "20df8ccd965c317376fd70c39479b3ddca376ebff40f08ab6f684f51a2afedb4",
       "exports": [
         "Accordion",
         "AccordionContent",
@@ -393,8 +419,8 @@
     "components/ui/alert-dialog.tsx": {
       "path": "components/ui/alert-dialog.tsx",
       "kind": "source",
-      "size": 5301,
-      "hash": "ed0f1fc432bca4c72f9dd8741ae2268a00d2d3429ff1149bf463c4271b13d8e9",
+      "size": 5488,
+      "hash": "b78e7cf80ba49b90e9f69184eaa7090026d9783eaa7761060c693a945a502d4f",
       "exports": [
         "AlertDialog",
         "AlertDialogAction",
@@ -423,8 +449,8 @@
     "components/ui/alert.tsx": {
       "path": "components/ui/alert.tsx",
       "kind": "source",
-      "size": 2060,
-      "hash": "e760c470414c9e617d7292094146d906352fee3b1526b790a611d4a118e79196",
+      "size": 2136,
+      "hash": "f1f30d8da19c09ef99054886461c82143f168bbde04009a6f16b609f8af93f04",
       "exports": [
         "Alert",
         "AlertAction",
@@ -444,8 +470,8 @@
     "components/ui/aspect-ratio.tsx": {
       "path": "components/ui/aspect-ratio.tsx",
       "kind": "source",
-      "size": 406,
-      "hash": "b7fb499905e441a0602392ce118828425ad059079060109694d01f9fac00ad20",
+      "size": 428,
+      "hash": "fd7999d9474e909cc9272f6c633c1266df0da86613985db1dc724f3371f8b4dd",
       "exports": [
         "AspectRatio"
       ],
@@ -459,8 +485,8 @@
     "components/ui/attachment.tsx": {
       "path": "components/ui/attachment.tsx",
       "kind": "source",
-      "size": 6132,
-      "hash": "dcb9e899f1322158f016d75c400fa8cce9b797ea49bec65528bac686cee2ec5c",
+      "size": 6339,
+      "hash": "20f4518e6dde10e1ef09b681d8f60a07fb9af80c76b9153b644725b2553cbdb7",
       "exports": [
         "Attachment",
         "AttachmentAction",
@@ -487,8 +513,8 @@
     "components/ui/avatar.tsx": {
       "path": "components/ui/avatar.tsx",
       "kind": "source",
-      "size": 3056,
-      "hash": "342f32b683937b826cdff2999d5e3057836d459aa43eadb0c3538b818d195b9a",
+      "size": 3165,
+      "hash": "5f701c7947c299126ddab74167e9bfee29c0369ca8ffc2815da48b69874eecf1",
       "exports": [
         "Avatar",
         "AvatarBadge",
@@ -510,8 +536,8 @@
     "components/ui/badge.tsx": {
       "path": "components/ui/badge.tsx",
       "kind": "source",
-      "size": 1984,
-      "hash": "89951252c9ec778d117fb3d882f1ca5325cd1823ffd4ac200d8aa83bd6a3086c",
+      "size": 1932,
+      "hash": "08e3f057f81b0dc394265e2a68b6b5b2a195ecc3d4ae06f17ab09c177d41140a",
       "exports": [
         "Badge",
         "badgeVariants"
@@ -526,15 +552,14 @@
       "lines": 53,
       "importedBy": [
         "components/dashboard/agency-card.tsx",
-        "components/dashboard/agency-columns.tsx",
         "components/dashboard/dashboard.tsx"
       ]
     },
     "components/ui/breadcrumb.tsx": {
       "path": "components/ui/breadcrumb.tsx",
       "kind": "source",
-      "size": 2602,
-      "hash": "b28b76d6f8d0feafbbeff2220cf83f9a6b03d8c81f0145b3af4c7d19933ab2c0",
+      "size": 2724,
+      "hash": "e68407a81a9ec90bb24ad4189fd2d6284ad07d8c86e474c28686174d01326a88",
       "exports": [
         "Breadcrumb",
         "BreadcrumbEllipsis",
@@ -558,8 +583,8 @@
     "components/ui/bubble.tsx": {
       "path": "components/ui/bubble.tsx",
       "kind": "source",
-      "size": 4828,
-      "hash": "dfb9f52ae3b89e4a419b336c3893ab6fb658fc324fb402759d878d54e3b2db5a",
+      "size": 4956,
+      "hash": "32b8effc1af0751877bbed4653db9d9b056a08ed241aeb9d3ac662879bac6e2f",
       "exports": [
         "Bubble",
         "BubbleContent",
@@ -580,8 +605,8 @@
     "components/ui/button-group.tsx": {
       "path": "components/ui/button-group.tsx",
       "kind": "source",
-      "size": 2494,
-      "hash": "79ad8fb6644a775cc49131c1aa737ca26cae6a563beec0fa52ef6e8d85202fab",
+      "size": 2581,
+      "hash": "6d4c96965656a8de32c00a6d4eccb3ba9904a2a4ebd04c4b849f3085fb379f27",
       "exports": [
         "ButtonGroup",
         "ButtonGroupSeparator",
@@ -602,8 +627,8 @@
     "components/ui/button.tsx": {
       "path": "components/ui/button.tsx",
       "kind": "source",
-      "size": 3199,
-      "hash": "d54e1b33e9158d5f410402ff50e445c576265bf2a030d55241fd0a34d9bd798f",
+      "size": 3141,
+      "hash": "04836ea70d261151f9f7f55c3ca0f1ff06cfbddd9acad7371e89f239e78a7854",
       "exports": [
         "Button",
         "buttonVariants"
@@ -617,6 +642,7 @@
       ],
       "lines": 59,
       "importedBy": [
+        "components/dashboard/dashboard-shell.tsx",
         "components/dashboard/dashboard.tsx",
         "components/dashboard/provider-filter.tsx",
         "components/ui/alert-dialog.tsx",
@@ -636,8 +662,8 @@
     "components/ui/calendar.tsx": {
       "path": "components/ui/calendar.tsx",
       "kind": "source",
-      "size": 8503,
-      "hash": "e7bc682eff8f2215e6b0aab40d1afb7ee927c5f5bef348ccff207631b9261658",
+      "size": 8734,
+      "hash": "63d2ec465a37a791692d50448e9f2315fcf16ef686452f99bd2931604fdb4063",
       "exports": [
         "Calendar",
         "CalendarDayButton"
@@ -657,8 +683,8 @@
     "components/ui/card.tsx": {
       "path": "components/ui/card.tsx",
       "kind": "source",
-      "size": 2717,
-      "hash": "1285c9d8b6542f7cd9bdfc1c5a79a3223c829b5695f939dc551ae28d8e9be562",
+      "size": 2614,
+      "hash": "5f52a2e5c8a142f047fcd1b08d1ec726968732a38b2ae73b396e3c5b50ecf307",
       "exports": [
         "Card",
         "CardAction",
@@ -683,8 +709,8 @@
     "components/ui/carousel.tsx": {
       "path": "components/ui/carousel.tsx",
       "kind": "source",
-      "size": 5727,
-      "hash": "7444126492d4e0b85b1270f0d83a0955350fa95b3d3fb7b88edc2a5c2b4e5d14",
+      "size": 5969,
+      "hash": "d00e374d1a5f514798a95c45d9cf5867169bd2662456d5a9855c0651a1bc93d2",
       "exports": [
         "Carousel",
         "CarouselApi",
@@ -709,8 +735,8 @@
     "components/ui/chart.tsx": {
       "path": "components/ui/chart.tsx",
       "kind": "source",
-      "size": 11355,
-      "hash": "24bb587ad0f2fdbe1075a4b6a97ba62bcb7ecd0b7baba42f3055e7a3d1ba029e",
+      "size": 11373,
+      "hash": "14ae75b90fb1f2c6456dc8dc4b70a59dad674b59178829d727fb4bc42188d5fd",
       "exports": [
         "ChartConfig",
         "ChartContainer",
@@ -736,8 +762,8 @@
     "components/ui/checkbox.tsx": {
       "path": "components/ui/checkbox.tsx",
       "kind": "source",
-      "size": 1589,
-      "hash": "c9044a363f747ac8e93db4031abc83d4562bab4789f56f33800f00586e8fa9b2",
+      "size": 1561,
+      "hash": "d924b53654e9abf4d1144f7b233b8bf05fad37b3f7f0a99592f83669ad223ab6",
       "exports": [
         "Checkbox"
       ],
@@ -749,15 +775,13 @@
         "lucide-react"
       ],
       "lines": 29,
-      "importedBy": [
-        "components/dashboard/provider-filter.tsx"
-      ]
+      "importedBy": []
     },
     "components/ui/collapsible.tsx": {
       "path": "components/ui/collapsible.tsx",
       "kind": "source",
-      "size": 664,
-      "hash": "3fdf7ef1ca89c4d85de5ecbb25813d0f572003a53b021baf43c5f3523e48ec97",
+      "size": 685,
+      "hash": "3eb3ee736aaaef892aebbf51d9d676c89f8642d278b3f46fad6760e22cceb5fa",
       "exports": [
         "Collapsible",
         "CollapsibleContent",
@@ -773,8 +797,8 @@
     "components/ui/combobox.tsx": {
       "path": "components/ui/combobox.tsx",
       "kind": "source",
-      "size": 9135,
-      "hash": "282041e2e8c52cc12e7bbc717bbd3f8c9c5ba18e7fa75b97053bc79687e1181e",
+      "size": 9435,
+      "hash": "8cb5fd7d7ad0c39c8dbf9457ead815396bc6e907250ef8a56fb097b9a2fb05f0",
       "exports": [
         "Combobox",
         "ComboboxChip",
@@ -809,8 +833,8 @@
     "components/ui/command.tsx": {
       "path": "components/ui/command.tsx",
       "kind": "source",
-      "size": 5029,
-      "hash": "9c1eae65aa105935a34c6b736f673b71a2ef939dde53dce29d986221edbf1f9f",
+      "size": 5222,
+      "hash": "b421fa62b0013f4dc4baeb04bbddeb841406cbca8c9df4804aba83e55e11640c",
       "exports": [
         "Command",
         "CommandDialog",
@@ -838,8 +862,8 @@
     "components/ui/context-menu.tsx": {
       "path": "components/ui/context-menu.tsx",
       "kind": "source",
-      "size": 8166,
-      "hash": "05c3646b452f5e3b9eb952eeba3d90657606d2b0875cb77652cdb5eadba0eb5c",
+      "size": 8438,
+      "hash": "2d15c8755aebca4ec661c3a8b0437c7f9a1ba6c304337edd9f69a9aee38361de",
       "exports": [
         "ContextMenu",
         "ContextMenuCheckboxItem",
@@ -871,8 +895,8 @@
     "components/ui/dialog.tsx": {
       "path": "components/ui/dialog.tsx",
       "kind": "source",
-      "size": 4087,
-      "hash": "8bc85def62538b4e62e8530c6b0ba167a192c38519c05f104bf6e10de73b811f",
+      "size": 4246,
+      "hash": "f732b9a008dd9ffda5c6377d07f1846e063a5fa21854a0a648df102b715c58f5",
       "exports": [
         "Dialog",
         "DialogClose",
@@ -902,8 +926,8 @@
     "components/ui/direction.tsx": {
       "path": "components/ui/direction.tsx",
       "kind": "source",
-      "size": 105,
-      "hash": "2dea8a95accb1723db2454ccc858697d5b1f1454568cf4da5e8fcbd0cf7cc1ee",
+      "size": 111,
+      "hash": "678a0fcddf8a404ca74374ad7d08151fbd0ae64bd758906cb231bb21c6829553",
       "exports": [
         "DirectionProvider",
         "useDirection"
@@ -918,8 +942,8 @@
     "components/ui/drawer.tsx": {
       "path": "components/ui/drawer.tsx",
       "kind": "source",
-      "size": 11396,
-      "hash": "b7ac53d0e5d1fed25fc3f2ac5f5a36e247ca684c677ac376829fa8a7c039b79e",
+      "size": 11624,
+      "hash": "f5053cf5f354e184de33ecef4038498d15b279176c45c5a071c92d315520094b",
       "exports": [
         "Drawer",
         "DrawerClose",
@@ -946,8 +970,8 @@
     "components/ui/dropdown-menu.tsx": {
       "path": "components/ui/dropdown-menu.tsx",
       "kind": "source",
-      "size": 8809,
-      "hash": "efc088f3d79f64cf96e222701ae23dcf385b53947b3cd57ffb7be6f5dadcbfe2",
+      "size": 9081,
+      "hash": "dc5603c124190132b0034e212ee7e28279a8f6f2c5aa02b2052cf2a937502bf4",
       "exports": [
         "DropdownMenu",
         "DropdownMenuCheckboxItem",
@@ -981,8 +1005,8 @@
     "components/ui/empty.tsx": {
       "path": "components/ui/empty.tsx",
       "kind": "source",
-      "size": 2415,
-      "hash": "bf54bac4881b79f6a53f55e70c18640f58a058add88aed763c71be35c4f64f59",
+      "size": 2519,
+      "hash": "2300d1409ebb5dcd440d7d9ed7608fff54340026825d3fb044097a526f8474a1",
       "exports": [
         "Empty",
         "EmptyContent",
@@ -1003,8 +1027,8 @@
     "components/ui/field.tsx": {
       "path": "components/ui/field.tsx",
       "kind": "source",
-      "size": 6303,
-      "hash": "79023ca89aae39f9cffa83a9483c9c672099b4547cc821486283db61c6ae9327",
+      "size": 6541,
+      "hash": "f5bd4e8d824d9c14bb6bbe2a4415e1c752506a9b672da86e7d47ebd664f1813e",
       "exports": [
         "Field",
         "FieldContent",
@@ -1032,8 +1056,8 @@
     "components/ui/hover-card.tsx": {
       "path": "components/ui/hover-card.tsx",
       "kind": "source",
-      "size": 1863,
-      "hash": "d8cb7270c5893213fc00b5f270f9bc461e2d7ce5b81f77b8778253a1aeda6a2c",
+      "size": 1914,
+      "hash": "d6b7c9e5ed51a17c45f376fe5945d4d2c48727d2a6491cf218660503923596de",
       "exports": [
         "HoverCard",
         "HoverCardContent",
@@ -1051,8 +1075,8 @@
     "components/ui/input-group.tsx": {
       "path": "components/ui/input-group.tsx",
       "kind": "source",
-      "size": 5289,
-      "hash": "2e65ddecb4401220be374cc6cfc42344538266cafeb2e590b3c760c7ed6b490a",
+      "size": 5447,
+      "hash": "a135a094cf93fd94a8c5bd062c182078137e0a59b2af944dc6af5e5a51a8a3c8",
       "exports": [
         "InputGroup",
         "InputGroupAddon",
@@ -1080,8 +1104,8 @@
     "components/ui/input-otp.tsx": {
       "path": "components/ui/input-otp.tsx",
       "kind": "source",
-      "size": 2558,
-      "hash": "867f568259caac95f682d128d72e681b3fe7c31701a396eacc9284401d917a6a",
+      "size": 2644,
+      "hash": "b847456b73ae795b55bc8f23a2d2c25bb637d9d435444d11101f9f41ae61fbb4",
       "exports": [
         "InputOTP",
         "InputOTPGroup",
@@ -1102,8 +1126,8 @@
     "components/ui/input.tsx": {
       "path": "components/ui/input.tsx",
       "kind": "source",
-      "size": 1082,
-      "hash": "934a5af5b055c0f3d33e42252b59454b805d42e766c4d98593799a82f67978e0",
+      "size": 1062,
+      "hash": "d6ba5e38c5339a91441d7563348122be4fd279da5128cd2738faf8f7a15e6f15",
       "exports": [
         "Input"
       ],
@@ -1116,7 +1140,6 @@
       ],
       "lines": 21,
       "importedBy": [
-        "components/dashboard/agency-columns.tsx",
         "components/dashboard/dashboard.tsx",
         "components/ui/input-group.tsx",
         "components/ui/sidebar.tsx"
@@ -1125,8 +1148,8 @@
     "components/ui/item.tsx": {
       "path": "components/ui/item.tsx",
       "kind": "source",
-      "size": 4888,
-      "hash": "9c5e45e6c4aae5b9c4c1304e1f1208d32681ab616a6e0de9de6e0d6b22690592",
+      "size": 5089,
+      "hash": "94ffd641acef671d225d5e345766ac34c684fc6042bb7b447af669ee82610423",
       "exports": [
         "Item",
         "ItemActions",
@@ -1154,8 +1177,8 @@
     "components/ui/kbd.tsx": {
       "path": "components/ui/kbd.tsx",
       "kind": "source",
-      "size": 842,
-      "hash": "bdfb38a4f7b9b604e196b5cee0d86f12311dae72946f0dbf5928c8ad0638178f",
+      "size": 868,
+      "hash": "b9b9eadd3b2510d88e0c2442bd07bd6aaec477dbd07a2a0375abd9714f9f8919",
       "exports": [
         "Kbd",
         "KbdGroup"
@@ -1170,8 +1193,8 @@
     "components/ui/label.tsx": {
       "path": "components/ui/label.tsx",
       "kind": "source",
-      "size": 524,
-      "hash": "e4a6fb662c44a44c468d16d79d02b3a3e5bf7b77bd50aef1e586c4d9613df0f6",
+      "size": 544,
+      "hash": "dd56d728bc68f25e0f2d3d484139a0fa9479e5ceec76410a7505c36745fff494",
       "exports": [
         "Label"
       ],
@@ -1189,8 +1212,8 @@
     "components/ui/marker.tsx": {
       "path": "components/ui/marker.tsx",
       "kind": "source",
-      "size": 1962,
-      "hash": "cd1e872384cf5001e48b4dc3cc2bb011eba9700561d41c83a89e872b60baf175",
+      "size": 2033,
+      "hash": "8c393f64a0434cccb527c6338903da7eb34015e0d8431e0a0c4f6a72051962b8",
       "exports": [
         "Marker",
         "MarkerContent",
@@ -1211,8 +1234,8 @@
     "components/ui/menubar.tsx": {
       "path": "components/ui/menubar.tsx",
       "kind": "source",
-      "size": 8315,
-      "hash": "a3715f8e8b78261f5784929c532e100759c58e831c91e842438730797bc9a124",
+      "size": 8599,
+      "hash": "1cabede602d38da170766297b39da60d686caafee021ff5d37714d11b3b474d9",
       "exports": [
         "Menubar",
         "MenubarCheckboxItem",
@@ -1246,8 +1269,8 @@
     "components/ui/message-scroller.tsx": {
       "path": "components/ui/message-scroller.tsx",
       "kind": "source",
-      "size": 4070,
-      "hash": "9512c586d1b0885cf3ae4f1c3dd4281cbdfec7428fe98ff48a66b4ba2a7319f4",
+      "size": 4200,
+      "hash": "250b38e09a6459037db02209671d855eea2955d7d1d5765c489a0f18566a8ba5",
       "exports": [
         "MessageScroller",
         "MessageScrollerButton",
@@ -1274,8 +1297,8 @@
     "components/ui/message.tsx": {
       "path": "components/ui/message.tsx",
       "kind": "source",
-      "size": 2246,
-      "hash": "2fedcc64ed8563a44f6697615e77574d96f819fe6e5e2fa8a555e30f8ed6bbd7",
+      "size": 2338,
+      "hash": "7b9ae2dacc508d421036a5490d6d75c6da975e05578c91389c272e5f7dfc584b",
       "exports": [
         "Message",
         "MessageAvatar",
@@ -1296,8 +1319,8 @@
     "components/ui/native-select.tsx": {
       "path": "components/ui/native-select.tsx",
       "kind": "source",
-      "size": 2188,
-      "hash": "ef794344ea87a0097b57ca21f9929f937f2cfe2bb0e0bbd045400f5593f2a830",
+      "size": 2123,
+      "hash": "4a3fa3617287e0e0043cd017cd1ada55485dac1b7fa980b1b1249296e35e151a",
       "exports": [
         "NativeSelect",
         "NativeSelectOptGroup",
@@ -1318,8 +1341,8 @@
     "components/ui/navigation-menu.tsx": {
       "path": "components/ui/navigation-menu.tsx",
       "kind": "source",
-      "size": 7436,
-      "hash": "c8e64bf5241145b512ae18f1062da8275691edf927736496a3860bec76ad6fa1",
+      "size": 7607,
+      "hash": "042d5b109dac67727565aa465118cac76c80805856cc633aa6c312409168e346",
       "exports": [
         "NavigationMenu",
         "NavigationMenuContent",
@@ -1345,8 +1368,8 @@
     "components/ui/pagination.tsx": {
       "path": "components/ui/pagination.tsx",
       "kind": "source",
-      "size": 2928,
-      "hash": "1f3c1713e8824cca7c3c0edacf9da7b0114bfda58640771b8fe0bc6179b370ce",
+      "size": 3061,
+      "hash": "837976b6d017f66459b5adf83977e2a9ada3bc100a0ecde76a6e74dac47802b3",
       "exports": [
         "Pagination",
         "PaginationContent",
@@ -1370,8 +1393,8 @@
     "components/ui/popover.tsx": {
       "path": "components/ui/popover.tsx",
       "kind": "source",
-      "size": 2586,
-      "hash": "7376624438588e2d64b6e0c5cdf82cbc5fd4530bbcf1f0235c5f3ee08d12e877",
+      "size": 2676,
+      "hash": "27a4e51e2695645ba20f2cf113625136e9490cdba4f2470a042388279fd02c56",
       "exports": [
         "Popover",
         "PopoverContent",
@@ -1393,8 +1416,8 @@
     "components/ui/progress.tsx": {
       "path": "components/ui/progress.tsx",
       "kind": "source",
-      "size": 1751,
-      "hash": "0d8ddec9731940e104b851cf3ac67d2fa8589b289824317a9e8f326e090ba65a",
+      "size": 1834,
+      "hash": "bcc086c23be7e9a4cfe8a65444b8f5d949e29ff9ca38e1bb522b34d68f04035f",
       "exports": [
         "Progress",
         "ProgressIndicator",
@@ -1414,8 +1437,8 @@
     "components/ui/radio-group.tsx": {
       "path": "components/ui/radio-group.tsx",
       "kind": "source",
-      "size": 1843,
-      "hash": "43f2d6c2f5bdd4a26c57d93e6f141be20472f9bb8777d9a0d61cd8a5e281a999",
+      "size": 1881,
+      "hash": "1d14450bd2792430076a0e85c9b5d85adb51bceebcd7e236554076884a1c3dd1",
       "exports": [
         "RadioGroup",
         "RadioGroupItem"
@@ -1432,8 +1455,8 @@
     "components/ui/resizable.tsx": {
       "path": "components/ui/resizable.tsx",
       "kind": "source",
-      "size": 1681,
-      "hash": "ea7b85817d4dc70866e0bcf15264e7e1bd7e1893eb4404261fbc23a4d6ff9029",
+      "size": 1731,
+      "hash": "e79b3499dbc4e4c67ebb5174334ce099ab2c9e8d76e0d3e907d4388b7b3490e5",
       "exports": [
         "ResizableHandle",
         "ResizablePanel",
@@ -1451,8 +1474,8 @@
     "components/ui/scroll-area.tsx": {
       "path": "components/ui/scroll-area.tsx",
       "kind": "source",
-      "size": 1632,
-      "hash": "730c4cc49f8f1b705eb1389cd32c774056a0a2a7a48a9b092cbe44c608be3a0b",
+      "size": 1687,
+      "hash": "e628b4da20e27815310ab4d6a525ce56e959cc4f18a34f98ae47563d81f03cd2",
       "exports": [
         "ScrollArea",
         "ScrollBar"
@@ -1470,8 +1493,8 @@
     "components/ui/select.tsx": {
       "path": "components/ui/select.tsx",
       "kind": "source",
-      "size": 6700,
-      "hash": "45489c502a21fdd5271481d64ad8f762181c9653d8d26bdc6f75450b78c3c852",
+      "size": 6902,
+      "hash": "73ee89922eb71a384a579df681c1d512d92038d156590377b2485369566284f9",
       "exports": [
         "Select",
         "SelectContent",
@@ -1498,8 +1521,8 @@
     "components/ui/separator.tsx": {
       "path": "components/ui/separator.tsx",
       "kind": "source",
-      "size": 551,
-      "hash": "92ad5065f03d7edc98f367e729f3ec84ece1d99ee8cd0d3a8137f266d4ab3d8a",
+      "size": 576,
+      "hash": "bb831d9511be1f318d4e058db0692399727ab56d88f6650977377ebacbc93b0f",
       "exports": [
         "Separator"
       ],
@@ -1520,8 +1543,8 @@
     "components/ui/sheet.tsx": {
       "path": "components/ui/sheet.tsx",
       "kind": "source",
-      "size": 4446,
-      "hash": "adb432b6f9d7a4733caa45ba8bf510a8a7ff0f6d0dd3aa1f013959fb61268234",
+      "size": 4583,
+      "hash": "3c46175017296d486e6e5538a489c011f9977e60b67e37e1682a956b502865be",
       "exports": [
         "Sheet",
         "SheetClose",
@@ -1549,8 +1572,8 @@
     "components/ui/sidebar.tsx": {
       "path": "components/ui/sidebar.tsx",
       "kind": "source",
-      "size": 21779,
-      "hash": "aa3322ca63f098aa1d2abf750f9d097da07362fce25939357f2cefc9b6a03988",
+      "size": 22502,
+      "hash": "b4c1061287417b4665ca44c1b9b51d53025dd9f4b2a26b4c994dfd6d4865c7a0",
       "exports": [
         "Sidebar",
         "SidebarContent",
@@ -1599,8 +1622,8 @@
     "components/ui/skeleton.tsx": {
       "path": "components/ui/skeleton.tsx",
       "kind": "source",
-      "size": 278,
-      "hash": "4c342102b2bbf5bd8c04fa151fe5c13c42faee2f9587a3586c27322020ca35d1",
+      "size": 291,
+      "hash": "7e213f989652eb736739dfcf5248335504547a594eeb7869c55e8c0621fc6966",
       "exports": [
         "Skeleton"
       ],
@@ -1617,8 +1640,8 @@
     "components/ui/slider.tsx": {
       "path": "components/ui/slider.tsx",
       "kind": "source",
-      "size": 1879,
-      "hash": "af657e73d672f4dd205f19abf151d21a172cf36abfdca49fd7014a20e12367a9",
+      "size": 1931,
+      "hash": "f76dd9625b6453c9c761f651890d0324cd9b6bd181ac6b6b4a385bafd13fb61d",
       "exports": [
         "Slider"
       ],
@@ -1634,8 +1657,8 @@
     "components/ui/spinner.tsx": {
       "path": "components/ui/spinner.tsx",
       "kind": "source",
-      "size": 360,
-      "hash": "8ddbb330e5564a1f53026da36c2322ed4b027687e91a88f63348ab10f26ae0cb",
+      "size": 376,
+      "hash": "bc1b1480fb37227bc66c69eed050585113fc37ce9e0c4e16c42db9f98b6994db",
       "exports": [
         "Spinner"
       ],
@@ -1651,8 +1674,8 @@
     "components/ui/switch.tsx": {
       "path": "components/ui/switch.tsx",
       "kind": "source",
-      "size": 1818,
-      "hash": "04b085443a1c6a72d408e6eb7dd45df881ca27814415b81b39f614806b52c8fc",
+      "size": 1850,
+      "hash": "cda57e3b380185d3ffe4195856bc533f595eccbd01b103a2bb1d9a0635d6c51a",
       "exports": [
         "Switch"
       ],
@@ -1668,8 +1691,8 @@
     "components/ui/table.tsx": {
       "path": "components/ui/table.tsx",
       "kind": "source",
-      "size": 2604,
-      "hash": "0b03ef95892922c4dbfbd903c7df44ae18f89c5fbdafb0734892fd368e4be86a",
+      "size": 2488,
+      "hash": "3e3339693080a1abd481dae8921c8ad988e75740c5039582b43700b824fc6a03",
       "exports": [
         "Table",
         "TableBody",
@@ -1694,8 +1717,8 @@
     "components/ui/tabs.tsx": {
       "path": "components/ui/tabs.tsx",
       "kind": "source",
-      "size": 3510,
-      "hash": "dd914d769bc223b5d5ea56839a7752e534eb475f8d2897d5675606c368bbca1f",
+      "size": 3592,
+      "hash": "e9e02515c9212cfd5fa149f67668c4117a0b1b961c9752eaa4d7547e829da998",
       "exports": [
         "Tabs",
         "TabsContent",
@@ -1712,14 +1735,15 @@
       ],
       "lines": 83,
       "importedBy": [
+        "components/dashboard/dashboard-shell.tsx",
         "components/dashboard/dashboard.tsx"
       ]
     },
     "components/ui/textarea.tsx": {
       "path": "components/ui/textarea.tsx",
       "kind": "source",
-      "size": 847,
-      "hash": "7ae7f0f5d907be24658652c771fee1685193102bf3200aafbf578d144d379fbf",
+      "size": 865,
+      "hash": "bd2878c7058d27bca7d97a01cc4dd4868e097184005ebf8b4176db93b2f3e22b",
       "exports": [
         "Textarea"
       ],
@@ -1737,8 +1761,8 @@
     "components/ui/toast.tsx": {
       "path": "components/ui/toast.tsx",
       "kind": "source",
-      "size": 7353,
-      "hash": "9126b09f47f0b117bf748cf19aaa4987a1f72d0813d10bfc4b4b0128e6439e48",
+      "size": 7582,
+      "hash": "078c918d7a63cfc2de51c7b5ad8510b2182bbb4b21f16d9cb6b7f11bfee9e8f8",
       "exports": [
         "Toast",
         "ToastAction",
@@ -1769,8 +1793,8 @@
     "components/ui/toggle-group.tsx": {
       "path": "components/ui/toggle-group.tsx",
       "kind": "source",
-      "size": 3201,
-      "hash": "9b006523be0fe3230cd75f7adf78a501829d594fd3506c56c55bb38211ff1850",
+      "size": 3290,
+      "hash": "6a84a2acf3ab88692c568a62be8198a26c0c5a58084bdbf19d17b1efa3f68726",
       "exports": [
         "ToggleGroup",
         "ToggleGroupItem"
@@ -1790,8 +1814,8 @@
     "components/ui/toggle.tsx": {
       "path": "components/ui/toggle.tsx",
       "kind": "source",
-      "size": 1770,
-      "hash": "6bf41d6f6ffe602c3e28274a82ac029e6ee1331ba3c670a6d814048e1823cc28",
+      "size": 1815,
+      "hash": "4cec25dd824d7534b1f79c68c27455136fcae594a4df2c3b43fde0b6a2035b82",
       "exports": [
         "Toggle",
         "toggleVariants"
@@ -1811,8 +1835,8 @@
     "components/ui/tooltip.tsx": {
       "path": "components/ui/tooltip.tsx",
       "kind": "source",
-      "size": 2855,
-      "hash": "b86e51969931c3d62e88d0bdacd1cd8219105dc6d6b6a588a80011bf92e987cd",
+      "size": 2921,
+      "hash": "7667acc0cbb79b9daad94af6bb694fb6840b5bd1395e7e60c68c0fb63af9c4bd",
       "exports": [
         "Tooltip",
         "TooltipContent",
@@ -1833,8 +1857,8 @@
     "hooks/use-dashboard-refresh.ts": {
       "path": "hooks/use-dashboard-refresh.ts",
       "kind": "source",
-      "size": 2124,
-      "hash": "7a82879e9b23bb21da142669564ed700ae2a6dfdd21b8f386b4ce546c7992876",
+      "size": 2194,
+      "hash": "1c671fd957327f42484fff5e04dd78839e1e5cf3b1b8cfac46c958d049f08902",
       "exports": [
         "useDashboardRefresh"
       ],
@@ -1852,8 +1876,8 @@
     "hooks/use-hydrated.ts": {
       "path": "hooks/use-hydrated.ts",
       "kind": "source",
-      "size": 276,
-      "hash": "bc54d4ebc21fef0aa0c39231e822ec9cb964e10dfe9452ea2034fef15593d7f2",
+      "size": 287,
+      "hash": "b2ff02ce3e62cd7aab6ce270fcef5f71f8b2b903a0b75d65b4d12fda3929e652",
       "exports": [
         "useHydrated"
       ],
@@ -1870,8 +1894,8 @@
     "hooks/use-mobile.ts": {
       "path": "hooks/use-mobile.ts",
       "kind": "source",
-      "size": 630,
-      "hash": "54683cf69bb85e3302db78eff067ac7c84b982101e54b33a7ac55f43df99c6e7",
+      "size": 653,
+      "hash": "d0d759940fc734d5b0cd9ad3c8905ffab0f3a7c2a285c3058d5deae48a75feea",
       "exports": [
         "useIsMobile"
       ],
@@ -1887,8 +1911,8 @@
     "lib/dashboard/filters.ts": {
       "path": "lib/dashboard/filters.ts",
       "kind": "source",
-      "size": 3278,
-      "hash": "f075c1a0150019a556c54a5ef56cd64a71249e49fea94cba6c87aa2ae299a568",
+      "size": 3391,
+      "hash": "a5abaa7128075eb7da850311b538b60baa29a8eb93459f9d1fb77648831c3e86",
       "exports": [
         "DashboardFilters",
         "filterDashboard",
@@ -1909,11 +1933,28 @@
         "tests/history-index.test.mjs"
       ]
     },
+    "lib/dashboard/format.ts": {
+      "path": "lib/dashboard/format.ts",
+      "kind": "source",
+      "size": 779,
+      "hash": "b9212b2a2290b4c0d44ba7ba55032ab3b385d004ba67efc7fd963e65fbb3d314",
+      "exports": [
+        "formatLimaTimestamp"
+      ],
+      "dependencies": [],
+      "externalDependencies": [],
+      "lines": 22,
+      "importedBy": [
+        "components/dashboard/dashboard-shell.tsx",
+        "components/dashboard/data-source-status.tsx",
+        "tests/date-format.test.mjs"
+      ]
+    },
     "lib/dashboard/milestones.ts": {
       "path": "lib/dashboard/milestones.ts",
       "kind": "source",
-      "size": 1622,
-      "hash": "4b7a1b0710830b9ada4d1bf09f7ea334dac97a8ed8916a52cf9cfc67f97ac4c1",
+      "size": 1668,
+      "hash": "a92d73434047683c58fc9dcf7b07092a0a7cdbd833c64627ec10af6935bfadd7",
       "exports": [
         "HalfwayMilestone",
         "latestHalfwayMilestones"
@@ -1932,8 +1973,8 @@
     "lib/dashboard/tools.ts": {
       "path": "lib/dashboard/tools.ts",
       "kind": "source",
-      "size": 3453,
-      "hash": "6a2f2e819644738de1bb6053f780cb8123fa098f3ade74eea1bfb381205d00d4",
+      "size": 3584,
+      "hash": "ab9c2283c5bb7150b4657d02242ac17cc0f51a42c08bf703ecbad9c35a871d8d",
       "exports": [
         "Attention",
         "RecordOrder",
@@ -1959,8 +2000,8 @@
     "lib/dashboard/types.ts": {
       "path": "lib/dashboard/types.ts",
       "kind": "source",
-      "size": 1703,
-      "hash": "28703a9946b5babeae6fdc378e4ab7f313bd5790f97b00a5261608ad4c0c479c",
+      "size": 1783,
+      "hash": "0021a34940b835c2fd28e335eec6f891fa8b2ba7fc83990b59fb1f8bf0ec655c",
       "exports": [
         "DashboardProject",
         "DashboardSnapshot",
@@ -1978,6 +2019,7 @@
         "components/dashboard/agency-columns.tsx",
         "components/dashboard/agency-sparkline.tsx",
         "components/dashboard/attention-panel.tsx",
+        "components/dashboard/dashboard-shell.tsx",
         "components/dashboard/dashboard.tsx",
         "components/dashboard/data-source-status.tsx",
         "components/dashboard/halfway-milestones.tsx",
@@ -1995,8 +2037,8 @@
     "lib/data-sources/configured-dashboard-source.ts": {
       "path": "lib/data-sources/configured-dashboard-source.ts",
       "kind": "source",
-      "size": 947,
-      "hash": "7f82e561f4f4ec28f3a9f084e690a03c94baaf1835e28ea97a0e2fab54255802",
+      "size": 973,
+      "hash": "8e040600e0d8d4e0733684e9df19ce9cfe8fafb17fd73c185cb2763d82ba4fbd",
       "exports": [
         "dashboardSource"
       ],
@@ -2015,8 +2057,8 @@
     "lib/data-sources/cronograma-columns.ts": {
       "path": "lib/data-sources/cronograma-columns.ts",
       "kind": "source",
-      "size": 988,
-      "hash": "ff3822ce48ab519038e780f7483c43cbed199fa0de8511fc9429878f928c69f0",
+      "size": 1017,
+      "hash": "2875d525faf1c4190f783a6cd8798539ad03f30e0a63f83e7545544f4fe5d024",
       "exports": [
         "cronogramaScheduleColumns"
       ],
@@ -2033,8 +2075,8 @@
     "lib/data-sources/dashboard-source.ts": {
       "path": "lib/data-sources/dashboard-source.ts",
       "kind": "source",
-      "size": 247,
-      "hash": "3e773197054fd623d937e29588e36daf8dadc95918fb1fd82fb792e0ffda8552",
+      "size": 256,
+      "hash": "6938381360d051bfcb5babd1b4690aea58548ebdd6ae8981e672e4b0bb75ee9a",
       "exports": [
         "DashboardSnapshotOptions",
         "DashboardSource"
@@ -2053,8 +2095,8 @@
     "lib/data-sources/excel-snapshot-source.ts": {
       "path": "lib/data-sources/excel-snapshot-source.ts",
       "kind": "source",
-      "size": 427,
-      "hash": "75335e31f3f2ebbe4cca9fd0ddec8a82293b9e3b232fdae15673fabeadd163ed",
+      "size": 438,
+      "hash": "c6ce292dd2618d13f42e2cd54f49fca855127f16c97283c604c1042c0fb52b32",
       "exports": [
         "dashboardSource"
       ],
@@ -2072,8 +2114,8 @@
     "lib/data-sources/sharepoint-excel-source.ts": {
       "path": "lib/data-sources/sharepoint-excel-source.ts",
       "kind": "source",
-      "size": 17078,
-      "hash": "8606ea4cab120e86fd4b31feb40162e4ce42f8be666c2ab46328a1991625d79d",
+      "size": 17609,
+      "hash": "c842ff23d63d9d78e7820d00638491ce805de486347d96328eae68cb36d00574",
       "exports": [
         "dashboardSource"
       ],
@@ -2093,8 +2135,8 @@
     "lib/data-sources/xlsx-reader.ts": {
       "path": "lib/data-sources/xlsx-reader.ts",
       "kind": "source",
-      "size": 5583,
-      "hash": "99276b4f33ca5101b4629bfd9e74dbf56a25bbb25a1c4d8a3b53796b9a2b20c2",
+      "size": 5526,
+      "hash": "3f9307c17d3b790a30da97e27735f26ac511d9d462abec8675952b19ab72567e",
       "exports": [
         "XlsxSheet",
         "XlsxWorkbook",
@@ -2114,8 +2156,8 @@
     "lib/utils.ts": {
       "path": "lib/utils.ts",
       "kind": "source",
-      "size": 169,
-      "hash": "9304a861c8673bee09e0f12de31773abbde503b02e59dfd74763ddec2e37cf05",
+      "size": 175,
+      "hash": "4b705c7d7e5c7a2dd73d26ad35e9c0583d3d3655e2a5be1e67cea21458f29c01",
       "exports": [
         "cn"
       ],
@@ -2189,8 +2231,8 @@
     "next.config.ts": {
       "path": "next.config.ts",
       "kind": "config",
-      "size": 104,
-      "hash": "d063bebef3a4878ae82f9f9547c2c9675b8b6945ab23702932dcb63a011a9fc9",
+      "size": 109,
+      "hash": "fe6aa70bd863267445528ae46be876dcc9e2aceca5513862c1cf59599d84b599",
       "exports": [
         "default"
       ],
@@ -2204,20 +2246,20 @@
     "package.json": {
       "path": "package.json",
       "kind": "json",
-      "size": 1985,
-      "mtime": 1792069823956.6643
+      "size": 2012,
+      "mtime": 1792088766456.9749
     },
     "scripts/extract-cronograma.ps1": {
       "path": "scripts/extract-cronograma.ps1",
       "kind": "script",
-      "size": 5478,
-      "hash": "231fc2dfb366d6815f594173f29080f7fda8eed01cbe24803366fcdd14617996"
+      "size": 5598,
+      "hash": "503639b464fa23459dac18b564a7a34b41697c9da06eeba092ec7029ef9e42f3"
     },
     "scripts/project-map.mjs": {
       "path": "scripts/project-map.mjs",
       "kind": "script",
-      "size": 18330,
-      "hash": "5058ce7886bf6bd7eaf68caf91b5a0f255eb82f78ab45cb9e6197787a5d1ad56",
+      "size": 18917,
+      "hash": "b41ccb23402a8254473836208bd19bfe11fb97d0c65b8e3d6ad5e568344a8eac",
       "exports": [],
       "dependencies": [],
       "externalDependencies": [
@@ -2229,8 +2271,8 @@
     "tests/dashboard-tools.test.mjs": {
       "path": "tests/dashboard-tools.test.mjs",
       "kind": "script",
-      "size": 4048,
-      "hash": "3c7032d27244681ddd76bfc3bcfe96baba55f615b75487704a6d775de4d33984",
+      "size": 4192,
+      "hash": "7ff3243fa2fd3f3a0005b2ad78f66c7573e353cc9d338472a31b5b61dfb2b306",
       "exports": [],
       "dependencies": [
         "lib/dashboard/filters.ts",
@@ -2241,11 +2283,24 @@
       "lines": 145,
       "importedBy": []
     },
+    "tests/date-format.test.mjs": {
+      "path": "tests/date-format.test.mjs",
+      "kind": "script",
+      "size": 1313,
+      "hash": "7e82f72388c97987f593be44113e022914189e20f90fcc307ccaf6c52dc5ee5d",
+      "exports": [],
+      "dependencies": [
+        "lib/dashboard/format.ts"
+      ],
+      "externalDependencies": [],
+      "lines": 45,
+      "importedBy": []
+    },
     "tests/filters.test.mjs": {
       "path": "tests/filters.test.mjs",
       "kind": "script",
-      "size": 711,
-      "hash": "63562d572b65520c2d9d1a0662532ea39318f59fcb7b46f2b39da6e4e6b22d67",
+      "size": 736,
+      "hash": "d7b8d4bdb077a405fd7a2e9e8b35a9cadaaff97d7e79a2f222e925e35ce7ad78",
       "exports": [],
       "dependencies": [
         "lib/dashboard/filters.ts"
@@ -2257,8 +2312,8 @@
     "tests/history-index.test.mjs": {
       "path": "tests/history-index.test.mjs",
       "kind": "script",
-      "size": 685,
-      "hash": "c1202088eb6efc864e3850431cc5ed895d169ecd60fda5b0d940478515562697",
+      "size": 707,
+      "hash": "429d60c017ccbf95c43923fda88e461a4dfeb9f620f1d14c64aab24c6b92603c",
       "exports": [],
       "dependencies": [
         "lib/dashboard/filters.ts"
@@ -2270,8 +2325,8 @@
     "tests/milestones.test.mjs": {
       "path": "tests/milestones.test.mjs",
       "kind": "script",
-      "size": 1880,
-      "hash": "511bae3e37bc42126c52bbf16eb4f189db4aa2ebc48f971a30d59dcf194658d1",
+      "size": 1947,
+      "hash": "2dc421eeb673ef1c5c106d1aa11fff6409dd66be88cb125e469f4813db2a2514",
       "exports": [],
       "dependencies": [
         "lib/dashboard/milestones.ts"
@@ -2283,8 +2338,8 @@
     "tests/xlsx-reader.test.mjs": {
       "path": "tests/xlsx-reader.test.mjs",
       "kind": "script",
-      "size": 1894,
-      "hash": "d0764d232adddcc98c9f610e41bb9abd38688b0f6e83453afa4c842f8321b205",
+      "size": 1956,
+      "hash": "52eb5841890c4b411d4088930f4c065a74786f27984c0d7da37cad96df152a01",
       "exports": [],
       "dependencies": [
         "lib/data-sources/xlsx-reader.ts"
@@ -2298,14 +2353,14 @@
     "tsconfig.json": {
       "path": "tsconfig.json",
       "kind": "json",
-      "size": 671,
-      "mtime": 1788350280336.8408
+      "size": 701,
+      "mtime": 1788456636287.0764
     },
     "vite.config.ts": {
       "path": "vite.config.ts",
       "kind": "config",
-      "size": 1933,
-      "hash": "f0dc24209523c3ece6515971a7095bfcd215d7f34e74d8b2247beaa4bc197260",
+      "size": 1927,
+      "hash": "b23a4504e13e31dcf9ece4927ce00150d5409a54413071a68ebfad6ac34ea46d",
       "exports": [
         "default"
       ],
@@ -2391,16 +2446,6 @@
     },
     {
       "from": "components/dashboard/agency-columns.tsx",
-      "to": "components/ui/badge.tsx",
-      "kind": "import"
-    },
-    {
-      "from": "components/dashboard/agency-columns.tsx",
-      "to": "components/ui/input.tsx",
-      "kind": "import"
-    },
-    {
-      "from": "components/dashboard/agency-columns.tsx",
       "to": "lib/dashboard/tools.ts",
       "kind": "import"
     },
@@ -2426,6 +2471,31 @@
     },
     {
       "from": "components/dashboard/attention-panel.tsx",
+      "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard-shell.tsx",
+      "to": "components/dashboard/dashboard-navigation.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard-shell.tsx",
+      "to": "components/ui/button.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard-shell.tsx",
+      "to": "components/ui/tabs.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard-shell.tsx",
+      "to": "lib/dashboard/format.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard-shell.tsx",
       "to": "lib/dashboard/types.ts",
       "kind": "import"
     },
@@ -2458,6 +2528,11 @@
     {
       "from": "components/dashboard/dashboard.tsx",
       "to": "components/dashboard/dashboard-navigation.tsx",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/dashboard.tsx",
+      "to": "components/dashboard/dashboard-shell.tsx",
       "kind": "import"
     },
     {
@@ -2552,6 +2627,11 @@
     },
     {
       "from": "components/dashboard/data-source-status.tsx",
+      "to": "lib/dashboard/format.ts",
+      "kind": "import"
+    },
+    {
+      "from": "components/dashboard/data-source-status.tsx",
       "to": "lib/dashboard/types.ts",
       "kind": "import"
     },
@@ -2583,11 +2663,6 @@
     {
       "from": "components/dashboard/provider-filter.tsx",
       "to": "components/ui/button.tsx",
-      "kind": "import"
-    },
-    {
-      "from": "components/dashboard/provider-filter.tsx",
-      "to": "components/ui/checkbox.tsx",
       "kind": "import"
     },
     {
@@ -3133,6 +3208,11 @@
     {
       "from": "tests/dashboard-tools.test.mjs",
       "to": "lib/data-sources/cronograma-columns.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/date-format.test.mjs",
+      "to": "lib/dashboard/format.ts",
       "kind": "import"
     },
     {

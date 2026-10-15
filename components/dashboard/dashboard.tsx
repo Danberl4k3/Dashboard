@@ -2,13 +2,17 @@
 
 import { AttentionPanel } from './attention-panel';
 import {
-  dashboardTabs,
   useDashboardNavigation,
   type DashboardTab,
 } from './dashboard-navigation';
 import { OperationsOverview } from './operations-overview';
 import { HalfwayMilestones } from './halfway-milestones';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import {
+  DashboardSidebar,
+  DashboardHeading,
+  useWideDashboard,
+} from './dashboard-shell';
 import {
   limaDate,
   recordAttention,
@@ -38,17 +42,19 @@ import {
   ChevronLeft,
   ChevronRight,
   MapPin,
-  RefreshCw,
   RotateCcw,
   Search,
   LayoutGrid,
   List,
   AlertTriangle,
-  Download,
   X,
-  Activity,
   SlidersHorizontal,
-  Sparkles,
+  Building2,
+  CheckCheck,
+  Clock3,
+  CircleDashed,
+  TrendingUp,
+  ArrowUpRight,
 } from 'lucide-react';
 import {
   Bar,
@@ -212,16 +218,6 @@ function formatDate(date: string | null) {
   }).format(new Date(`${date}T00:00:00Z`));
 }
 
-function formatSnapshotDate(date: string) {
-  return Intl.DateTimeFormat('es-PE', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-    timeZone: 'America/Lima',
-  })
-    .format(new Date(date))
-    .replace(/\s+/g, ' ');
-}
-
 function usePrefersReducedMotion() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
@@ -379,6 +375,7 @@ function KpiCard({
   tone,
   className = '',
   prefersReducedMotion,
+  onSelect,
 }: {
   label: string;
   value: number;
@@ -386,11 +383,25 @@ function KpiCard({
   note: string;
   tone: KpiTone;
   className?: string;
+  onSelect?: () => void;
   prefersReducedMotion: boolean;
 }) {
   const styles = kpiToneStyles[tone];
+  const Icon = {
+    blue: Building2,
+    emerald: CheckCheck,
+    amber: Clock3,
+    rose: CircleDashed,
+    teal: TrendingUp,
+  }[tone];
   return (
-    <Card size="sm" className={`border-t-2 ${styles.card} ${className}`}>
+    <Card
+      size="sm"
+      className={`kpi-card kpi-${tone} ${styles.card} ${className}`}
+    >
+      <span className="kpi-icon">
+        <Icon size={17} aria-hidden="true" />
+      </span>
       <CardContent className="min-w-0">
         <p className="truncate text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
           {label}
@@ -407,6 +418,16 @@ function KpiCard({
         <p className="mt-1.5 truncate text-[11px] text-muted-foreground">
           {note}
         </p>
+        {onSelect && (
+          <button
+            className="kpi-drilldown"
+            type="button"
+            onClick={onSelect}
+            aria-label={`Ver ${label.toLowerCase()}`}
+          >
+            <ArrowUpRight size={15} aria-hidden="true" />
+          </button>
+        )}
       </CardContent>
     </Card>
   );
@@ -434,6 +455,7 @@ export function Dashboard({
   const [order, setOrder] = useState<RecordOrder>('original');
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const { activeTab, navigate } = useDashboardNavigation();
+  const wideLayout = useWideDashboard();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [project, setProject] = useState('Todos');
@@ -486,10 +508,9 @@ export function Dashboard({
     [snapshot],
   );
   const filteredHalfwayMilestones = useMemo(() => {
-    const keys = new Set(filtered.map((record) => `${record.projectId}::${record.id}`));
-    return halfwayMilestones.filter(({ record }) =>
-      keys.has(`${record.projectId}::${record.id}`),
-    );
+    // Workbook item numbers may repeat. Keep the exact selected records.
+    const selection = new Set(filtered);
+    return halfwayMilestones.filter(({ record }) => selection.has(record));
   }, [filtered, halfwayMilestones]);
   const orderedRecords = useMemo(
     () => sortRecords(filtered, order),
@@ -675,6 +696,10 @@ export function Dashboard({
   };
 
   const showRecord = (record: WorkRecord) => {
+    setAttention('all');
+    setStatus('Todos');
+    setLocation('Todas');
+    setSelectedProviders([]);
     setProject(record.projectId);
     setSearch(record.agency);
     setPage(1);
@@ -683,6 +708,13 @@ export function Dashboard({
   const showHistory = (record: WorkRecord) => {
     setHistoryAgency(`${record.projectId}::${record.agency}`);
     navigate('linea-tiempo');
+  };
+
+  const drillDownStatus = (value: string) => {
+    setStatus(value);
+    setAttention('all');
+    setPage(1);
+    navigate('agencias');
   };
 
   const toggleHistorySeries = (key: HistorySeriesKey) =>
@@ -702,148 +734,26 @@ export function Dashboard({
       </a>
       <Tabs
         value={activeTab}
+        orientation={wideLayout ? 'vertical' : 'horizontal'}
         onValueChange={(value) => navigate(value as DashboardTab)}
         className="dashboard-workspace"
       >
-        <header className="dashboard-header sticky top-0 z-40 border-b border-border bg-card">
-          <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-2.5 sm:px-6 lg:px-8">
-            <div className="flex min-w-0 items-center gap-3">
-              <div className="dashboard-brand-icon grid size-10 shrink-0 place-items-center rounded-xl font-mono text-[10px] font-semibold tracking-wider text-white">
-                <Activity className="size-4" aria-hidden="true" />
-              </div>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold tracking-tight">
-                  Control de implementación
-                </p>
-                <p className="truncate text-[11px] text-muted-foreground">
-                  Portafolio operativo · 2026
-                </p>
-              </div>
-            </div>
-            <Badge
-              variant="outline"
-              className={`hidden h-6 gap-1.5 sm:inline-flex ${snapshot.isLive ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-amber-50 text-amber-800'}`}
-            >
-              <span
-                className={`size-1.5 rounded-full ${snapshot.isLive ? 'bg-emerald-500' : 'bg-amber-500'}`}
-              />
-              {snapshot.isLive
-                ? 'Excel online conectado'
-                : snapshot.status === 'partial'
-                  ? 'Datos parciales'
-                  : snapshot.status === 'stale'
-                    ? 'Datos guardados'
-                    : 'Copia de respaldo'}
-            </Badge>
-          </div>
-          <TabsList
-            className="workspace-tabs"
-            aria-label="Secciones del dashboard"
-          >
-            {dashboardTabs.map(({ id, label, icon: Icon }) => (
-              <TabsTrigger
-                key={id}
-                value={id}
-                id={`tab-${id}`}
-                className="workspace-tab"
-              >
-                <Icon className="size-4" aria-hidden="true" />
-                {label}
-                {id === 'hito-50' && filteredHalfwayMilestones.length > 0 && (
-                  <span className="tab-count">{filteredHalfwayMilestones.length}</span>
-                )}
-                {id === 'prioridades' &&
-                  attentionCounts.late + attentionCounts.unreported > 0 && (
-                    <span className="tab-count">
-                      {attentionCounts.late + attentionCounts.unreported}
-                    </span>
-                  )}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          {isRefreshing ? (
-            <>
-              <div className="refresh-track" aria-hidden="true">
-                <span className="refresh-thumb" />
-              </div>
-              <output className="sr-only" aria-live="polite">
-                Actualizando datos del dashboard
-              </output>
-            </>
-          ) : null}
-        </header>
-
-        <div className="dashboard-content mx-auto max-w-[1500px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-          <section
-            className={`dashboard-hero mb-4 flex flex-col justify-between gap-3 lg:flex-row lg:items-end ${activeTab !== 'resumen' ? 'hero-compact' : ''}`}
-          >
-            <div>
-              <p className="mb-1 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-blue-700">
-                <Sparkles className="size-3.5" aria-hidden="true" />
-                Control operativo
-              </p>
-              <h1 className="text-2xl font-semibold tracking-[-0.04em] sm:text-3xl lg:text-4xl">
-                Tu operación. Un paso adelante.
-              </h1>
-              <p className="mt-1 max-w-2xl text-xs text-muted-foreground">
-                Seguimiento de implementación por agencia, proveedor y etapa.
-                Explora el avance y prioriza los próximos pasos.
-              </p>
-            </div>
-            <div className="flex flex-col items-start gap-1.5 lg:items-end">
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-muted-foreground">
-                <span>
-                  <span className="font-medium text-foreground">Fuente</span>{' '}
-                  {snapshot.source}
-                </span>
-                <span>
-                  <span className="font-medium text-foreground">Corte</span>{' '}
-                  <span className="font-mono tabular-nums">
-                    {formatSnapshotDate(snapshot.extractedAt)}
-                  </span>
-                </span>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="hero-refresh border-blue-200 text-blue-700 hover:border-blue-300 hover:bg-blue-50"
-                  onClick={() => void refresh(true)}
-                  disabled={isRefreshing}
-                  aria-label={
-                    isRefreshing
-                      ? 'Actualizando datos'
-                      : 'Actualizar datos ahora'
-                  }
-                >
-                  <RefreshCw className={isRefreshing ? 'animate-spin' : ''} />
-                  {isRefreshing ? 'Actualizando…' : 'Actualizar ahora'}
-                </Button>
-              </div>
-              <Button
-                type="button"
-                onClick={exportCsv}
-                disabled={!filtered.length}
-                size="sm"
-                className="hero-export gap-2"
-              >
-                <Download className="size-4" />
-                Exportar CSV
-              </Button>
-              <p className="text-[10px] text-muted-foreground">
-                {isRefreshing
-                  ? 'Descargando ambos Excel…'
-                  : `Actualización automática cada ${REFRESH_INTERVAL_MS / 1000} s`}
-              </p>
-              {refreshError ? (
-                <p
-                  className="text-[11px] font-medium text-red-600"
-                  aria-live="polite"
-                >
-                  {refreshError}
-                </p>
-              ) : null}
-            </div>
-          </section>
+        <DashboardSidebar
+          snapshot={snapshot}
+          milestoneCount={filteredHalfwayMilestones.length}
+          priorityCount={attentionCounts.late + attentionCounts.unreported}
+          isRefreshing={isRefreshing}
+        />
+        <div className="dashboard-content">
+          <DashboardHeading
+            activeTab={activeTab}
+            snapshot={snapshot}
+            isRefreshing={isRefreshing}
+            refreshError={refreshError}
+            onRefresh={() => void refresh(true)}
+            onExport={exportCsv}
+            canExport={filtered.length > 0}
+          />
 
           <DataSourceStatus
             projectStatuses={snapshot.projectStatuses}
@@ -851,84 +761,42 @@ export function Dashboard({
           />
 
           <div className="workspace-toolbar">
-            <div>
-              <span className="section-eyebrow">ESPACIO DE TRABAJO</span>
-              <h2>
-                {dashboardTabs.find((tab) => tab.id === activeTab)?.label}
-              </h2>
-              <p>
-                {dashboardTabs.find((tab) => tab.id === activeTab)?.description}
-              </p>
-            </div>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setFiltersOpen((open) => !open)}
-              aria-expanded={filtersOpen}
-              aria-controls="dashboard-filters"
-              className="filter-toggle"
-            >
-              <SlidersHorizontal className="size-4" /> Filtros{' '}
-              {activeFilters > 0 && (
-                <span className="filter-count">{activeFilters}</span>
-              )}
-            </Button>
-          </div>
-          {!filtersOpen && activeFilters > 0 && (
-            <div className="collapsed-filters">
-              <span>
-                {activeFilters} filtros activos · {filtered.length} de{' '}
-                {snapshot.records.length} agencias
-              </span>
-              <button
-                type="button"
-                className="overview-link"
-                onClick={resetFilters}
-              >
-                Limpiar filtros <X size={13} />
-              </button>
-            </div>
-          )}
-          <section
-            id="dashboard-filters"
-            hidden={!filtersOpen}
-            aria-label="Filtros"
-            className="mb-3 grid gap-3 rounded-md border border-border bg-card p-3 md:grid-cols-2 xl:grid-cols-[minmax(240px,1.35fr)_190px_160px_170px_auto]"
-          >
-            <div>
-              <label
-                htmlFor="dashboard-search"
-                className="mb-1 block text-[10px] font-medium text-muted-foreground"
-              >
-                Buscar
+            <div className="quick-search">
+              <Search size={17} aria-hidden="true" />
+              <label className="sr-only" htmlFor="dashboard-search">
+                Buscar agencias
               </label>
-              <div className="group relative">
-                <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
-                <Input
-                  id="dashboard-search"
-                  value={search}
-                  onChange={(event) => {
-                    setSearch(event.target.value);
+              <Input
+                id="dashboard-search"
+                value={search}
+                onChange={(event) => {
+                  setSearch(event.target.value);
+                  setPage(1);
+                }}
+                placeholder="Buscar agencia, proveedor o distrito…"
+              />
+              {search && (
+                <button
+                  type="button"
+                  aria-label="Limpiar búsqueda"
+                  onClick={() => {
+                    setSearch('');
                     setPage(1);
                   }}
-                  className="pl-8"
-                  placeholder="Agencia, proveedor, distrito…"
-                />
-              </div>
+                >
+                  <X size={15} aria-hidden="true" />
+                </button>
+              )}
             </div>
-            <div>
-              <label
-                htmlFor="dashboard-project"
-                className="mb-1 block text-[10px] font-medium text-muted-foreground"
-              >
-                Proyecto
+            <div className="quick-project">
+              <label className="sr-only" htmlFor="dashboard-project">
+                Filtrar por proyecto
               </label>
               <NativeSelect
                 id="dashboard-project"
                 aria-label="Filtrar por proyecto"
                 value={project}
                 onChange={(event) => changeProject(event.target.value)}
-                className="w-full"
               >
                 <NativeSelectOption value="Todos">
                   Todos los proyectos
@@ -945,6 +813,47 @@ export function Dashboard({
                 ))}
               </NativeSelect>
             </div>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setFiltersOpen((open) => !open)}
+              aria-expanded={filtersOpen}
+              aria-controls="dashboard-filters"
+              className="filter-toggle"
+            >
+              <SlidersHorizontal className="size-4" aria-hidden="true" />{' '}
+              Filtros{' '}
+              {activeFilters > 0 && (
+                <span className="filter-count">{activeFilters}</span>
+              )}
+            </Button>
+            <span className="workspace-result" role="status">
+              {filtered.length}{' '}
+              <span>{filtered.length === 1 ? 'agencia' : 'agencias'}</span>
+            </span>
+          </div>
+          {!filtersOpen && activeFilters > 0 && (
+            <div className="collapsed-filters">
+              <span>
+                {activeFilters}{' '}
+                {activeFilters === 1 ? 'filtro activo' : 'filtros activos'} ·{' '}
+                {filtered.length} de {snapshot.records.length} agencias
+              </span>
+              <button
+                type="button"
+                className="overview-link"
+                onClick={resetFilters}
+              >
+                Limpiar filtros <X size={13} />
+              </button>
+            </div>
+          )}
+          <section
+            id="dashboard-filters"
+            hidden={!filtersOpen}
+            aria-label="Filtros"
+            className="advanced-filters"
+          >
             <div>
               <label
                 htmlFor="dashboard-status"
@@ -1168,9 +1077,13 @@ export function Dashboard({
               value="resumen"
               className="workspace-panel"
             >
-              <section className="kpi-grid grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+              <section
+                className="kpi-grid"
+                aria-label="Indicadores del resultado actual"
+              >
                 <KpiCard
                   label="Agencias"
+                  onSelect={() => drillDownStatus('Todos')}
                   value={summary.total}
                   note={
                     summary.unreported
@@ -1182,6 +1095,7 @@ export function Dashboard({
                 />
                 <KpiCard
                   label="Terminadas"
+                  onSelect={() => drillDownStatus('Terminada')}
                   value={summary.completed}
                   note={`${summary.total ? Math.round((summary.completed / summary.total) * 100) : 0}% del alcance`}
                   tone="emerald"
@@ -1189,6 +1103,7 @@ export function Dashboard({
                 />
                 <KpiCard
                   label="En proceso"
+                  onSelect={() => drillDownStatus('En proceso')}
                   value={summary.inProgress}
                   note="Requieren seguimiento"
                   tone="amber"
@@ -1196,6 +1111,7 @@ export function Dashboard({
                 />
                 <KpiCard
                   label="No empezadas"
+                  onSelect={() => drillDownStatus('No empezada')}
                   value={summary.pending}
                   note="Pendientes de movilización"
                   tone="rose"
@@ -1207,7 +1123,7 @@ export function Dashboard({
                   suffix="%"
                   note="Avance reportado"
                   tone="teal"
-                  className="kpi-featured xl:col-span-2"
+                  className="kpi-featured"
                   prefersReducedMotion={prefersReducedMotion}
                 />
                 <p className="sr-only" aria-live="polite">
@@ -1218,6 +1134,16 @@ export function Dashboard({
               </section>
 
               <OperationsOverview
+                milestonesCount={filteredHalfwayMilestones.length}
+                onProject={(value) => {
+                  changeProject(value);
+                  navigate('agencias');
+                }}
+                onProvider={(value) => {
+                  setSelectedProviders([value]);
+                  setPage(1);
+                  navigate('agencias');
+                }}
                 records={filtered}
                 referenceDate={referenceDate}
                 onNavigate={navigate}
@@ -1433,6 +1359,7 @@ export function Dashboard({
                     <AgencyColumns
                       records={filtered}
                       referenceDate={referenceDate}
+                      onSelectRecord={showRecord}
                     />
                   </CardContent>
                 </Card>
