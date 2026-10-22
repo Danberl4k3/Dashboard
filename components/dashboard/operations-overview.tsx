@@ -313,8 +313,8 @@ export function OperationsOverview({
         </h2>
         <p>
           {milestonesCount
-            ? `${milestonesCount} ${milestonesCount === 1 ? 'agencia cruzó' : 'agencias cruzaron'} su umbral de avance en el último corte disponible.`
-            : 'Aquí podrás ver las agencias que cruzan su umbral de avance en el último corte.'}
+            ? `${milestonesCount} ${milestonesCount === 1 ? 'agencia está lista' : 'agencias están listas'} para la visita por avance.`
+            : 'Aquí podrás ver las agencias en proceso cuando alcancen su umbral de visita.'}
         </p>
         <button
           type="button"

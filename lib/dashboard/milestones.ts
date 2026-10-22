@@ -1,13 +1,7 @@
-import type {
-  DashboardSnapshot,
-  ProgressHistoryRecord,
-  WorkRecord,
-} from './types';
+import type { DashboardSnapshot, WorkRecord } from './types';
 
-export interface ProgressMilestone {
+export interface ProgressVisitAlert {
   record: WorkRecord;
-  previous: ProgressHistoryRecord;
-  latest: ProgressHistoryRecord;
   threshold: number;
 }
 
@@ -22,41 +16,23 @@ export function progressAlertThreshold(record: WorkRecord): number {
   return 50;
 }
 
-/** Crossings recorded on the newest history date available for each project. */
-export function latestProgressMilestones(
+/** Agencies currently eligible for a progress visit, regardless of when they crossed the threshold. */
+export function progressVisitAlerts(
   snapshot: DashboardSnapshot,
-): ProgressMilestone[] {
-  const latestDateByProject = new Map<string, string>();
-  const historyByAgency = new Map<string, ProgressHistoryRecord[]>();
-
-  // The workbook appends history cuts in chronological order. Repeated rows for
-  // one date represent the same cut, so the last row for that date wins.
-  for (const entry of snapshot.history) {
-    latestDateByProject.set(entry.projectId, entry.date);
-    const key = `${entry.projectId}::${entry.agency}`;
-    const entries = historyByAgency.get(key) ?? [];
-    if (entries.at(-1)?.date === entry.date)
-      entries[entries.length - 1] = entry;
-    else entries.push(entry);
-    historyByAgency.set(key, entries);
-  }
-
-  return snapshot.records.flatMap((record) => {
-    const threshold = progressAlertThreshold(record);
-    if (record.status !== 'En proceso' || (record.progress ?? 0) < threshold)
-      return [];
-    const entries = historyByAgency.get(
-      `${record.projectId}::${record.agency}`,
-    );
-    if (!entries || entries.length < 2) return [];
-    const previous = entries[entries.length - 2];
-    const latest = entries[entries.length - 1];
-    if (
-      latest.date !== latestDateByProject.get(record.projectId) ||
-      previous.progress >= threshold ||
-      latest.progress < threshold
+): ProgressVisitAlert[] {
+  return snapshot.records
+    .filter(
+      (record) =>
+        record.status === 'En proceso' &&
+        record.progress !== null &&
+        record.progress >= progressAlertThreshold(record),
     )
-      return [];
-    return [{ record, previous, latest, threshold }];
-  });
+    .map((record) => ({ record, threshold: progressAlertThreshold(record) }))
+    .sort((a, b) => {
+      if (a.record.visit2.checked !== b.record.visit2.checked)
+        return a.record.visit2.checked ? 1 : -1;
+      return a.record.agency.localeCompare(b.record.agency, 'es', {
+        numeric: true,
+      });
+    });
 }

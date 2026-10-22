@@ -22,7 +22,7 @@ import {
 } from '@/lib/dashboard/tools';
 import ProviderFilter from '@/components/dashboard/provider-filter';
 import { filterDashboard, indexHistoryByAgency } from '@/lib/dashboard/filters';
-import { latestProgressMilestones } from '@/lib/dashboard/milestones';
+import { progressVisitAlerts } from '@/lib/dashboard/milestones';
 import { DataSourceStatus } from './data-source-status';
 import { useDashboardRefresh } from '@/hooks/use-dashboard-refresh';
 import { AgencyCard } from './agency-card';
@@ -504,7 +504,7 @@ export function Dashboard({
     [filterView.records, attention, referenceDate],
   );
   const progressMilestones = useMemo(
-    () => latestProgressMilestones(snapshot),
+    () => progressVisitAlerts(snapshot),
     [snapshot],
   );
   const filteredProgressMilestones = useMemo(() => {

@@ -208,8 +208,8 @@
     "components/dashboard/dashboard-navigation.tsx": {
       "path": "components/dashboard/dashboard-navigation.tsx",
       "kind": "source",
-      "size": 2795,
-      "hash": "21af7661e957a5af703664bdee2ed02730a6ebe5914b109b0df2be2432635694",
+      "size": 2793,
+      "hash": "9181978fe78052d8b417d9b42913228f71114fed0a58098f2a1b2bd85b7fa664",
       "exports": [
         "DashboardTab",
         "dashboardTabs",
@@ -256,8 +256,8 @@
     "components/dashboard/dashboard.tsx": {
       "path": "components/dashboard/dashboard.tsx",
       "kind": "source",
-      "size": 81821,
-      "hash": "24c3c9063ba725bf49782d754b2b6190507c263ef9368fb9c0d11ea214aac77a",
+      "size": 81811,
+      "hash": "14b1a5581354798fc1d33ebc703e53a8e7e7b2c28c1b9e70a827803c6cacf8cb",
       "exports": [
         "Dashboard"
       ],
@@ -318,8 +318,8 @@
     "components/dashboard/operations-overview.tsx": {
       "path": "components/dashboard/operations-overview.tsx",
       "kind": "source",
-      "size": 11666,
-      "hash": "dd74be88681184c945dbea2067378c5d5727242925f5c8b2beecc691cacae5f8",
+      "size": 11647,
+      "hash": "8a991ad80d66569f428d7ab610c730cbe2204e18958c63613634708ad6fd6282",
       "exports": [
         "OperationsOverview"
       ],
@@ -339,8 +339,8 @@
     "components/dashboard/progress-milestones.tsx": {
       "path": "components/dashboard/progress-milestones.tsx",
       "kind": "source",
-      "size": 4236,
-      "hash": "610f068796887a5cb6860af93ab86bc5412f9f4ca76c791f677bf5889216198a",
+      "size": 3923,
+      "hash": "70a5022ce981030a4335d38dcf48cc807ae0bfa9c856df949c1fc93a925c5f8f",
       "exports": [
         "ProgressMilestones"
       ],
@@ -351,7 +351,7 @@
       "externalDependencies": [
         "lucide-react"
       ],
-      "lines": 103,
+      "lines": 97,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -1953,18 +1953,18 @@
     "lib/dashboard/milestones.ts": {
       "path": "lib/dashboard/milestones.ts",
       "kind": "source",
-      "size": 2114,
-      "hash": "6d87bd6893ae186338176ffed5ba50eadc2543fb2a09f89e4302f350c9d1fb07",
+      "size": 1231,
+      "hash": "c15c9f34323cbb7ab17b951882506d31bb1f59993e4f97155c7efd38629ffe9a",
       "exports": [
-        "ProgressMilestone",
-        "latestProgressMilestones",
-        "progressAlertThreshold"
+        "ProgressVisitAlert",
+        "progressAlertThreshold",
+        "progressVisitAlerts"
       ],
       "dependencies": [
         "lib/dashboard/types.ts"
       ],
       "externalDependencies": [],
-      "lines": 63,
+      "lines": 39,
       "importedBy": [
         "components/dashboard/dashboard.tsx",
         "components/dashboard/progress-milestones.tsx",
@@ -2326,14 +2326,14 @@
     "tests/milestones.test.mjs": {
       "path": "tests/milestones.test.mjs",
       "kind": "script",
-      "size": 3899,
-      "hash": "80b9fc279e07fe3225d377aa12bc91959b75f3930c193135ecbc2c511ef55893",
+      "size": 2229,
+      "hash": "e25a15281b9e8107aae38237459a2a6a3247b3633d62de693a2493183160876b",
       "exports": [],
       "dependencies": [
         "lib/dashboard/milestones.ts"
       ],
       "externalDependencies": [],
-      "lines": 146,
+      "lines": 89,
       "importedBy": []
     },
     "tests/xlsx-reader.test.mjs": {
