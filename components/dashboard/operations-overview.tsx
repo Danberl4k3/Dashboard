@@ -305,27 +305,27 @@ export function OperationsOverview({
         <span className="milestone-icon">
           <Milestone size={24} aria-hidden="true" />
         </span>
-        <span className="section-eyebrow">UN PASO MÁS CERCA</span>
+        <span className="section-eyebrow">ALERTAS DE AVANCE</span>
         <h2>
-          El 50% marca
+          Cada agencia tiene
           <br />
-          un nuevo comienzo.
+          su umbral de alerta.
         </h2>
         <p>
           {milestonesCount
-            ? `${milestonesCount} ${milestonesCount === 1 ? 'agencia cruzó' : 'agencias cruzaron'} la mitad de su implementación en el último corte disponible.`
-            : 'Aquí podrás ver las agencias que cruzan la mitad de su implementación en el último corte.'}
+            ? `${milestonesCount} ${milestonesCount === 1 ? 'agencia cruzó' : 'agencias cruzaron'} su umbral de avance en el último corte disponible.`
+            : 'Aquí podrás ver las agencias que cruzan su umbral de avance en el último corte.'}
         </p>
         <button
           type="button"
           className="milestone-cta"
-          onClick={() => onNavigate('hito-50')}
+          onClick={() => onNavigate('alertas-avance')}
         >
-          Explorar hitos {milestonesCount > 0 && <span>{milestonesCount}</span>}
+          Explorar alertas {milestonesCount > 0 && <span>{milestonesCount}</span>}
           <ArrowUpRight size={17} aria-hidden="true" />
         </button>
         <span className="milestone-decoration" aria-hidden="true">
-          50<span>%</span>
+          ↑
         </span>
       </section>
     </div>

@@ -25,9 +25,9 @@ export const dashboardTabs = [
     icon: Building2,
   },
   {
-    id: 'hito-50',
-    label: 'Hito 50%',
-    description: 'Agencias en proceso que acaban de alcanzar o superar el 50%.',
+    id: 'alertas-avance',
+    label: 'Alertas de avance',
+    description: 'Agencias en proceso que alcanzaron su umbral de avance.',
     icon: Milestone,
   },
   {

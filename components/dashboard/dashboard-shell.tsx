@@ -58,7 +58,7 @@ export function DashboardSidebar({
       <TabsList className="workspace-tabs" aria-label="Secciones del dashboard">
         {dashboardTabs.map(({ id, label, icon: Icon }) => {
           const count =
-            id === 'hito-50'
+            id === 'alertas-avance'
               ? milestoneCount
               : id === 'prioridades'
                 ? priorityCount
@@ -164,11 +164,9 @@ export function DashboardHeading({
           <h1>
             {activeTab === 'resumen'
               ? 'Resumen del portafolio'
-              : current.label === 'Hito 50%'
-                ? 'Hitos de implementación'
-                : current.label === 'Detalle'
-                  ? 'Detalle de agencias'
-                  : current.label}
+              : current.label === 'Detalle'
+                ? 'Detalle de agencias'
+                : current.label}
           </h1>
           <p>{current.description}</p>
         </div>

@@ -6,7 +6,7 @@ import {
   type DashboardTab,
 } from './dashboard-navigation';
 import { OperationsOverview } from './operations-overview';
-import { HalfwayMilestones } from './halfway-milestones';
+import { ProgressMilestones } from './progress-milestones';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import {
   DashboardSidebar,
@@ -22,7 +22,7 @@ import {
 } from '@/lib/dashboard/tools';
 import ProviderFilter from '@/components/dashboard/provider-filter';
 import { filterDashboard, indexHistoryByAgency } from '@/lib/dashboard/filters';
-import { latestHalfwayMilestones } from '@/lib/dashboard/milestones';
+import { latestProgressMilestones } from '@/lib/dashboard/milestones';
 import { DataSourceStatus } from './data-source-status';
 import { useDashboardRefresh } from '@/hooks/use-dashboard-refresh';
 import { AgencyCard } from './agency-card';
@@ -503,15 +503,15 @@ export function Dashboard({
           ),
     [filterView.records, attention, referenceDate],
   );
-  const halfwayMilestones = useMemo(
-    () => latestHalfwayMilestones(snapshot),
+  const progressMilestones = useMemo(
+    () => latestProgressMilestones(snapshot),
     [snapshot],
   );
-  const filteredHalfwayMilestones = useMemo(() => {
+  const filteredProgressMilestones = useMemo(() => {
     // Workbook item numbers may repeat. Keep the exact selected records.
     const selection = new Set(filtered);
-    return halfwayMilestones.filter(({ record }) => selection.has(record));
-  }, [filtered, halfwayMilestones]);
+    return progressMilestones.filter(({ record }) => selection.has(record));
+  }, [filtered, progressMilestones]);
   const orderedRecords = useMemo(
     () => sortRecords(filtered, order),
     [filtered, order],
@@ -740,7 +740,7 @@ export function Dashboard({
       >
         <DashboardSidebar
           snapshot={snapshot}
-          milestoneCount={filteredHalfwayMilestones.length}
+          milestoneCount={filteredProgressMilestones.length}
           priorityCount={attentionCounts.late + attentionCounts.unreported}
           isRefreshing={isRefreshing}
         />
@@ -1063,12 +1063,12 @@ export function Dashboard({
 
           <div id="dashboard-workspace" tabIndex={-1}>
             <TabsContent
-              id="panel-hito-50"
-              value="hito-50"
+              id="panel-alertas-avance"
+              value="alertas-avance"
               className="workspace-panel"
             >
-              <HalfwayMilestones
-                milestones={filteredHalfwayMilestones}
+              <ProgressMilestones
+                milestones={filteredProgressMilestones}
                 onSelect={showHistory}
               />
             </TabsContent>
@@ -1134,7 +1134,7 @@ export function Dashboard({
               </section>
 
               <OperationsOverview
-                milestonesCount={filteredHalfwayMilestones.length}
+                milestonesCount={filteredProgressMilestones.length}
                 onProject={(value) => {
                   changeProject(value);
                   navigate('agencias');

@@ -4,16 +4,28 @@ import type {
   WorkRecord,
 } from './types';
 
-export interface HalfwayMilestone {
+export interface ProgressMilestone {
   record: WorkRecord;
   previous: ProgressHistoryRecord;
   latest: ProgressHistoryRecord;
+  threshold: number;
+}
+
+export function progressAlertThreshold(record: WorkRecord): number {
+  if (record.projectId.trim().toLowerCase() === 'esparta') return 85;
+  if (record.location.trim().toUpperCase() === 'PROVINCIA') return 40;
+  if (
+    record.provider.trim().toUpperCase() === 'PROSEGUR' &&
+    record.location.trim().toUpperCase() === 'LIMA'
+  )
+    return 48;
+  return 50;
 }
 
 /** Crossings recorded on the newest history date available for each project. */
-export function latestHalfwayMilestones(
+export function latestProgressMilestones(
   snapshot: DashboardSnapshot,
-): HalfwayMilestone[] {
+): ProgressMilestone[] {
   const latestDateByProject = new Map<string, string>();
   const historyByAgency = new Map<string, ProgressHistoryRecord[]>();
 
@@ -23,24 +35,28 @@ export function latestHalfwayMilestones(
     latestDateByProject.set(entry.projectId, entry.date);
     const key = `${entry.projectId}::${entry.agency}`;
     const entries = historyByAgency.get(key) ?? [];
-    if (entries.at(-1)?.date === entry.date) entries[entries.length - 1] = entry;
+    if (entries.at(-1)?.date === entry.date)
+      entries[entries.length - 1] = entry;
     else entries.push(entry);
     historyByAgency.set(key, entries);
   }
 
   return snapshot.records.flatMap((record) => {
-    if (record.status !== 'En proceso' || (record.progress ?? 0) < 50)
+    const threshold = progressAlertThreshold(record);
+    if (record.status !== 'En proceso' || (record.progress ?? 0) < threshold)
       return [];
-    const entries = historyByAgency.get(`${record.projectId}::${record.agency}`);
+    const entries = historyByAgency.get(
+      `${record.projectId}::${record.agency}`,
+    );
     if (!entries || entries.length < 2) return [];
     const previous = entries[entries.length - 2];
     const latest = entries[entries.length - 1];
     if (
       latest.date !== latestDateByProject.get(record.projectId) ||
-      previous.progress >= 50 ||
-      latest.progress < 50
+      previous.progress >= threshold ||
+      latest.progress < threshold
     )
       return [];
-    return [{ record, previous, latest }];
+    return [{ record, previous, latest, threshold }];
   });
 }
