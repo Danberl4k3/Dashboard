@@ -307,21 +307,22 @@ export function OperationsOverview({
         </span>
         <span className="section-eyebrow">ALERTAS DE AVANCE</span>
         <h2>
-          Cada agencia tiene
+          Visitas intermedias
           <br />
-          su umbral de alerta.
+          y finales separadas.
         </h2>
         <p>
           {milestonesCount
-            ? `${milestonesCount} ${milestonesCount === 1 ? 'agencia está lista' : 'agencias están listas'} para la visita por avance.`
-            : 'Aquí podrás ver las agencias en proceso cuando alcancen su umbral de visita.'}
+            ? `${milestonesCount} ${milestonesCount === 1 ? 'agencia está lista' : 'agencias están listas'} para visita intermedia o final.`
+            : 'Aquí podrás consultar las visitas intermedias por avance y las finales por cierre.'}
         </p>
         <button
           type="button"
           className="milestone-cta"
           onClick={() => onNavigate('alertas-avance')}
         >
-          Explorar alertas {milestonesCount > 0 && <span>{milestonesCount}</span>}
+          Explorar alertas{' '}
+          {milestonesCount > 0 && <span>{milestonesCount}</span>}
           <ArrowUpRight size={17} aria-hidden="true" />
         </button>
         <span className="milestone-decoration" aria-hidden="true">

@@ -1,8 +1,130 @@
-'use client';
+﻿'use client';
 
 import { ArrowUpRight, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
 import type { ProgressVisitAlert } from '@/lib/dashboard/milestones';
 import type { WorkRecord } from '@/lib/dashboard/types';
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from '@/components/ui/native-select';
+
+function VisitGroup({
+  kind,
+  milestones,
+  onSelect,
+}: {
+  kind: ProgressVisitAlert['kind'];
+  milestones: ProgressVisitAlert[];
+  onSelect: (record: WorkRecord) => void;
+}) {
+  const [visitFilter, setVisitFilter] = useState<
+    'all' | 'checked' | 'unchecked'
+  >('all');
+  const isFinal = kind === 'final';
+  const title = isFinal ? 'Visitas finales' : 'Visitas intermedias';
+  const visitLabel = isFinal ? 'Visita 3' : 'Visita 2';
+  const pendingVisits = milestones.filter(
+    ({ record }) => !(isFinal ? record.visit3 : record.visit2).checked,
+  ).length;
+  const visibleMilestones = milestones.filter(({ record }) => {
+    const checked = (isFinal ? record.visit3 : record.visit2).checked;
+    return visitFilter === 'all' || checked === (visitFilter === 'checked');
+  });
+
+  return (
+    <section className="mt-5" aria-label={title}>
+      <div className="rounded-xl border border-border bg-card p-5">
+        <h3 className="text-base font-semibold">{title}</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {isFinal
+            ? 'Agencias terminadas o con 100% de avance. Control de cierre: Visita 3.'
+            : 'Solo agencias Prosegur en proceso con avance menor al 100% que alcanzan su umbral: Lima 48%, provincia 35% y Esparta 2 85%. Control: Visita 2.'}
+        </p>
+        <p className="mt-3 text-sm font-medium" aria-live="polite">
+          {milestones.length} {milestones.length === 1 ? 'agencia' : 'agencias'}{' '}
+          · {pendingVisits} pendientes · {milestones.length - pendingVisits}{' '}
+          marcadas
+        </p>
+        <label className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+          <span>Mostrar</span>
+          <NativeSelect
+            aria-label={`Filtrar ${title.toLowerCase()} por estado de marcado`}
+            value={visitFilter}
+            onChange={(event) =>
+              setVisitFilter(event.target.value as typeof visitFilter)
+            }
+          >
+            <NativeSelectOption value="all">Todas</NativeSelectOption>
+            <NativeSelectOption value="checked">Marcadas</NativeSelectOption>
+            <NativeSelectOption value="unchecked">
+              No marcadas
+            </NativeSelectOption>
+          </NativeSelect>
+          <span className="text-muted-foreground">
+            {visibleMilestones.length} mostradas
+          </span>
+        </label>
+      </div>
+      {visibleMilestones.length ? (
+        <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {visibleMilestones.map(({ record, threshold }) => {
+            const checked = (isFinal ? record.visit3 : record.visit2).checked;
+            return (
+              <button
+                key={`${record.projectId}-${record.id}-${record.agency}`}
+                type="button"
+                onClick={() => onSelect(record)}
+                className="group rounded-xl border border-border bg-card p-4 text-left shadow-sm transition-colors hover:border-blue-300 hover:bg-blue-50/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label={`Ver historial de ${record.agency}`}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="font-semibold break-words">{record.agency}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {record.projectLabel} · {record.provider}
+                    </p>
+                  </div>
+                  <ArrowUpRight
+                    className="size-4 shrink-0 text-blue-600"
+                    aria-hidden="true"
+                  />
+                </div>
+                <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+                  <span className="text-xs text-muted-foreground">
+                    {isFinal ? record.status : `Umbral ${threshold}%`}
+                  </span>
+                  <span className="rounded-md bg-emerald-100 px-2 py-0.5 font-mono font-semibold tabular-nums text-emerald-800">
+                    Avance{' '}
+                    {record.progress === null
+                      ? 'sin reporte'
+                      : `${record.progress}%`}
+                  </span>
+                </div>
+                <p className="mt-3 text-xs text-muted-foreground">
+                  {visitLabel}: {checked ? 'marcada' : 'sin marcar'}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="mt-3 rounded-xl border border-dashed border-border bg-card p-8 text-center">
+          <p className="text-sm font-medium">
+            {milestones.length === 0
+              ? isFinal
+                ? 'No hay agencias listas para visita final en la selección actual.'
+                : 'No hay agencias listas para visita intermedia en la selección actual.'
+              : `No hay visitas ${visitFilter === 'checked' ? 'marcadas' : 'sin marcar'} en este grupo.`}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Prueba otros filtros o espera la próxima actualización de datos.
+          </p>
+        </div>
+      )}
+    </section>
+  );
+}
 
 export function ProgressMilestones({
   milestones,
@@ -11,86 +133,34 @@ export function ProgressMilestones({
   milestones: ProgressVisitAlert[];
   onSelect: (record: WorkRecord) => void;
 }) {
-  const pendingVisits = milestones.filter(
-    ({ record }) => !record.visit2.checked,
-  ).length;
   return (
     <section
       id="alertas-avance"
       className="mt-3 scroll-mt-28"
-      aria-label="Alertas por avance de agencias"
+      aria-label="Alertas de visitas por agencia"
     >
-      <div className="rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 to-white p-5 sm:p-6">
-        <div className="flex items-start gap-3">
-          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-blue-100 text-blue-700">
-            <TrendingUp className="size-5" aria-hidden="true" />
-          </span>
-          <div>
-            <h2 className="text-lg font-semibold tracking-tight">
-              Alertas de avance por agencia
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Agencias en proceso que ya alcanzan el umbral: Prosegur Lima 48%,
-              provincia 40% y Esparta 2 85%. Las demás conservan 50%.
-            </p>
-          </div>
+      <div className="flex items-start gap-3 rounded-xl border border-blue-200 bg-gradient-to-br from-blue-50 to-white p-5 sm:p-6">
+        <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-blue-100 text-blue-700">
+          <TrendingUp className="size-5" aria-hidden="true" />
+        </span>
+        <div>
+          <h2 className="text-lg font-semibold tracking-tight">
+            Visitas intermedias y finales
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Consulta por separado las visitas por avance y las visitas de cierre
+            en la selección actual.
+          </p>
         </div>
-        <p
-          className="mt-5 text-sm font-medium text-blue-900"
-          aria-live="polite"
-        >
-          {milestones.length}{' '}
-          {milestones.length === 1 ? 'agencia lista' : 'agencias listas'} para
-          visita en la selección actual · {pendingVisits} sin Visita 2 marcada.
-        </p>
       </div>
-
-      {milestones.length ? (
-        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {milestones.map(({ record, threshold }) => (
-            <button
-              key={`${record.projectId}-${record.id}-${record.agency}`}
-              type="button"
-              onClick={() => onSelect(record)}
-              className="group rounded-xl border border-border bg-card p-4 text-left shadow-sm transition-colors hover:border-blue-300 hover:bg-blue-50/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              aria-label={`Ver historial de ${record.agency}`}
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="font-semibold break-words">{record.agency}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {record.projectLabel} · {record.provider}
-                  </p>
-                </div>
-                <ArrowUpRight
-                  className="size-4 shrink-0 text-blue-600"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-                <span className="text-xs text-muted-foreground">
-                  Umbral {threshold}%
-                </span>
-                <span className="rounded-md bg-emerald-100 px-2 py-0.5 font-mono font-semibold tabular-nums text-emerald-800">
-                  Avance {record.progress}%
-                </span>
-              </div>
-              <p className="mt-3 text-xs text-muted-foreground">
-                Visita 2: {record.visit2.checked ? 'marcada' : 'sin marcar'}
-              </p>
-            </button>
-          ))}
-        </div>
-      ) : (
-        <div className="mt-4 rounded-xl border border-dashed border-border bg-card p-8 text-center">
-          <p className="text-sm font-medium">
-            Ninguna agencia en proceso alcanza su umbral de visita.
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Prueba otros filtros o espera la próxima actualización de datos.
-          </p>
-        </div>
-      )}
+      {(['intermediate', 'final'] as const).map((kind) => (
+        <VisitGroup
+          key={kind}
+          kind={kind}
+          milestones={milestones.filter((milestone) => milestone.kind === kind)}
+          onSelect={onSelect}
+        />
+      ))}
     </section>
   );
 }

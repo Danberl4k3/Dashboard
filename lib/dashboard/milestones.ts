@@ -3,11 +3,13 @@ import type { DashboardSnapshot, WorkRecord } from './types';
 export interface ProgressVisitAlert {
   record: WorkRecord;
   threshold: number;
+  kind: 'intermediate' | 'final';
 }
 
 export function progressAlertThreshold(record: WorkRecord): number {
   if (record.projectId.trim().toLowerCase() === 'esparta') return 85;
-  if (record.location.trim().toUpperCase() === 'PROVINCIA') return 40;
+  if (record.location.trim().toUpperCase() === 'PROVINCIA')
+    return record.provider.trim().toUpperCase() === 'PROSEGUR' ? 35 : 40;
   if (
     record.provider.trim().toUpperCase() === 'PROSEGUR' &&
     record.location.trim().toUpperCase() === 'LIMA'
@@ -16,21 +18,34 @@ export function progressAlertThreshold(record: WorkRecord): number {
   return 50;
 }
 
-/** Agencies currently eligible for a progress visit, regardless of when they crossed the threshold. */
+/** Final visits take precedence so an agency never appears in both groups. */
 export function progressVisitAlerts(
   snapshot: DashboardSnapshot,
 ): ProgressVisitAlert[] {
   return snapshot.records
     .filter(
       (record) =>
-        record.status === 'En proceso' &&
-        record.progress !== null &&
-        record.progress >= progressAlertThreshold(record),
+        record.status === 'Terminada' ||
+        (record.status === 'En proceso' &&
+          record.provider.trim().toUpperCase() === 'PROSEGUR' &&
+          record.progress !== null &&
+          record.progress >= progressAlertThreshold(record)),
     )
-    .map((record) => ({ record, threshold: progressAlertThreshold(record) }))
+    .map((record): ProgressVisitAlert => {
+      const isFinal =
+        record.status === 'Terminada' || (record.progress ?? 0) >= 100;
+      return {
+        record,
+        threshold: isFinal ? 100 : progressAlertThreshold(record),
+        kind: isFinal ? 'final' : 'intermediate',
+      };
+    })
     .sort((a, b) => {
-      if (a.record.visit2.checked !== b.record.visit2.checked)
-        return a.record.visit2.checked ? 1 : -1;
+      const aChecked =
+        a.kind === 'final' ? a.record.visit3.checked : a.record.visit2.checked;
+      const bChecked =
+        b.kind === 'final' ? b.record.visit3.checked : b.record.visit2.checked;
+      if (aChecked !== bChecked) return aChecked ? 1 : -1;
       return a.record.agency.localeCompare(b.record.agency, 'es', {
         numeric: true,
       });

@@ -27,7 +27,7 @@ export const dashboardTabs = [
   {
     id: 'alertas-avance',
     label: 'Alertas de avance',
-    description: 'Agencias en proceso listas para la visita por avance.',
+    description: 'Visitas intermedias por avance y finales por cierre.',
     icon: Milestone,
   },
   {

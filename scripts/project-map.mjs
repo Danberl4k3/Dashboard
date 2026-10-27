@@ -20,6 +20,8 @@ const SCAN_EXTS = new Set([
 const CONFIG_FILES = [
   'next.config.ts',
   'vite.config.ts',
+  'vite.vercel.config.ts',
+  'vercel.json',
   'tsconfig.json',
   'package.json',
 ];
