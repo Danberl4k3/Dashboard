@@ -57,7 +57,7 @@ graph LR
 | use-dashboard-refresh.ts | [hooks/use-dashboard-refresh.ts](../hooks/use-dashboard-refresh.ts) | 71 | lib/dashboard/types.ts |
 | use-hydrated.ts | [hooks/use-hydrated.ts](../hooks/use-hydrated.ts) | 12 | — |
 | use-mobile.ts | [hooks/use-mobile.ts](../hooks/use-mobile.ts) | 24 | — |
-| filters.ts | [lib/dashboard/filters.ts](../lib/dashboard/filters.ts) | 114 | lib/dashboard/types.ts |
+| filters.ts | [lib/dashboard/filters.ts](../lib/dashboard/filters.ts) | 141 | lib/dashboard/tools.ts, lib/dashboard/types.ts |
 | format.ts | [lib/dashboard/format.ts](../lib/dashboard/format.ts) | 22 | — |
 | milestones.ts | [lib/dashboard/milestones.ts](../lib/dashboard/milestones.ts) | 135 | lib/dashboard/types.ts |
 | tools.ts | [lib/dashboard/tools.ts](../lib/dashboard/tools.ts) | 132 | lib/dashboard/types.ts |

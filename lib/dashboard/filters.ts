@@ -3,6 +3,7 @@ import type {
   ProgressHistoryRecord,
   WorkRecord,
 } from './types';
+import { limaDate } from './tools';
 
 export function withoutDya(snapshot: DashboardSnapshot): DashboardSnapshot {
   const eligibleRecords = snapshot.records.filter(
@@ -29,6 +30,32 @@ export function indexHistoryByAgency(
     } else {
       index.set(key, [entry]);
     }
+  }
+  const observedAt = limaDate(snapshot.extractedAt);
+  const completionDate = observedAt
+    ? `${observedAt.slice(8, 10)}/${observedAt.slice(5, 7)}`
+    : 'Sin fecha';
+  for (const record of snapshot.records) {
+    if (record.status !== 'Terminada') continue;
+    const key = `${record.projectId}::${record.agency}`;
+    const existing = index.get(key) ?? [];
+    if (existing.at(-1)?.progress === 100) continue;
+    const completion: ProgressHistoryRecord = {
+      date: completionDate,
+      item: record.id,
+      projectId: record.projectId,
+      projectLabel: record.projectLabel,
+      agency: record.agency,
+      supervisor: record.supervisor,
+      newConduit: record.newConduit ?? 100,
+      newCabling: record.newCabling ?? 100,
+      installation: record.installation ?? 100,
+      commissioning: record.commissioning ?? 100,
+      dismantling: record.dismantling ?? 100,
+      progress: 100,
+      status: 'Terminada',
+    };
+    index.set(key, [...existing, completion]);
   }
   return index;
 }

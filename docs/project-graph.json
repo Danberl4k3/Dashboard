@@ -1914,8 +1914,8 @@
     "lib/dashboard/filters.ts": {
       "path": "lib/dashboard/filters.ts",
       "kind": "source",
-      "size": 3391,
-      "hash": "a5abaa7128075eb7da850311b538b60baa29a8eb93459f9d1fb77648831c3e86",
+      "size": 4447,
+      "hash": "db3277d8275d3eec4ca5b36ce5a8166d0d0dced60fd9a075ffb2b107300f0648",
       "exports": [
         "DashboardFilters",
         "filterDashboard",
@@ -1923,10 +1923,11 @@
         "withoutDya"
       ],
       "dependencies": [
+        "lib/dashboard/tools.ts",
         "lib/dashboard/types.ts"
       ],
       "externalDependencies": [],
-      "lines": 114,
+      "lines": 141,
       "importedBy": [
         "app/api/dashboard/route.ts",
         "app/page.tsx",
@@ -1998,6 +1999,7 @@
         "components/dashboard/attention-panel.tsx",
         "components/dashboard/dashboard.tsx",
         "components/dashboard/operations-overview.tsx",
+        "lib/dashboard/filters.ts",
         "tests/dashboard-tools.test.mjs"
       ]
     },
@@ -3146,6 +3148,11 @@
     {
       "from": "hooks/use-dashboard-refresh.ts",
       "to": "lib/dashboard/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "lib/dashboard/filters.ts",
+      "to": "lib/dashboard/tools.ts",
       "kind": "import"
     },
     {
