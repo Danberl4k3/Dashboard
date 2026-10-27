@@ -1914,8 +1914,8 @@
     "lib/dashboard/filters.ts": {
       "path": "lib/dashboard/filters.ts",
       "kind": "source",
-      "size": 4447,
-      "hash": "db3277d8275d3eec4ca5b36ce5a8166d0d0dced60fd9a075ffb2b107300f0648",
+      "size": 5833,
+      "hash": "ec35bf80139520493c525d81f70b9c06c3bdbf7deda09171427e931e64b8553b",
       "exports": [
         "DashboardFilters",
         "filterDashboard",
@@ -1927,7 +1927,7 @@
         "lib/dashboard/types.ts"
       ],
       "externalDependencies": [],
-      "lines": 141,
+      "lines": 179,
       "importedBy": [
         "app/api/dashboard/route.ts",
         "app/page.tsx",

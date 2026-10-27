@@ -18,6 +18,46 @@ export function withoutDya(snapshot: DashboardSnapshot): DashboardSnapshot {
   return { ...snapshot, records: eligibleRecords, history: filteredHistory };
 }
 
+function nextHistoryDate(
+  history: ProgressHistoryRecord[],
+  referenceDate: string,
+): string {
+  const referenceYear = Number(referenceDate.slice(0, 4)) || 2000;
+  const referenceMonthDay = Number(referenceDate.slice(5, 7)) * 100 +
+    Number(referenceDate.slice(8, 10));
+  let latestCut: number | null = null;
+
+  for (const entry of history) {
+    const iso = entry.date.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    const local = entry.date.match(/^(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?$/);
+    if (!iso && !local) continue;
+    const month = Number(iso?.[2] ?? local?.[2]);
+    const day = Number(iso?.[3] ?? local?.[1]);
+    let year = Number(iso?.[1] ?? local?.[3]) || referenceYear;
+    if (
+      !iso &&
+      !local?.[3] &&
+      month * 100 + day > referenceMonthDay
+    )
+      year -= 1;
+    const parsed = new Date(Date.UTC(year, month - 1, day));
+    if (
+      parsed.getUTCFullYear() !== year ||
+      parsed.getUTCMonth() !== month - 1 ||
+      parsed.getUTCDate() !== day
+    )
+      continue;
+    latestCut = Math.max(latestCut ?? parsed.getTime(), parsed.getTime());
+  }
+
+  if (latestCut === null)
+    return referenceDate
+      ? `${referenceDate.slice(8, 10)}/${referenceDate.slice(5, 7)}`
+      : 'Sin fecha';
+  const nextDay = new Date(latestCut + 86_400_000);
+  return `${String(nextDay.getUTCDate()).padStart(2, '0')}/${String(nextDay.getUTCMonth() + 1).padStart(2, '0')}`;
+}
+
 export function indexHistoryByAgency(
   snapshot: DashboardSnapshot,
 ): Map<string, ProgressHistoryRecord[]> {
@@ -32,14 +72,12 @@ export function indexHistoryByAgency(
     }
   }
   const observedAt = limaDate(snapshot.extractedAt);
-  const completionDate = observedAt
-    ? `${observedAt.slice(8, 10)}/${observedAt.slice(5, 7)}`
-    : 'Sin fecha';
   for (const record of snapshot.records) {
     if (record.status !== 'Terminada') continue;
     const key = `${record.projectId}::${record.agency}`;
     const existing = index.get(key) ?? [];
     if (existing.at(-1)?.progress === 100) continue;
+    const completionDate = nextHistoryDate(existing, observedAt);
     const completion: ProgressHistoryRecord = {
       date: completionDate,
       item: record.id,
