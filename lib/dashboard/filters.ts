@@ -73,7 +73,7 @@ export function indexHistoryByAgency(
   }
   const observedAt = limaDate(snapshot.extractedAt);
   for (const record of snapshot.records) {
-    if (record.status !== 'Terminada') continue;
+    if (record.progress !== 100) continue;
     const key = `${record.projectId}::${record.agency}`;
     const existing = index.get(key) ?? [];
     if (existing.at(-1)?.progress === 100) continue;
