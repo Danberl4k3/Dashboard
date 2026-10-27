@@ -21,15 +21,19 @@ function VisitGroup({
   const [visitFilter, setVisitFilter] = useState<
     'all' | 'checked' | 'unchecked'
   >('all');
+  const [crossingFilter, setCrossingFilter] = useState<'all' | 'first'>('all');
   const isFinal = kind === 'final';
   const title = isFinal ? 'Visitas finales' : 'Visitas intermedias';
   const visitLabel = isFinal ? 'Visita 3' : 'Visita 2';
   const pendingVisits = milestones.filter(
     ({ record }) => !(isFinal ? record.visit3 : record.visit2).checked,
   ).length;
-  const visibleMilestones = milestones.filter(({ record }) => {
+  const visibleMilestones = milestones.filter(({ record, isFirstCrossing }) => {
     const checked = (isFinal ? record.visit3 : record.visit2).checked;
-    return visitFilter === 'all' || checked === (visitFilter === 'checked');
+    return (
+      (visitFilter === 'all' || checked === (visitFilter === 'checked')) &&
+      (crossingFilter === 'all' || isFirstCrossing)
+    );
   });
 
   return (
@@ -65,6 +69,32 @@ function VisitGroup({
             {visibleMilestones.length} mostradas
           </span>
         </label>
+        <label
+          htmlFor={`crossing-filter-${kind}`}
+          className="mt-3 flex flex-wrap items-center gap-2 text-sm"
+        >
+          <span>Cruce del umbral</span>
+          <NativeSelect
+            id={`crossing-filter-${kind}`}
+            aria-label={`Filtrar ${title.toLowerCase()} por primer cruce`}
+            value={crossingFilter}
+            onChange={(event) =>
+              setCrossingFilter(event.target.value as typeof crossingFilter)
+            }
+          >
+            <NativeSelectOption value="all">
+              Todas las alertas
+            </NativeSelectOption>
+            <NativeSelectOption value="first">
+              Primer cruce en el último reporte
+            </NativeSelectOption>
+          </NativeSelect>
+        </label>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Primer cruce: alcanzó el umbral en el último reporte de su proyecto o
+          después, con un reporte previo por debajo y sin cruces anteriores. Las
+          sedes sin historial suficiente se muestran en Todas las alertas.
+        </p>
       </div>
       {visibleMilestones.length ? (
         <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -115,7 +145,7 @@ function VisitGroup({
               ? isFinal
                 ? 'No hay agencias listas para visita final en la selección actual.'
                 : 'No hay agencias listas para visita intermedia en la selección actual.'
-              : `No hay visitas ${visitFilter === 'checked' ? 'marcadas' : 'sin marcar'} en este grupo.`}
+              : 'No hay visitas que coincidan con los filtros de marcado y cruce del umbral.'}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
             Prueba otros filtros o espera la próxima actualización de datos.

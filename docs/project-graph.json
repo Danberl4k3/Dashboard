@@ -339,8 +339,8 @@
     "components/dashboard/progress-milestones.tsx": {
       "path": "components/dashboard/progress-milestones.tsx",
       "kind": "source",
-      "size": 6805,
-      "hash": "dfcc95cc605f75b6a642e23d46c65c35cb35016d86b9b31f980aa57e2ccb7a4b",
+      "size": 8050,
+      "hash": "1506bfd62567a00f392832cdefb79eb5c7c73bc72b296df07d09aeed9bd87fc2",
       "exports": [
         "ProgressMilestones"
       ],
@@ -353,7 +353,7 @@
         "lucide-react",
         "react"
       ],
-      "lines": 167,
+      "lines": 197,
       "importedBy": [
         "components/dashboard/dashboard.tsx"
       ]
@@ -1956,8 +1956,8 @@
     "lib/dashboard/milestones.ts": {
       "path": "lib/dashboard/milestones.ts",
       "kind": "source",
-      "size": 1791,
-      "hash": "650e4cd49ab1efe168a72215b55b9c906979a5afac5abe1b1c0f178823ca60c0",
+      "size": 4543,
+      "hash": "39258ab74c2a7a6b8de04d6d1c757ea87a6e92f88706693a39358e49646d93fa",
       "exports": [
         "ProgressVisitAlert",
         "progressAlertThreshold",
@@ -1967,7 +1967,7 @@
         "lib/dashboard/types.ts"
       ],
       "externalDependencies": [],
-      "lines": 54,
+      "lines": 135,
       "importedBy": [
         "components/dashboard/dashboard.tsx",
         "components/dashboard/progress-milestones.tsx",
@@ -2329,14 +2329,14 @@
     "tests/milestones.test.mjs": {
       "path": "tests/milestones.test.mjs",
       "kind": "script",
-      "size": 4705,
-      "hash": "c71644eda8951dcd3c48d53a512f9596e64371c60b3195c6baa211bf4db7c65a",
+      "size": 8727,
+      "hash": "d7af9909c99ec37aa29f1e47e2b29ae50fe4da4586d05ca7d0ec0c0d2fd60336",
       "exports": [],
       "dependencies": [
         "lib/dashboard/milestones.ts"
       ],
       "externalDependencies": [],
-      "lines": 161,
+      "lines": 301,
       "importedBy": []
     },
     "tests/xlsx-reader.test.mjs": {

@@ -51,7 +51,7 @@ graph LR
 | dashboard.tsx | [components/dashboard/dashboard.tsx](../components/dashboard/dashboard.tsx) | 2029 | components/dashboard/agency-card.tsx, components/dashboard/agency-columns.tsx, components/dashboard/agency-sparkline.tsx, components/dashboard/attention-panel.tsx, components/dashboard/dashboard-navigation.tsx, components/dashboard/dashboard-shell.tsx, components/dashboard/data-source-status.tsx, components/dashboard/operations-overview.tsx, components/dashboard/progress-milestones.tsx, components/dashboard/provider-filter.tsx, components/dashboard/stage-stepper.tsx, components/ui/badge.tsx, components/ui/button.tsx, components/ui/card.tsx, components/ui/chart.tsx, components/ui/input.tsx, components/ui/native-select.tsx, components/ui/table.tsx, components/ui/tabs.tsx, hooks/use-dashboard-refresh.ts, lib/dashboard/filters.ts, lib/dashboard/milestones.ts, lib/dashboard/tools.ts, lib/dashboard/types.ts |
 | data-source-status.tsx | [components/dashboard/data-source-status.tsx](../components/dashboard/data-source-status.tsx) | 63 | lib/dashboard/format.ts, lib/dashboard/types.ts |
 | operations-overview.tsx | [components/dashboard/operations-overview.tsx](../components/dashboard/operations-overview.tsx) | 335 | components/dashboard/dashboard-navigation.tsx, lib/dashboard/tools.ts, lib/dashboard/types.ts |
-| progress-milestones.tsx | [components/dashboard/progress-milestones.tsx](../components/dashboard/progress-milestones.tsx) | 167 | components/ui/native-select.tsx, lib/dashboard/milestones.ts, lib/dashboard/types.ts |
+| progress-milestones.tsx | [components/dashboard/progress-milestones.tsx](../components/dashboard/progress-milestones.tsx) | 197 | components/ui/native-select.tsx, lib/dashboard/milestones.ts, lib/dashboard/types.ts |
 | provider-filter.tsx | [components/dashboard/provider-filter.tsx](../components/dashboard/provider-filter.tsx) | 70 | components/ui/button.tsx |
 | stage-stepper.tsx | [components/dashboard/stage-stepper.tsx](../components/dashboard/stage-stepper.tsx) | 66 | lib/dashboard/types.ts |
 | use-dashboard-refresh.ts | [hooks/use-dashboard-refresh.ts](../hooks/use-dashboard-refresh.ts) | 71 | lib/dashboard/types.ts |
@@ -59,7 +59,7 @@ graph LR
 | use-mobile.ts | [hooks/use-mobile.ts](../hooks/use-mobile.ts) | 24 | — |
 | filters.ts | [lib/dashboard/filters.ts](../lib/dashboard/filters.ts) | 114 | lib/dashboard/types.ts |
 | format.ts | [lib/dashboard/format.ts](../lib/dashboard/format.ts) | 22 | — |
-| milestones.ts | [lib/dashboard/milestones.ts](../lib/dashboard/milestones.ts) | 54 | lib/dashboard/types.ts |
+| milestones.ts | [lib/dashboard/milestones.ts](../lib/dashboard/milestones.ts) | 135 | lib/dashboard/types.ts |
 | tools.ts | [lib/dashboard/tools.ts](../lib/dashboard/tools.ts) | 132 | lib/dashboard/types.ts |
 | types.ts | [lib/dashboard/types.ts](../lib/dashboard/types.ts) | 81 | — |
 | configured-dashboard-source.ts | [lib/data-sources/configured-dashboard-source.ts](../lib/data-sources/configured-dashboard-source.ts) | 27 | lib/data-sources/dashboard-source.ts, lib/data-sources/excel-snapshot-source.ts, lib/data-sources/sharepoint-excel-source.ts |
@@ -77,7 +77,7 @@ graph LR
 | date-format.test.mjs | [tests/date-format.test.mjs](../tests/date-format.test.mjs) | 45 | lib/dashboard/format.ts |
 | filters.test.mjs | [tests/filters.test.mjs](../tests/filters.test.mjs) | 26 | lib/dashboard/filters.ts |
 | history-index.test.mjs | [tests/history-index.test.mjs](../tests/history-index.test.mjs) | 23 | lib/dashboard/filters.ts |
-| milestones.test.mjs | [tests/milestones.test.mjs](../tests/milestones.test.mjs) | 161 | lib/dashboard/milestones.ts |
+| milestones.test.mjs | [tests/milestones.test.mjs](../tests/milestones.test.mjs) | 301 | lib/dashboard/milestones.ts |
 | xlsx-reader.test.mjs | [tests/xlsx-reader.test.mjs](../tests/xlsx-reader.test.mjs) | 63 | lib/data-sources/xlsx-reader.ts |
 | tsconfig.json | [tsconfig.json](../tsconfig.json) | 0 | — |
 | vercel.json | [vercel.json](../vercel.json) | 0 | — |
