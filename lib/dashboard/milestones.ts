@@ -54,7 +54,7 @@ export function progressAlertThreshold(record: WorkRecord): number {
     record.provider.trim().toUpperCase() === 'PROSEGUR' &&
     record.location.trim().toUpperCase() === 'LIMA'
   )
-    return 48;
+    return 35;
   return 50;
 }
 

@@ -39,12 +39,12 @@ test('Esparta 2 takes precedence over province and Prosegur', () => {
   );
   assert.equal(
     progressAlertThreshold(
-      record('Lima', 48, {
+      record('Lima', 35, {
         provider: 'prosegur',
         location: ' lima ',
       }),
     ),
-    48,
+    35,
   );
   assert.equal(
     progressAlertThreshold(
@@ -59,14 +59,14 @@ test('Esparta 2 takes precedence over province and Prosegur', () => {
 test('lists eligible agencies with pending visits first', () => {
   const records = [
     record('Lima visitada', 92, { visit2: { checked: true, color: null } }),
-    record('Lima pendiente', 48),
+    record('Lima pendiente', 35),
     record('Provincia pendiente', 35, { location: 'PROVINCIA' }),
     record('Esparta pendiente', 85, {
       projectId: 'esparta',
       location: 'PROVINCIA',
     }),
     record('Esparta debajo', 84, { projectId: 'esparta' }),
-    record('Lima debajo', 47),
+    record('Lima debajo', 34.99),
     record('Otro proveedor', 99, { provider: 'DOMINION' }),
     record('Terminada', 100, { status: 'Terminada' }),
     record('Sin avance', null),
@@ -77,10 +77,10 @@ test('lists eligible agencies with pending visits first', () => {
     ),
     [
       ['Esparta pendiente', 85],
-      ['Lima pendiente', 48],
+      ['Lima pendiente', 35],
       ['Provincia pendiente', 35],
       ['Terminada', 100],
-      ['Lima visitada', 48],
+      ['Lima visitada', 35],
     ],
   );
 });
@@ -122,7 +122,7 @@ test('separates intermediate and final visits without duplicating agencies', () 
     record('Final al 100', 100),
     record('Terminada sin avance', null, { status: 'Terminada' }),
     record('Terminada con avance menor', 95, { status: 'Terminada' }),
-    record('Debajo del umbral', 47),
+    record('Debajo del umbral', 34.99),
     record('Otro proveedor en umbral', 99, { provider: 'DOMINION' }),
   ];
   const alerts = progressVisitAlerts({ records, history: [] });
@@ -140,7 +140,7 @@ test('separates intermediate and final visits without duplicating agencies', () 
 test('only Prosegur agencies qualify for intermediate visits', () => {
   const alerts = progressVisitAlerts({
     records: [
-      record('Prosegur Lima', 48),
+      record('Prosegur Lima', 35),
       record('Otro proveedor', 99, { provider: 'DOMINION' }),
     ],
     history: [],
@@ -188,7 +188,7 @@ test('identifies the first crossing in the latest project report, in calendar or
     ],
     history: [
       historyEntry('Nueva', '26/10', 50),
-      historyEntry('Nueva', '30/09', 47),
+      historyEntry('Nueva', '30/09', 34),
       historyEntry('Anterior', '30/09', 48),
       historyEntry('Anterior', '26/10', 60),
       historyEntry('Recruce', '29/09', 49),
@@ -274,13 +274,13 @@ test('final visits have their own first crossing, including completion with lowe
 
 test('compares history dates across the new year without mutating history', () => {
   const history = [
-    historyEntry('Nueva', '31/12', 47),
-    historyEntry('Nueva', '02/01', 48),
+    historyEntry('Nueva', '31/12', 34),
+    historyEntry('Nueva', '02/01', 35),
   ];
   const original = structuredClone(history);
   const [alert] = progressVisitAlerts({
     extractedAt: '2027-01-03T15:00:00Z',
-    records: [record('Nueva', 48)],
+    records: [record('Nueva', 35)],
     history,
   });
   assert.equal(alert.isFirstCrossing, true);
